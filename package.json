@@ -1,0 +1,21 @@
+{
+  "name": "tokenized-carbon-credit-wrapped-NFT-marketplace",
+  "version": "1.0.0",
+  "description": "Tokenized carbon credit wrapped NFT marketplace",
+  "main": "index.js",
+  "scripts": {
+    "test": "truffle test ./test/*",
+    "start-blank": "rm -rf client/src && cp -rf barebones/src client/",
+    "client": "cd client && npm run start",
+    "console": "truffle console --network local",
+    "migrate:local": "truffle migrate --reset --network local",
+    "migrate:ropsten": "truffle migrate --reset --network ropsten"
+  },
+  "author": "masaun",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "@truffle/hdwallet-provider": "^1.2.0"
+  },
+  "devDependencies": {}
+}
