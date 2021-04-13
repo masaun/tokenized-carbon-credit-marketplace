@@ -23,7 +23,7 @@ export default class CreateGreenNFT extends Component {
           /////// NFT concern
           valueNFTName: '',
           valueNFTSymbol: '',
-          valuePhotoPrice: '',
+          valuegreenNFTPrice: '',
 
           /////// Ipfs Upload
           buffer: null,
@@ -33,7 +33,7 @@ export default class CreateGreenNFT extends Component {
         /////// Handle
         this.handleNFTName = this.handleNFTName.bind(this);
         this.handleNFTSymbol = this.handleNFTSymbol.bind(this);
-        this.handlePhotoPrice = this.handlePhotoPrice.bind(this);
+        this.handlegreenNFTPrice = this.handlegreenNFTPrice.bind(this);
 
         /////// Ipfs Upload
         this.captureFile = this.captureFile.bind(this);
@@ -52,8 +52,8 @@ export default class CreateGreenNFT extends Component {
         this.setState({ valueNFTSymbol: event.target.value });
     }
 
-    handlePhotoPrice(event) {
-        this.setState({ valuePhotoPrice: event.target.value });
+    handlegreenNFTPrice(event) {
+        this.setState({ valuegreenNFTPrice: event.target.value });
     }
 
     ///--------------------------
@@ -74,7 +74,7 @@ export default class CreateGreenNFT extends Component {
     }
       
     onSubmit(event) {
-        const { web3, accounts, photoNFTFactory, photoNFTMarketplace, PHOTO_NFT_MARKETPLACE, valueNFTName, valueNFTSymbol, valuePhotoPrice } = this.state;
+        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, GREEN_NFT_MARKETPLACE, valueNFTName, valueNFTSymbol, valuegreenNFTPrice } = this.state;
 
         event.preventDefault()
 
@@ -92,40 +92,40 @@ export default class CreateGreenNFT extends Component {
           const nftName = valueNFTName;
           const nftSymbol = "NFT-MARKETPLACE";  /// [Note]: All NFT's symbol are common symbol
           //const nftSymbol = valueNFTSymbol;
-          const _photoPrice = valuePhotoPrice;
+          const _greenNFTPrice = valuegreenNFTPrice;
           console.log('=== nftName ===', nftName);
           console.log('=== nftSymbol ===', nftSymbol);
-          console.log('=== _photoPrice ===', _photoPrice);
+          console.log('=== _greenNFTPrice ===', _greenNFTPrice);
           this.setState({ 
             valueNFTName: '',
             valueNFTSymbol: '',
-            valuePhotoPrice: ''
+            valuegreenNFTPrice: ''
           });
 
-          //let PHOTO_NFT;  /// [Note]: This is a photoNFT address created
-          const photoPrice = web3.utils.toWei(_photoPrice, 'ether');
-          const ipfsHashOfPhoto = this.state.ipfsHash;
-          photoNFTFactory.methods.createNewPhotoNFT(nftName, nftSymbol, photoPrice, ipfsHashOfPhoto).send({ from: accounts[0] })
+          //let GREEN_NFT;  /// [Note]: This is a GreenNFT address created
+          const greenNFTPrice = web3.utils.toWei(_greenNFTPrice, 'ether');
+          const ipfsHashOfGreenNFT = this.state.ipfsHash;
+          greenNFTFactory.methods.createNewGreenNFT(nftName, nftSymbol, greenNFTPrice, ipfsHashOfGreenNFT).send({ from: accounts[0] })
           .once('receipt', (receipt) => {
             console.log('=== receipt ===', receipt);
 
-            const PHOTO_NFT = receipt.events.PhotoNFTCreated.returnValues.photoNFT;
-            console.log('=== PHOTO_NFT ===', PHOTO_NFT);
+            const GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.GreenNFT;
+            console.log('=== GREEN_NFT ===', GREEN_NFT);
 
-            /// Get instance by using created photoNFT address
-            let PhotoNFT = {};
-            PhotoNFT = require("../../../../smart-contract/build/contracts/GreenNFT.json"); 
-            let photoNFT = new web3.eth.Contract(PhotoNFT.abi, PHOTO_NFT);
-            console.log('=== photoNFT ===', photoNFT);
+            /// Get instance by using created GreenNFT address
+            let GreenNFT = {};
+            GreenNFT = require("../../../../smart-contract/build/contracts/GreenNFT.json"); 
+            let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
+            console.log('=== greenNFT ===', greenNFT);
      
-            /// Check owner of photoId==1
-            const photoId = 1;  /// [Note]: PhotoID is always 1. Because each photoNFT is unique.
-            photoNFT.methods.ownerOf(photoId).call().then(owner => console.log('=== owner of photoId 1 ===', owner));
+            /// Check owner of greenNFTId==1
+            const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
+            greenNFT.methods.ownerOf(greenNFTId).call().then(owner => console.log('=== owner of greenNFTId 1 ===', owner));
             
             /// [Note]: Promise (nested-structure) is needed for executing those methods below (Or, rewrite by async/await)
-            photoNFT.methods.approve(PHOTO_NFT_MARKETPLACE, photoId).send({ from: accounts[0] }).once('receipt', (receipt) => {
+            greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] }).once('receipt', (receipt) => {
                 /// Put on sale (by a seller who is also called as owner)
-                photoNFTMarketplace.methods.openTradeWhenCreateNewPhotoNFT(PHOTO_NFT, photoId, photoPrice).send({ from: accounts[0] }).once('receipt', (receipt) => {})
+                greenNFTTMarketplace.methods.openTradeWhenCreateNewGreenNFT(GREEN_NFT, greenNFTId, greenNFTPrice).send({ from: accounts[0] }).once('receipt', (receipt) => {})
             })
           })
         })
@@ -148,11 +148,11 @@ export default class CreateGreenNFT extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let PhotoNFTFactory = {};
-        let PhotoNFTMarketplace = {};
+        let greenNFTFactory = {};
+        let greenNFTTMarketplace = {};
         try {
-          PhotoNFTFactory = require("../../../../smart-contract/build/contracts/PhotoNFTFactory.json"); // Load ABI of contract of PhotoNFTFactory
-          PhotoNFTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          greenNFTFactory = require("../../../../smart-contract/build/contracts/greenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
+          greenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
         } catch (e) {
           console.log(e);
         }
@@ -179,37 +179,37 @@ export default class CreateGreenNFT extends Component {
             let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]): web3.utils.toWei('0');
             balance = web3.utils.fromWei(balance, 'ether');
 
-            let instancePhotoNFTFactory = null;
-            let instancePhotoNFTMarketplace = null;
-            let PHOTO_NFT_MARKETPLACE;
+            let instanceGreenNFTFactory = null;
+            let instanceGreenNFTTMarketplace = null;
+            let GREEN_NFT_MARKETPLACE;
             let deployedNetwork = null;
 
             // Create instance of contracts
-            if (PhotoNFTFactory.networks) {
-              deployedNetwork = PhotoNFTFactory.networks[networkId.toString()];
+            if (greenNFTFactory.networks) {
+              deployedNetwork = greenNFTFactory.networks[networkId.toString()];
               if (deployedNetwork) {
-                instancePhotoNFTFactory = new web3.eth.Contract(
-                  PhotoNFTFactory.abi,
+                instanceGreenNFTFactory = new web3.eth.Contract(
+                  greenNFTFactory.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
-                console.log('=== instancePhotoNFTFactory ===', instancePhotoNFTFactory);
+                console.log('=== instanceGreenNFTFactory ===', instanceGreenNFTFactory);
               }
             }
 
-            if (PhotoNFTMarketplace.networks) {
-              deployedNetwork = PhotoNFTMarketplace.networks[networkId.toString()];
+            if (greenNFTTMarketplace.networks) {
+              deployedNetwork = greenNFTTMarketplace.networks[networkId.toString()];
               if (deployedNetwork) {
-                instancePhotoNFTMarketplace = new web3.eth.Contract(
-                  PhotoNFTMarketplace.abi,
+                instanceGreenNFTTMarketplace = new web3.eth.Contract(
+                  greenNFTTMarketplace.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
-                PHOTO_NFT_MARKETPLACE = deployedNetwork.address;
-                console.log('=== instancePhotoNFTMarketplace ===', instancePhotoNFTMarketplace);
-                console.log('=== PHOTO_NFT_MARKETPLACE ===', PHOTO_NFT_MARKETPLACE);
+                GREEN_NFT_MARKETPLACE = deployedNetwork.address;
+                console.log('=== instanceGreenNFTTMarketplace ===', instanceGreenNFTTMarketplace);
+                console.log('=== GREEN_NFT_MARKETPLACE ===', GREEN_NFT_MARKETPLACE);
               }
             }
 
-            if (instancePhotoNFTFactory) {
+            if (instanceGreenNFTFactory) {
                 // Set web3, accounts, and contract to the state, and then proceed with an
                 // example of interacting with the contract's methods.
                 this.setState({ 
@@ -221,12 +221,12 @@ export default class CreateGreenNFT extends Component {
                     networkType, 
                     hotLoaderDisabled,
                     isMetaMask, 
-                    photoNFTFactory: instancePhotoNFTFactory,
-                    photoNFTMarketplace: instancePhotoNFTMarketplace, 
-                    PHOTO_NFT_MARKETPLACE: PHOTO_NFT_MARKETPLACE }, () => {
-                      this.refreshValues(instancePhotoNFTFactory);
+                    greenNFTFactory: instanceGreenNFTFactory,
+                    greenNFTTMarketplace: instanceGreenNFTTMarketplace, 
+                    GREEN_NFT_MARKETPLACE: GREEN_NFT_MARKETPLACE }, () => {
+                      this.refreshValues(instanceGreenNFTFactory);
                       setInterval(() => {
-                        this.refreshValues(instancePhotoNFTFactory);
+                        this.refreshValues(instanceGreenNFTFactory);
                     }, 5000);
                 });
             }
@@ -249,9 +249,9 @@ export default class CreateGreenNFT extends Component {
         }
     }
 
-    refreshValues = (instancePhotoNFTFactory) => {
-        if (instancePhotoNFTFactory) {
-          console.log('refreshValues of instancePhotoNFTFactory');
+    refreshValues = (instanceGreenNFTFactory) => {
+        if (instanceGreenNFTFactory) {
+          console.log('refreshValues of instanceGreenNFTFactory');
         }
     }
 
@@ -301,8 +301,8 @@ export default class CreateGreenNFT extends Component {
                                         width={1}
                                         placeholder="e.g) 10"
                                         required={true}
-                                        value={this.state.valuePhotoPrice} 
-                                        onChange={this.handlePhotoPrice}                                        
+                                        value={this.state.valuegreenNFTPrice} 
+                                        onChange={this.handlegreenNFTPrice}                                        
                                     />
                                 </Field>
 
