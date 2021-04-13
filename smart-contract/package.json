@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "truffle test ./test/*",
-    "start-blank": "rm -rf client/src && cp -rf barebones/src client/",
-    "client": "cd client && npm run start",
     "console": "truffle console --network local",
     "migrate:local": "truffle migrate --reset --network local",
     "migrate:ropsten": "truffle migrate --reset --network ropsten"
