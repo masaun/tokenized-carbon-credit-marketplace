@@ -24,8 +24,7 @@ contract PhotoNFTTradable {
 
     uint256 tradeCounter;
 
-    constructor(PhotoNFTData _photoNFTData) public {
-        photoNFTData = _photoNFTData;
+    constructor() public {
         tradeCounter = 0;
     }
 
@@ -52,7 +51,8 @@ contract PhotoNFTTradable {
     /**
      * @dev Opens a trade by the seller.
      */
-    function openTrade(PhotoNFT photoNFT, uint256 _photoId) public {
+    function openTrade(PhotoNFTData _photoNFTData, PhotoNFT photoNFT, uint256 _photoId) public {
+        PhotoNFTData photoNFTData = _photoNFTData;
         photoNFTData.updateStatus(photoNFT, "Open");
 
         Trade storage trade = trades[_photoId];
@@ -68,7 +68,8 @@ contract PhotoNFTTradable {
     /**
      * @dev Cancels a trade by the seller.
      */
-    function cancelTrade(PhotoNFT photoNFT, uint256 _photoId) public {
+    function cancelTrade(PhotoNFTData _photoNFTData, PhotoNFT photoNFT, uint256 _photoId) public {
+        PhotoNFTData photoNFTData = _photoNFTData;
         photoNFTData.updateStatus(photoNFT, "Cancelled");
         
         Trade storage trade = trades[_photoId];
