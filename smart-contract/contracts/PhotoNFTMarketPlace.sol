@@ -59,34 +59,4 @@ contract PhotoNFTMarketplace is PhotoNFTTradable, PhotoNFTMarketplaceEvents {
         //photoNFT.mint(msg.sender, tokenURI);
     }
 
-
-    ///-----------------------------------------------------
-    /// Methods below are pending methods
-    ///-----------------------------------------------------
-
-    /** 
-     * @dev reputation function is that gives reputation to a user who has ownership of being posted photo.
-     * @dev Each user has reputation data in struct
-     */
-    function reputation(address from, address to, uint256 photoId) public returns (uint256, uint256) {
-
-        // Photo storage photo = photos[photoId];
-        // photo.reputation = photo.reputation.add(1);
-
-        // emit AddReputation(photoId, photo.reputation);
-
-        // return (photoId, photo.reputation);
-        return (0, 0);
-    }
-    
-
-    function getReputationCount(uint256 photoId) public view returns (uint256) {
-        uint256 curretReputationCount;
-
-        // Photo memory photo = photos[photoId];
-        // curretReputationCount = photo.reputation;
-
-        return curretReputationCount;
-    }    
-
 }

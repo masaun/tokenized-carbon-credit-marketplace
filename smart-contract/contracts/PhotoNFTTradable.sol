@@ -13,7 +13,6 @@ contract PhotoNFTTradable {
     event TradeStatusChange(uint256 ad, bytes32 status);
 
     PhotoNFT public photoNFT;
-    PhotoNFTData public photoNFTData;
 
     struct Trade {
         address seller;
