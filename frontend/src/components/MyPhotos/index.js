@@ -41,7 +41,7 @@ export default class MyPhotos extends Component {
     /// Functions put a photo NFT on sale or cancel it on sale 
     ///---------------------------------------------------------
     putOnSale = async (e) => {
-        const { web3, accounts, photoNFTMarketplace, photoNFTData, PHOTO_NFT_MARKETPLACE } = this.state;
+        const { web3, accounts, photoNFTMarketplace, photoNFTData, PHOTO_NFT_MARKETPLACE, PHOTO_NFT_DATA } = this.state;
 
         console.log('=== value of putOnSale ===', e.target.value);
         console.log('=== PHOTO_NFT_MARKETPLACE ===', PHOTO_NFT_MARKETPLACE);
@@ -60,12 +60,12 @@ export default class MyPhotos extends Component {
             
         /// Put on sale (by a seller who is also called as owner)
         const txReceipt1 = await photoNFT.methods.approve(PHOTO_NFT_MARKETPLACE, photoId).send({ from: accounts[0] });
-        const txReceipt2 = await photoNFTMarketplace.methods.openTrade(PHOTO_NFT, photoId).send({ from: accounts[0] });
+        const txReceipt2 = await photoNFTMarketplace.methods.openTrade(PHOTO_NFT_DATA, PHOTO_NFT, photoId).send({ from: accounts[0] });
         console.log('=== response of openTrade ===', txReceipt2);
     }
 
     cancelOnSale = async (e) => {
-        const { web3, accounts, photoNFTMarketplace, photoNFTData, PHOTO_NFT_MARKETPLACE } = this.state;
+        const { web3, accounts, photoNFTMarketplace, photoNFTData, PHOTO_NFT_MARKETPLACE, PHOTO_NFT_DATA } = this.state;
 
         console.log('=== value of cancelOnSale ===', e.target.value);
 
@@ -83,7 +83,7 @@ export default class MyPhotos extends Component {
             
         /// Cancel on sale
         //const txReceipt1 = await photoNFT.methods.approve(PHOTO_NFT_MARKETPLACE, photoId).send({ from: accounts[0] });
-        const txReceipt2 = await photoNFTMarketplace.methods.cancelTrade(PHOTO_NFT, photoId).send({ from: accounts[0] });
+        const txReceipt2 = await photoNFTMarketplace.methods.cancelTrade(PHOTO_NFT_DATA, PHOTO_NFT, photoId).send({ from: accounts[0] });
         console.log('=== response of cancelTrade ===', txReceipt2);
     }
 
@@ -154,6 +154,7 @@ export default class MyPhotos extends Component {
             let instancePhotoNFTMarketplace = null;
             let instancePhotoNFTData = null;
             let PHOTO_NFT_MARKETPLACE;
+            let PHOTO_NFT_DATA;
             let deployedNetwork = null;
 
             // Create instance of contracts
@@ -176,6 +177,7 @@ export default class MyPhotos extends Component {
                   PhotoNFTData.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
+                PHOTO_NFT_DATA = deployedNetwork.address;
                 console.log('=== instancePhotoNFTData ===', instancePhotoNFTData);
               }
             }
@@ -195,7 +197,8 @@ export default class MyPhotos extends Component {
                     currentAccount: currentAccount,
                     photoNFTMarketplace: instancePhotoNFTMarketplace,
                     photoNFTData: instancePhotoNFTData,
-                    PHOTO_NFT_MARKETPLACE: PHOTO_NFT_MARKETPLACE }, () => {
+                    PHOTO_NFT_MARKETPLACE: PHOTO_NFT_MARKETPLACE,
+                    PHOTO_NFT_DATA: PHOTO_NFT_DATA }, () => {
                       this.refreshValues(instancePhotoNFTMarketplace);
                       setInterval(() => {
                         this.refreshValues(instancePhotoNFTMarketplace);
