@@ -78,7 +78,7 @@ class App extends Component {
     );
   }
 
-  renderPublish() {
+  renderCreateGreenNFT() {
     return (
       <div className={styles.wrapper}>
         <CreateGreenNFT />
@@ -86,7 +86,7 @@ class App extends Component {
     );
   }
 
-  renderMyPhotos() {
+  renderMyGreenNFTs() {
     return (
       <div className={styles.wrapper}>
         <MyGreenNFTs />
@@ -94,7 +94,7 @@ class App extends Component {
     );
   }
 
-  renderPhotoMarketPlace() {
+  renderGreenNFTMarketplace() {
     return (
       <div className={styles.wrapper}>
         <GreenNFTMarketplace />
@@ -106,9 +106,9 @@ class App extends Component {
     return (
       <div className={styles.App}>
         <Header />
-          {this.state.route === 'publish' && this.renderPublish()}
-          {this.state.route === 'my-photos' && this.renderMyPhotos()}
-          {this.state.route === 'photo-marketplace' && this.renderPhotoMarketPlace()}
+          {this.state.route === 'create-green-nft' && this.renderCreateGreenNFT()}
+          {this.state.route === 'my-green-nfts' && this.renderMyGreenNFTs()}
+          {this.state.route === 'green-nft-marketplace' && this.renderGreenNFTMarketplace()}
         <Footer />
       </div>
     );
