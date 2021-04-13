@@ -1,17 +1,17 @@
 pragma solidity 0.6.12;
 
-import { PhotoNFT } from "../../PhotoNFT.sol";
+import { GreenNFT } from "../../GreenNFT.sol";
 
 
-contract PhotoNFTFactoryEvents {
+contract GreenNFTFactoryEvents {
 
-    event PhotoNFTCreated (
+    event GreenNFTCreated (
         address owner,
-        PhotoNFT photoNFT,
+        GreenNFT greenNFT,
         string nftName, 
         string nftSymbol, 
-        uint photoPrice, 
-        string ipfsHashOfPhoto
+        uint greenPrice, 
+        string ipfsHashOfgreen
     );
 
     event AddReputation (
