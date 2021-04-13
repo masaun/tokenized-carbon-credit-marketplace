@@ -18,7 +18,7 @@ contract GreenNFT is ERC721 {
         string memory _nftName, 
         string memory _nftSymbol,
         string memory _tokenURI,    /// [Note]: TokenURI is URL include ipfs hash
-        uint greenPrice
+        uint greenNFTPrice
     ) 
         public 
         ERC721(_nftName, _nftSymbol) 

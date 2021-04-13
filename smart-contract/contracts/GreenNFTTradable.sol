@@ -17,7 +17,7 @@ contract GreenNFTTradable {
     struct Trade {
         address seller;
         uint256 greenId;  /// GreenNFT's token ID
-        uint256 greenPrice;
+        uint256 greenNFTPrice;
         bytes32 status;   /// Open, Executed, Cancelled
     }
     mapping(uint256 => Trade) public trades;  /// [Key]: GreenNFT's token ID
@@ -32,16 +32,16 @@ contract GreenNFTTradable {
      * @notice - This method is only executed when a seller create a new GreenNFT
      * @dev Opens a new trade. Puts _greenId in escrow.
      * @param _greenId The id for the greenId to trade.
-     * @param _greenPrice The amount of currency for which to trade the greenId.
+     * @param _greenNFTPrice The amount of currency for which to trade the greenId.
      */
-    function openTradeWhenCreateNewGreenNFT(GreenNFT greenNFT, uint256 _greenId, uint256 _greenPrice) public {
+    function openTradeWhenCreateNewGreenNFT(GreenNFT greenNFT, uint256 _greenId, uint256 _greenNFTPrice) public {
         greenNFT.transferFrom(msg.sender, address(this), _greenId);
 
         tradeCounter += 1;    /// [Note]: New. Trade count is started from "1". This is to align greenId
         trades[tradeCounter] = Trade({
             seller: msg.sender,
             greenId: _greenId,
-            greenPrice: _greenPrice,
+            greenNFTPrice: _greenNFTPrice,
             status: "Open"
         });
         //tradeCounter += 1;  /// [Note]: Original
@@ -111,6 +111,6 @@ contract GreenNFTTradable {
     function getTrade(uint256 _greenId) public view returns (Trade memory trade_) {
         Trade memory trade = trades[_greenId];
         return trade;
-        //return (trade.seller, trade.greenId, trade.greenPrice, trade.status);
+        //return (trade.seller, trade.greenId, trade.greenNFTPrice, trade.status);
     }
 }

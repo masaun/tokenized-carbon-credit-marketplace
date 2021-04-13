@@ -109,7 +109,7 @@ export default class CreateGreenNFT extends Component {
           .once('receipt', (receipt) => {
             console.log('=== receipt ===', receipt);
 
-            const GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.GreenNFT;
+            const GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT;
             console.log('=== GREEN_NFT ===', GREEN_NFT);
 
             /// Get instance by using created GreenNFT address
@@ -148,11 +148,11 @@ export default class CreateGreenNFT extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let greenNFTFactory = {};
-        let greenNFTTMarketplace = {};
+        let GreenNFTFactory = {};
+        let GreenNFTTMarketplace = {};
         try {
-          greenNFTFactory = require("../../../../smart-contract/build/contracts/greenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
-          greenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTFactory = require("../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
+          GreenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
         } catch (e) {
           console.log(e);
         }
@@ -185,22 +185,22 @@ export default class CreateGreenNFT extends Component {
             let deployedNetwork = null;
 
             // Create instance of contracts
-            if (greenNFTFactory.networks) {
-              deployedNetwork = greenNFTFactory.networks[networkId.toString()];
+            if (GreenNFTFactory.networks) {
+              deployedNetwork = GreenNFTFactory.networks[networkId.toString()];
               if (deployedNetwork) {
                 instanceGreenNFTFactory = new web3.eth.Contract(
-                  greenNFTFactory.abi,
+                  GreenNFTFactory.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
                 console.log('=== instanceGreenNFTFactory ===', instanceGreenNFTFactory);
               }
             }
 
-            if (greenNFTTMarketplace.networks) {
-              deployedNetwork = greenNFTTMarketplace.networks[networkId.toString()];
+            if (GreenNFTTMarketplace.networks) {
+              deployedNetwork = GreenNFTTMarketplace.networks[networkId.toString()];
               if (deployedNetwork) {
                 instanceGreenNFTTMarketplace = new web3.eth.Contract(
-                  greenNFTTMarketplace.abi,
+                  GreenNFTTMarketplace.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
                 GREEN_NFT_MARKETPLACE = deployedNetwork.address;
@@ -267,11 +267,11 @@ export default class CreateGreenNFT extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Publish and Put on Sale</h2>
+                            <h2>Create a new Green NFT and Put on Sale</h2>
                             <p>Please upload your photo and put on sale from here!</p>
 
                             <Form onSubmit={this.onSubmit}>
-                                <Field label="Photo NFT Name">
+                                <Field label="Green NFT Name">
                                     <Input
                                         type="text"
                                         width={1}
@@ -295,7 +295,7 @@ export default class CreateGreenNFT extends Component {
                                 </Field>
                                 */}
 
-                                <Field label="Photo Price (unit: ETH)">
+                                <Field label="Green NFT's Price (unit: ETH)">
                                     <Input
                                         type="text"
                                         width={1}

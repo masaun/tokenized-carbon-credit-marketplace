@@ -96,10 +96,10 @@ export default class GreenNFTMarketplace extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let greenNFTTMarketplace = {};
+        let GreenNFTTMarketplace = {};
         let GreenNFTData = {};
         try {
-          greenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
           GreenNFTData = require("../../../../smart-contract/build/contracts/GreenNFTData.json");
         } catch (e) {
           console.log(e);
@@ -134,11 +134,11 @@ export default class GreenNFTMarketplace extends Component {
             let deployedNetwork = null;
 
             // Create instance of contracts
-            if (greenNFTTMarketplace.networks) {
-              deployedNetwork = greenNFTTMarketplace.networks[networkId.toString()];
+            if (GreenNFTTMarketplace.networks) {
+              deployedNetwork = GreenNFTTMarketplace.networks[networkId.toString()];
               if (deployedNetwork) {
                 instanceGreenNFTTMarketplace = new web3.eth.Contract(
-                  greenNFTTMarketplace.abi,
+                  GreenNFTTMarketplace.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
                 console.log('=== instanceGreenNFTTMarketplace ===', instanceGreenNFTTMarketplace);
@@ -170,7 +170,7 @@ export default class GreenNFTMarketplace extends Component {
                     isMetaMask, 
                     currentAccount: currentAccount, 
                     greenNFTTMarketplace: instanceGreenNFTTMarketplace,
-                    GreenNFTData: instanceGreenNFTData }, () => {
+                    greenNFTData: instanceGreenNFTData }, () => {
                       this.refreshValues(instanceGreenNFTTMarketplace);
                       setInterval(() => {
                         this.refreshValues(instanceGreenNFTTMarketplace);
@@ -263,7 +263,7 @@ export default class GreenNFTMarketplace extends Component {
                                 </Field>
                                 */}
 
-                                <Button size={'medium'} width={1} value={ green.GreenNFT } onClick={this.buyGreenNFT}> Buy </Button>
+                                <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.buyGreenNFT}> Buy </Button>
 
                                 {/* <Button size={'small'} value={ green.GreenNFT } onClick={this.buyGreenNFT}> Buy </Button> */}
 

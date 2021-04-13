@@ -10,8 +10,8 @@ contract GreenNFTFactoryObjects {
     //     string greenNFTName;
     //     string greenNFTSymbol;
     //     address ownerAddress;
-    //     uint greenPrice;
-    //     string ipfsHashOfgreen;
+    //     uint greenNFTPrice;
+    //     string ipfsHashOfGreenNFT;
     //     uint256 reputation;
     // }
 

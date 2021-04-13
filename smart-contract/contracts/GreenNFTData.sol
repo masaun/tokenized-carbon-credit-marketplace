@@ -23,8 +23,8 @@ contract GreenNFTData is GreenNFTDataStorages {
         string memory _greenNFTName, 
         string memory _greenNFTSymbol, 
         address _ownerAddress, 
-        uint _greenPrice, 
-        string memory _ipfsHashOfgreen
+        uint _greenNFTPrice, 
+        string memory _ipfsHashOfGreenNFT
     ) public returns (bool) {
         /// Save metadata of a GreenNFT of green
         Green memory green = Green({
@@ -32,8 +32,8 @@ contract GreenNFTData is GreenNFTDataStorages {
             greenNFTName: _greenNFTName,
             greenNFTSymbol: _greenNFTSymbol,
             ownerAddress: _ownerAddress,
-            greenPrice: _greenPrice,
-            ipfsHashOfgreen: _ipfsHashOfgreen,
+            greenNFTPrice: _greenNFTPrice,
+            ipfsHashOfGreenNFT: _ipfsHashOfGreenNFT,
             status: "Open",
             reputation: 0
         });
@@ -72,7 +72,7 @@ contract GreenNFTData is GreenNFTDataStorages {
     ///-----------------
     /// Getter methods
     ///-----------------
-    function getgreen(uint index) public view returns (Green memory _green) {
+    function getGreen(uint index) public view returns (Green memory _green) {
         Green memory green = greens[index];
         return green;
     }
@@ -106,7 +106,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         return green;
     }
 
-    function getAllgreens() public view returns (Green[] memory _greens) {
+    function getAllGreens() public view returns (Green[] memory _greens) {
         return greens;
     }
 

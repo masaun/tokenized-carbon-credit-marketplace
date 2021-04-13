@@ -31,17 +31,17 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
     /**
      * @notice - Create a new GreenNFT when a seller (owner) upload a green onto IPFS
      */
-    function createNewGreenNFT(string memory nftName, string memory nftSymbol, uint greenPrice, string memory ipfsHashOfgreen) public returns (bool) {
+    function createNewGreenNFT(string memory nftName, string memory nftSymbol, uint greenNFTPrice, string memory ipfsHashOfGreenNFT) public returns (bool) {
         address owner = msg.sender;  /// [Note]: Initial owner of GreenNFT is msg.sender
-        string memory tokenURI = getTokenURI(ipfsHashOfgreen);  /// [Note]: IPFS hash + URL
-        GreenNFT greenNFT = new GreenNFT(owner, nftName, nftSymbol, tokenURI, greenPrice);
+        string memory tokenURI = getTokenURI(ipfsHashOfGreenNFT);  /// [Note]: IPFS hash + URL
+        GreenNFT greenNFT = new GreenNFT(owner, nftName, nftSymbol, tokenURI, greenNFTPrice);
         greenAddresses.push(address(greenNFT));
 
         /// Save metadata of a GreenNFT created
-        greenNFTData.saveMetadataOfGreenNFT(greenAddresses, greenNFT, nftName, nftSymbol, msg.sender, greenPrice, ipfsHashOfgreen);
+        greenNFTData.saveMetadataOfGreenNFT(greenAddresses, greenNFT, nftName, nftSymbol, msg.sender, greenNFTPrice, ipfsHashOfGreenNFT);
         greenNFTData.updateStatus(greenNFT, "Open");
 
-        emit GreenNFTCreated(msg.sender, greenNFT, nftName, nftSymbol, greenPrice, ipfsHashOfgreen);
+        emit GreenNFTCreated(msg.sender, greenNFT, nftName, nftSymbol, greenNFTPrice, ipfsHashOfGreenNFT);
     }
 
 
@@ -52,8 +52,8 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
         return "https://ipfs.io/ipfs/";
     }
 
-    function getTokenURI(string memory _ipfsHashOfgreen) public view returns (string memory) {
-        return Strings.strConcat(baseTokenURI(), _ipfsHashOfgreen);
+    function getTokenURI(string memory _ipfsHashOfGreenNFT) public view returns (string memory) {
+        return Strings.strConcat(baseTokenURI(), _ipfsHashOfGreenNFT);
     }
 
 }

@@ -10,8 +10,8 @@ contract GreenNFTDataObjects {
         string greenNFTName;
         string greenNFTSymbol;
         address ownerAddress;
-        uint greenPrice;
-        string ipfsHashOfgreen;
+        uint greenNFTPrice;
+        string ipfsHashOfGreenNFT;
         string status;  /// "Open" or "Cancelled"
         uint256 reputation;
     }

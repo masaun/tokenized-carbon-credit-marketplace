@@ -32,7 +32,7 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
         GreenNFTData.Green memory green = greenNFTData.getGreenByNFTAddress(greenNFT);
         address _seller = green.ownerAddress;                     /// Owner
         address payable seller = address(uint160(_seller));  /// Convert owner address with payable
-        uint buyAmount = green.greenPrice;
+        uint buyAmount = green.greenNFTPrice;
         require (msg.value == buyAmount, "msg.value should be equal to the buyAmount");
  
         /// Bought-amount is transferred into a seller wallet
@@ -55,7 +55,7 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
         emit GreenNFTOwnershipChanged(greenNFT, greenId, ownerBeforeOwnershipTransferred, ownerAfterOwnershipTransferred);
 
         /// Mint a green with a new greenId
-        //string memory tokenURI = GreenNFTFactory.getTokenURI(greenData.ipfsHashOfgreen);  /// [Note]: IPFS hash + URL
+        //string memory tokenURI = GreenNFTFactory.getTokenURI(greenData.ipfsHashOfGreenNFT);  /// [Note]: IPFS hash + URL
         //GreenNFT.mint(msg.sender, tokenURI);
     }
 

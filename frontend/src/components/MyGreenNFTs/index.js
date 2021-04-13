@@ -118,10 +118,10 @@ export default class MyGreenNFTs extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let greenNFTTMarketplace = {};
+        let GreenNFTTMarketplace = {};
         let GreenNFTData = {};
         try {
-          greenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
           GreenNFTData = require("../../../../smart-contract/build/contracts/GreenNFTData.json");
         } catch (e) {
           console.log(e);
@@ -158,11 +158,11 @@ export default class MyGreenNFTs extends Component {
             let deployedNetwork = null;
 
             // Create instance of contracts
-            if (greenNFTTMarketplace.networks) {
-              deployedNetwork = greenNFTTMarketplace.networks[networkId.toString()];
+            if (GreenNFTTMarketplace.networks) {
+              deployedNetwork = GreenNFTTMarketplace.networks[networkId.toString()];
               if (deployedNetwork) {
                 instanceGreenNFTTMarketplace = new web3.eth.Contract(
-                  greenNFTTMarketplace.abi,
+                  GreenNFTTMarketplace.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
                 GREEN_NFT_MARKETPLACE = deployedNetwork.address;
@@ -239,7 +239,7 @@ export default class MyGreenNFTs extends Component {
 
         return (
             <div className={styles.contracts}>
-              <h2>My Photos</h2>
+              <h2>My Green NFTs</h2>
 
               { allGreens.map((green, key) => {
                 return (
@@ -264,7 +264,7 @@ export default class MyGreenNFTs extends Component {
 
                               <span style={{ padding: "20px" }}></span>
 
-                              <p>Photo Name: { green.GreenNFTName }</p>
+                              <p>Photo Name: { green.greenNFTName }</p>
 
                               <p>Price: { web3.utils.fromWei(`${green.greenNFTPrice}`, 'ether') } ETH</p>
 
@@ -273,9 +273,9 @@ export default class MyGreenNFTs extends Component {
                               <br />
 
                               { green.status == "Cancelled" ? 
-                                  <Button size={'medium'} width={1} value={ green.GreenNFT } onClick={this.putOnSale}> Put on sale </Button>
+                                  <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.putOnSale}> Put on sale </Button>
                               :
-                                  <Button size={'medium'} width={1} value={ green.GreenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
+                                  <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
                               }
 
                               <span style={{ padding: "5px" }}></span>

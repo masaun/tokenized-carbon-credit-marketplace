@@ -10,8 +10,8 @@ contract GreenNFTFactoryEvents {
         GreenNFT greenNFT,
         string nftName, 
         string nftSymbol, 
-        uint greenPrice, 
-        string ipfsHashOfgreen
+        uint greenNFTPrice, 
+        string ipfsHashOfGreenNFT
     );
 
     event AddReputation (
