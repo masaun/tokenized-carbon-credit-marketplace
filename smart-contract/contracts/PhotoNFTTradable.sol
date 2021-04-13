@@ -1,4 +1,4 @@
-pragma solidity ^0.5.16;
+pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import { PhotoNFT } from "./PhotoNFT.sol";
@@ -13,7 +13,6 @@ contract PhotoNFTTradable {
     event TradeStatusChange(uint256 ad, bytes32 status);
 
     PhotoNFT public photoNFT;
-    PhotoNFTData public photoNFTData;
 
     struct Trade {
         address seller;

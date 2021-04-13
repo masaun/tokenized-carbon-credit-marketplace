@@ -1,7 +1,7 @@
-pragma solidity ^0.5.16;
+pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-import { SafeMath } from "./openzeppelin-solidity/contracts/math/SafeMath.sol";
+import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { Strings } from "./libraries/Strings.sol";
 import { PhotoNFTFactoryStorages } from "./photo-nft-factory/commons/PhotoNFTFactoryStorages.sol";
 import { PhotoNFT } from "./PhotoNFT.sol";
