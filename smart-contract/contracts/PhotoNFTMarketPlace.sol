@@ -1,8 +1,8 @@
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
-//import { ERC20 } from './openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
-import { SafeMath } from "./openzeppelin-solidity/contracts/math/SafeMath.sol";
+//import { ERC20 } from '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { PhotoNFT } from "./PhotoNFT.sol";
 import { PhotoNFTTradable } from "./PhotoNFTTradable.sol";
 import { PhotoNFTMarketplaceEvents } from "./photo-nft-marketplace/commons/PhotoNFTMarketplaceEvents.sol";

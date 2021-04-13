@@ -1,8 +1,8 @@
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
-import { ERC721Full } from "./openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
-import { SafeMath } from "./openzeppelin-solidity/contracts/math/SafeMath.sol";
+import { ERC721Full } from "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
+import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 /**
