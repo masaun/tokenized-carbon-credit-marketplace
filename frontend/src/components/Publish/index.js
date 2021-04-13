@@ -114,7 +114,7 @@ export default class Publish extends Component {
 
             /// Get instance by using created photoNFT address
             let PhotoNFT = {};
-            PhotoNFT = require("../../../../build/contracts/PhotoNFT.json"); 
+            PhotoNFT = require("../../../../smart-contract/build/contracts/PhotoNFT.json"); 
             let photoNFT = new web3.eth.Contract(PhotoNFT.abi, PHOTO_NFT);
             console.log('=== photoNFT ===', photoNFT);
      
@@ -151,8 +151,8 @@ export default class Publish extends Component {
         let PhotoNFTFactory = {};
         let PhotoNFTMarketplace = {};
         try {
-          PhotoNFTFactory = require("../../../../build/contracts/PhotoNFTFactory.json"); // Load ABI of contract of PhotoNFTFactory
-          PhotoNFTMarketplace = require("../../../../build/contracts/PhotoNFTMarketplace.json");
+          PhotoNFTFactory = require("../../../../smart-contract/build/contracts/PhotoNFTFactory.json"); // Load ABI of contract of PhotoNFTFactory
+          PhotoNFTMarketplace = require("../../../../smart-contract/build/contracts/PhotoNFTMarketplace.json");
         } catch (e) {
           console.log(e);
         }
