@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
-import Publish from "./components/Publish/index.js";
-import MyPhotos from "./components/MyPhotos/index.js";
-import PhotoMarketplace from "./components/PhotoMarketplace/index.js";
+import CreateGreenNFT from "./components/CreateGreenNFT/index.js";
+import MyGreenNFTs from "./components/MyGreenNFTs/index.js";
+import GreenNFTMarketplace from "./components/GreenNFTMarketplace/index.js";
 import ipfs from './components/ipfs/ipfsApi.js'
 
 import { Loader, Button, Card, Input, Heading, Table, Form, Flex, Box, Image } from 'rimble-ui';
@@ -81,7 +81,7 @@ class App extends Component {
   renderPublish() {
     return (
       <div className={styles.wrapper}>
-        <Publish />
+        <CreateGreenNFT />
       </div>
     );
   }
@@ -89,7 +89,7 @@ class App extends Component {
   renderMyPhotos() {
     return (
       <div className={styles.wrapper}>
-        <MyPhotos />
+        <MyGreenNFTs />
       </div>
     );
   }
@@ -97,7 +97,7 @@ class App extends Component {
   renderPhotoMarketPlace() {
     return (
       <div className={styles.wrapper}>
-        <PhotoMarketplace />
+        <GreenNFTMarketplace />
       </div>    
     );
   }

@@ -7,7 +7,7 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
 import styles from '../../App.module.scss';
 
 
-export default class PhotoMarketplace extends Component {
+export default class GreenNFTMarketplace extends Component {
     constructor(props) {    
         super(props);
 
@@ -52,7 +52,7 @@ export default class PhotoMarketplace extends Component {
 
         /// Get instance by using created photoNFT address
         let PhotoNFT = {};
-        PhotoNFT = require("../../../../smart-contract/build/contracts/PhotoNFT.json"); 
+        PhotoNFT = require("../../../../smart-contract/build/contracts/GreenNFT.json"); 
         let photoNFT = new web3.eth.Contract(PhotoNFT.abi, PHOTO_NFT);
 
         /// Check owner of photoId
@@ -117,8 +117,8 @@ export default class PhotoMarketplace extends Component {
         let PhotoNFTMarketplace = {};
         let PhotoNFTData = {};
         try {
-          PhotoNFTMarketplace = require("../../../../smart-contract/build/contracts/PhotoNFTMarketplace.json");
-          PhotoNFTData = require("../../../../smart-contract/build/contracts/PhotoNFTData.json");
+          PhotoNFTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          PhotoNFTData = require("../../../../smart-contract/build/contracts/GreenNFTData.json");
         } catch (e) {
           console.log(e);
         }
