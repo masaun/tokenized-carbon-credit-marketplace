@@ -9,13 +9,11 @@ const Header = () => (
           <ul>
             <li><a href="/" className={styles.link}><span style={{ padding: "60px" }}></span></a></li>
 
-            <li><a href="/publish" className={styles.link}> Publish</a></li>
+            <li><a href="/create-green-nft" className={styles.link}> Create</a></li>
 
-            <li><a href="/my-photos" className={styles.link}> My Photos</a></li>
+            <li><a href="/my-green-nfts" className={styles.link}> My Green NFTs</a></li>
 
-            {process.env.NODE_ENV !== 'photo_marketplace' && (
-              <li><a href="/photo-marketplace" className={styles.link}> PhotoMarketPlace</a></li>
-            )}
+            <li><a href="/green-nft-marketplace" className={styles.link}> MarketPlace</a></li>
           </ul>
         </nav>
     </div>

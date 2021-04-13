@@ -7,7 +7,7 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
 import styles from '../../App.module.scss';
 
 
-export default class PhotoMarketplace extends Component {
+export default class GreenNFTMarketplace extends Component {
     constructor(props) {    
         super(props);
 
@@ -20,81 +20,63 @@ export default class PhotoMarketplace extends Component {
           route: window.location.pathname.replace("/", ""),
 
           /////// NFT
-          allPhotos: []
+          allGreens: []
         };
 
-        //this.handlePhotoNFTAddress = this.handlePhotoNFTAddress.bind(this);
+        //this.handleGreenNFTAddress = this.handleGreenNFTAddress.bind(this);
 
-        this.buyPhotoNFT = this.buyPhotoNFT.bind(this);
-        this.addReputation = this.addReputation.bind(this);
+        this.buyGreenNFT = this.buyGreenNFT.bind(this);
     }
 
     ///--------------------------
     /// Handler
     ///-------------------------- 
-    // handlePhotoNFTAddress(event) {
-    //     this.setState({ valuePhotoNFTAddress: event.target.value });
+    // handleGreenNFTAddress(event) {
+    //     this.setState({ valueGreenNFTAddress: event.target.value });
     // }
 
 
     ///---------------------------------
     /// Functions of buying a photo NFT 
     ///---------------------------------
-    buyPhotoNFT = async (e) => {
-        const { web3, accounts, photoNFTMarketplace, photoNFTData } = this.state;
-        //const { web3, accounts, photoNFTMarketplace, photoNFTData, valuePhotoNFTAddress } = this.state;
+    buyGreenNFT = async (e) => {
+        const { web3, accounts, greenNFTTMarketplace, greenNFTData } = this.state;
+        //const { web3, accounts, greenNFTTMarketplace, GreenNFTData, valueGreenNFTAddress } = this.state;
 
-        console.log('=== value of buyPhotoNFT ===', e.target.value);
+        console.log('=== value of buyGreenNFT ===', e.target.value);
 
-        const PHOTO_NFT = e.target.value;
-        //const PHOTO_NFT = valuePhotoNFTAddress;
-        //this.setState({ valuePhotoNFTAddress: "" });
+        const GREEN_NFT = e.target.value;
+        //const GREEN_NFT = valueGreenNFTAddress;
+        //this.setState({ valueGreenNFTAddress: "" });
 
-        /// Get instance by using created photoNFT address
-        let PhotoNFT = {};
-        PhotoNFT = require("../../../../smart-contract/build/contracts/PhotoNFT.json"); 
-        let photoNFT = new web3.eth.Contract(PhotoNFT.abi, PHOTO_NFT);
+        /// Get instance by using created GreenNFT address
+        let GreenNFT = {};
+        GreenNFT = require("../../../../smart-contract/build/contracts/GreenNFT.json"); 
+        let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
 
-        /// Check owner of photoId
-        const photoId = 1;  /// [Note]: PhotoID is always 1. Because each photoNFT is unique.
-        const owner = await photoNFT.methods.ownerOf(photoId).call();
-        console.log('=== owner of photoId ===', owner);  /// [Expect]: Owner should be the PhotoNFTMarketplace.sol (This also called as a proxy/escrow contract)
+        /// Check owner of greenNFTId
+        const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
+        const owner = await greenNFT.methods.ownerOf(greenNFTId).call();
+        console.log('=== owner of greenNFTId ===', owner);  /// [Expect]: Owner should be the greenNFTTMarketplace.sol (This also called as a proxy/escrow contract)
 
-        const photo = await photoNFTData.methods.getPhotoByNFTAddress(PHOTO_NFT).call();
-        const buyAmount = await photo.photoPrice;
-        const txReceipt1 = await photoNFTMarketplace.methods.buyPhotoNFT(PHOTO_NFT).send({ from: accounts[0], value: buyAmount });
-        console.log('=== response of buyPhotoNFT ===', txReceipt1);
-    }
-
-
-    ///--------------------------
-    /// Functions of reputation 
-    ///---------------------------
-    addReputation = async () => {
-        const { accounts, photoNFTMarketplace } = this.state;
-
-        let _from2 = "0x2cb2418B11B66E331fFaC7FFB0463d91ef8FE8F5"
-        let _to2 = accounts[0]
-        let _tokenId2 = 1
-        const response_1 = await photoNFTMarketplace.methods.reputation(_from2, _to2, _tokenId2).send({ from: accounts[0] })
-        console.log('=== response of reputation function ===', response_1);      // Debug
-
-        const response_2 = await photoNFTMarketplace.methods.getReputationCount(_tokenId2).call()
-        console.log('=== response of getReputationCount function ===', response_2);      // Debug
+        const green = await greenNFTData.methods.getGreenByNFTAddress(GREEN_NFT).call();
+        const buyAmount = await green.greenNFTPrice;
+        const txReceipt1 = await greenNFTTMarketplace.methods.buyGreenNFT(GREEN_NFT).send({ from: accounts[0], value: buyAmount });
+        console.log('=== response of buyGreenNFT ===', txReceipt1);
     }
 
 
     ///------------------------------------- 
     /// NFT（Always load listed NFT data）
     ///-------------------------------------
-    getAllPhotos = async () => {
-        const { photoNFTData } = this.state
+    getAllGreens = async () => {
+        const { greenNFTData } = this.state
 
-        const allPhotos = await photoNFTData.methods.getAllPhotos().call()
-        console.log('=== allPhotos ===', allPhotos)
+        const allGreens = await greenNFTData.methods.getAllGreens().call()
+        console.log('=== allGreens ===', allGreens)
 
-        this.setState({ allPhotos: allPhotos })
-        return allPhotos
+        this.setState({ allGreens: allGreens })
+        return allGreens
     }
 
 
@@ -114,11 +96,11 @@ export default class PhotoMarketplace extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let PhotoNFTMarketplace = {};
-        let PhotoNFTData = {};
+        let GreenNFTTMarketplace = {};
+        let GreenNFTData = {};
         try {
-          PhotoNFTMarketplace = require("../../../../smart-contract/build/contracts/PhotoNFTMarketplace.json");
-          PhotoNFTData = require("../../../../smart-contract/build/contracts/PhotoNFTData.json");
+          GreenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTData = require("../../../../smart-contract/build/contracts/GreenNFTData.json");
         } catch (e) {
           console.log(e);
         }
@@ -147,34 +129,34 @@ export default class PhotoMarketplace extends Component {
             let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]): web3.utils.toWei('0');
             balance = web3.utils.fromWei(balance, 'ether');
 
-            let instancePhotoNFTMarketplace = null;
-            let instancePhotoNFTData = null;
+            let instanceGreenNFTTMarketplace = null;
+            let instanceGreenNFTData = null;
             let deployedNetwork = null;
 
             // Create instance of contracts
-            if (PhotoNFTMarketplace.networks) {
-              deployedNetwork = PhotoNFTMarketplace.networks[networkId.toString()];
+            if (GreenNFTTMarketplace.networks) {
+              deployedNetwork = GreenNFTTMarketplace.networks[networkId.toString()];
               if (deployedNetwork) {
-                instancePhotoNFTMarketplace = new web3.eth.Contract(
-                  PhotoNFTMarketplace.abi,
+                instanceGreenNFTTMarketplace = new web3.eth.Contract(
+                  GreenNFTTMarketplace.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
-                console.log('=== instancePhotoNFTMarketplace ===', instancePhotoNFTMarketplace);
+                console.log('=== instanceGreenNFTTMarketplace ===', instanceGreenNFTTMarketplace);
               }
             }
 
-            if (PhotoNFTData.networks) {
-              deployedNetwork = PhotoNFTData.networks[networkId.toString()];
+            if (GreenNFTData.networks) {
+              deployedNetwork = GreenNFTData.networks[networkId.toString()];
               if (deployedNetwork) {
-                instancePhotoNFTData = new web3.eth.Contract(
-                  PhotoNFTData.abi,
+                instanceGreenNFTData = new web3.eth.Contract(
+                  GreenNFTData.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
-                console.log('=== instancePhotoNFTData ===', instancePhotoNFTData);
+                console.log('=== instanceGreenNFTData ===', instanceGreenNFTData);
               }
             }
 
-            if (instancePhotoNFTMarketplace) {
+            if (instanceGreenNFTTMarketplace) {
                 // Set web3, accounts, and contract to the state, and then proceed with an
                 // example of interacting with the contract's methods.
                 this.setState({ 
@@ -187,11 +169,11 @@ export default class PhotoMarketplace extends Component {
                     hotLoaderDisabled,
                     isMetaMask, 
                     currentAccount: currentAccount, 
-                    photoNFTMarketplace: instancePhotoNFTMarketplace,
-                    photoNFTData: instancePhotoNFTData }, () => {
-                      this.refreshValues(instancePhotoNFTMarketplace);
+                    greenNFTTMarketplace: instanceGreenNFTTMarketplace,
+                    greenNFTData: instanceGreenNFTData }, () => {
+                      this.refreshValues(instanceGreenNFTTMarketplace);
                       setInterval(() => {
-                        this.refreshValues(instancePhotoNFTMarketplace);
+                        this.refreshValues(instanceGreenNFTTMarketplace);
                     }, 5000);
                 });
             }
@@ -200,8 +182,8 @@ export default class PhotoMarketplace extends Component {
             }
 
             ///@dev - NFT（Always load listed NFT data
-            const allPhotos = await this.getAllPhotos();
-            this.setState({ allPhotos: allPhotos })
+            const allGreens = await this.getAllGreens();
+            this.setState({ allGreens: allGreens })
           }
         } catch (error) {
           // Catch any errors for any of the above operations.
@@ -218,25 +200,25 @@ export default class PhotoMarketplace extends Component {
         }
     }
 
-    refreshValues = (instancePhotoNFTMarketplace) => {
-        if (instancePhotoNFTMarketplace) {
-          console.log('refreshValues of instancePhotoNFTMarketplace');
+    refreshValues = (instanceGreenNFTTMarketplace) => {
+        if (instanceGreenNFTTMarketplace) {
+          console.log('refreshValues of instanceGreenNFTTMarketplace');
         }
     }
 
     render() {
-        const { web3, allPhotos, currentAccount } = this.state;
+        const { web3, allGreens, currentAccount } = this.state;
 
         return (
             <div className={styles.contracts}>
               <h2>NFT based Photo MarketPlace</h2>
 
-              { allPhotos.map((photo, key) => {
+              { allGreens.map((green, key) => {
                 return (
                   <div key={key} className="">
                     <div className={styles.widgets}>
 
-                        { currentAccount != photo.ownerAddress && photo.status == "Open" ?
+                        { currentAccount != green.ownerAddress && green.status == "Open" ?
                             <Card width={"360px"} 
                                       maxWidth={"360px"} 
                                       mx={"auto"} 
@@ -249,20 +231,20 @@ export default class PhotoMarketplace extends Component {
                                   borderRadius={8}
                                   height="100%"
                                   maxWidth='100%'
-                                  src={ `https://ipfs.io/ipfs/${photo.ipfsHashOfPhoto}` }
+                                  src={ `https://ipfs.io/ipfs/${green.ipfsHashOfGreenNFT}` }
                                 />
 
                                 <span style={{ padding: "20px" }}></span>
 
-                                <p>Photo Name: { photo.photoNFTName }</p>
+                                <p>Photo Name: { green.GreenNFTName }</p>
 
-                                <p>Price: { web3.utils.fromWei(`${photo.photoPrice}`, 'ether') } ETH</p>
+                                <p>Price: { web3.utils.fromWei(`${green.greenNFTPrice}`, 'ether') } ETH</p>
 
-                                {/* <p>NFT Address: { photo.photoNFT }</p> */}
+                                {/* <p>NFT Address: { green.GreenNFT }</p> */}
 
-                                <p>Owner: { photo.ownerAddress }</p>
+                                <p>Owner: { green.ownerAddress }</p>
 
-                                {/* <p>Reputation Count: { photo.reputation }</p> */}
+                                {/* <p>Reputation Count: { green.reputation }</p> */}
                                 
                                 <br />
 
@@ -275,15 +257,15 @@ export default class PhotoMarketplace extends Component {
                                         width={1}
                                         placeholder="e.g) 0x6d7d6fED69E7769C294DE41a28aF9E118567Bc81"
                                         required={true}
-                                        value={this.state.valuePhotoNFTAddress} 
-                                        onChange={this.handlePhotoNFTAddress}                                        
+                                        value={this.state.valueGreenNFTAddress} 
+                                        onChange={this.handleGreenNFTAddress}                                        
                                     />
                                 </Field>
                                 */}
 
-                                <Button size={'medium'} width={1} value={ photo.photoNFT } onClick={this.buyPhotoNFT}> Buy </Button>
+                                <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.buyGreenNFT}> Buy </Button>
 
-                                {/* <Button size={'small'} value={ photo.photoNFT } onClick={this.buyPhotoNFT}> Buy </Button> */}
+                                {/* <Button size={'small'} value={ green.GreenNFT } onClick={this.buyGreenNFT}> Buy </Button> */}
 
                                 {/* <span style={{ padding: "5px" }}></span> */}
 

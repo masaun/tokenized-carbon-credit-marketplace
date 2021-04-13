@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
-import Publish from "./components/Publish/index.js";
-import MyPhotos from "./components/MyPhotos/index.js";
-import PhotoMarketplace from "./components/PhotoMarketplace/index.js";
+import CreateGreenNFT from "./components/CreateGreenNFT/index.js";
+import MyGreenNFTs from "./components/MyGreenNFTs/index.js";
+import GreenNFTMarketplace from "./components/GreenNFTMarketplace/index.js";
 import ipfs from './components/ipfs/ipfsApi.js'
 
 import { Loader, Button, Card, Input, Heading, Table, Form, Flex, Box, Image } from 'rimble-ui';
@@ -78,26 +78,26 @@ class App extends Component {
     );
   }
 
-  renderPublish() {
+  renderCreateGreenNFT() {
     return (
       <div className={styles.wrapper}>
-        <Publish />
+        <CreateGreenNFT />
       </div>
     );
   }
 
-  renderMyPhotos() {
+  renderMyGreenNFTs() {
     return (
       <div className={styles.wrapper}>
-        <MyPhotos />
+        <MyGreenNFTs />
       </div>
     );
   }
 
-  renderPhotoMarketPlace() {
+  renderGreenNFTMarketplace() {
     return (
       <div className={styles.wrapper}>
-        <PhotoMarketplace />
+        <GreenNFTMarketplace />
       </div>    
     );
   }
@@ -106,9 +106,9 @@ class App extends Component {
     return (
       <div className={styles.App}>
         <Header />
-          {this.state.route === 'publish' && this.renderPublish()}
-          {this.state.route === 'my-photos' && this.renderMyPhotos()}
-          {this.state.route === 'photo-marketplace' && this.renderPhotoMarketPlace()}
+          {this.state.route === 'create-green-nft' && this.renderCreateGreenNFT()}
+          {this.state.route === 'my-green-nfts' && this.renderMyGreenNFTs()}
+          {this.state.route === 'green-nft-marketplace' && this.renderGreenNFTMarketplace()}
         <Footer />
       </div>
     );
