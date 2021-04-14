@@ -8,5 +8,7 @@ contract GreenNFTDataStorages is GreenNFTDataObjects {
 
     Green[] public greens;
 
+    Request[] public requests;
+
 }
 

@@ -4,6 +4,9 @@ pragma experimental ABIEncoderV2;
 import { GreenNFT } from "./GreenNFT.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
 
+/// [Note]: For calling enum
+import { GreenNFTDataObjects } from "./green-nft-data/commons/GreenNFTDataObjects.sol";
+
 
 /**
  * @title - GreenNFTTradable contract
@@ -53,7 +56,8 @@ contract GreenNFTTradable {
      */
     function openTrade(GreenNFTData _greenNFTData, GreenNFT greenNFT, uint256 _greenId) public {
         GreenNFTData greenNFTData = _greenNFTData;
-        greenNFTData.updateStatus(greenNFT, "Open");
+        greenNFTData.updateStatus(greenNFT, GreenNFTDataObjects.GreenNFTStatus.Sale);
+        //greenNFTData.updateStatus(greenNFT, "Open");
 
         Trade storage trade = trades[_greenId];
         require(
@@ -70,7 +74,8 @@ contract GreenNFTTradable {
      */
     function cancelTrade(GreenNFTData _greenNFTData, GreenNFT greenNFT, uint256 _greenId) public {
         GreenNFTData greenNFTData = _greenNFTData;
-        greenNFTData.updateStatus(greenNFT, "Cancelled");
+        greenNFTData.updateStatus(greenNFT, GreenNFTDataObjects.GreenNFTStatus.NotSale);
+        //greenNFTData.updateStatus(greenNFT, "Cancelled");
         
         Trade storage trade = trades[_greenId];
         require(

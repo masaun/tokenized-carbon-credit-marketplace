@@ -14,16 +14,16 @@ contract GreenNFT is ERC721 {
     uint256 public currentGreenId;
     
     constructor(
-        address owner,  /// Initial owner (Seller)
-        string memory _nftName, 
-        string memory _nftSymbol,
-        string memory _tokenURI,    /// [Note]: TokenURI is URL include ipfs hash
-        uint greenNFTPrice
+        address _projectOwner,  /// Initial owner (Seller)
+        string memory _projectName, 
+        string memory _projectSymbol,
+        string memory _tokenURI    /// [Note]: TokenURI is URL include ipfs hash
+        //uint greenNFTPrice
     ) 
         public 
-        ERC721(_nftName, _nftSymbol) 
+        ERC721(_projectName, _projectSymbol) 
     {
-        mint(owner, _tokenURI);
+        mint(_projectOwner, _tokenURI);
     }
 
     /** 

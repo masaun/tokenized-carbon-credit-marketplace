@@ -305,7 +305,7 @@ export default class Apply extends Component {
                                     />
                                 </Field>
 
-                                <Field label="Attached-document for approval (this document will be uploaded on IPFS)">
+                                <Field label="Reference document for approval">
                                     <input 
                                         type='file' 
                                         onChange={this.captureFile} 

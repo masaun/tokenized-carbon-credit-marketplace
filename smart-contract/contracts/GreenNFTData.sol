@@ -10,6 +10,9 @@ import { GreenNFT } from "./GreenNFT.sol";
  */
 contract GreenNFTData is GreenNFTDataStorages {
 
+    /// Auditor
+    address[] public auditors;
+
     address[] public greenAddresses;
 
     constructor() public {}
@@ -20,22 +23,39 @@ contract GreenNFTData is GreenNFTDataStorages {
     function saveMetadataOfGreenNFT(
         address[] memory _greenAddresses, 
         GreenNFT _greenNFT, 
-        string memory _greenNFTName, 
-        string memory _greenNFTSymbol, 
-        address _ownerAddress, 
-        uint _greenNFTPrice, 
-        string memory _ipfsHashOfGreenNFT
+
+        address _projectOwner,
+        string memory _projectName, 
+        uint _carbonCreditsTotal,
+        uint _carbonCreditsSold,
+
+        //string memory _greenNFTName, 
+        //string memory _greenNFTSymbol, 
+        //address _ownerAddress, 
+        //uint _greenNFTPrice, 
+        //string memory _ipfsHashOfGreenNFT
+
+        string memory _referenceDocument,
+        string memory _auditedReport
     ) public returns (bool) {
         /// Save metadata of a GreenNFT
         Green memory green = Green({
             greenNFT: _greenNFT,
-            greenNFTName: _greenNFTName,
-            greenNFTSymbol: _greenNFTSymbol,
-            ownerAddress: _ownerAddress,
-            greenNFTPrice: _greenNFTPrice,
-            ipfsHashOfGreenNFT: _ipfsHashOfGreenNFT,
-            status: "Open",
-            reputation: 0
+            projectOwner: _projectOwner,
+            projectName: _projectName,
+            carbonCreditsTotal: _carbonCreditsTotal,
+            carbonCreditsSold: _carbonCreditsSold,
+            referenceDocument: _referenceDocument,
+            auditedReport: _auditedReport,
+            greenNFTStatus: GreenNFTStatus.Applied
+
+            //greenNFTName: _greenNFTName,
+            //greenNFTSymbol: _greenNFTSymbol,
+            //ownerAddress: _ownerAddress,
+            //greenNFTPrice: _greenNFTPrice,
+            //ipfsHashOfGreenNFT: _ipfsHashOfGreenNFT,
+            //status: "Open",
+
         });
         greens.push(green);
 
@@ -53,19 +73,21 @@ contract GreenNFTData is GreenNFTDataStorages {
         /// Update metadata of a GreenNFT
         Green storage green = greens[greenIndex];
         require (_newOwner != address(0), "A new owner address should be not empty");
-        green.ownerAddress = _newOwner;  
+        //green.ownerAddress = _newOwner;  
+        green.projectOwner = _newOwner;
     }
 
     /**
      * @notice - Update status ("Open" or "Cancelled")
      */
-    function updateStatus(GreenNFT _greenNFT, string memory _newStatus) public returns (bool) {
+    function updateStatus(GreenNFT _greenNFT, GreenNFTStatus _newStatus) public returns (bool) {
         /// Identify green's index
         uint greenIndex = getGreenIndex(_greenNFT);
 
         /// Update metadata of a GreenNFT
         Green storage green = greens[greenIndex];
-        green.status = _newStatus;  
+        green.greenNFTStatus = _newStatus;  
+        //green.status = _newStatus;  
     }
 
 
@@ -109,5 +131,11 @@ contract GreenNFTData is GreenNFTDataStorages {
     function getAllGreens() public view returns (Green[] memory _greens) {
         return greens;
     }
+
+
+    function getAuditors() public view returns (address[] memory _auditors) {
+        return auditors;
+    }
+    
 
 }
