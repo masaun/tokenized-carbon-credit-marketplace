@@ -267,8 +267,7 @@ export default class CreateGreenNFT extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Create a new Green NFT and Put on Sale</h2>
-                            <p>Please upload your photo and put on sale from here!</p>
+                            <h2>Create a new Green NFT</h2>
 
                             <Form onSubmit={this.onSubmit}>
                                 <Field label="Green NFT Name">
@@ -306,7 +305,7 @@ export default class CreateGreenNFT extends Component {
                                     />
                                 </Field>
 
-                                <Field label="Photo for uploading to IPFS">
+                                <Field label="Attached-document for approval (this document will be uploaded on IPFS)">
                                     <input 
                                         type='file' 
                                         onChange={this.captureFile} 
@@ -314,7 +313,7 @@ export default class CreateGreenNFT extends Component {
                                     />
                                 </Field>
 
-                                <Button size={'medium'} width={1} type='submit'>Upload my photo and put on sale</Button>
+                                <Button size={'medium'} width={1} type='submit'>Apply</Button>
                             </Form>
                         </Card>
                     </Grid>
