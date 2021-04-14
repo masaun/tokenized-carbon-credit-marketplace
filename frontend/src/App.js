@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
-import CreateGreenNFT from "./components/Pages/CreateGreenNFT/index.js";
+import Apply from "./components/Pages/CreateGreenNFT/Apply.js";
+import Approve from "./components/Pages/CreateGreenNFT/Approve.js";
 import MyGreenNFTs from "./components/Pages/MyGreenNFTs/index.js";
 import GreenNFTMarketplace from "./components/Pages/GreenNFTMarketplace/index.js";
 import ipfs from './components/ipfs/ipfsApi.js'
@@ -81,7 +82,7 @@ class App extends Component {
   renderApply() {
     return (
       <div className={styles.wrapper}>
-        <CreateGreenNFT />
+        <Apply />
       </div>
     );
   }
@@ -89,7 +90,7 @@ class App extends Component {
   renderApprove() {
     return (
       <div className={styles.wrapper}>
-        <CreateGreenNFT />
+        <Approve />
       </div>
     );
   }  
