@@ -106,7 +106,8 @@ class App extends Component {
     return (
       <div className={styles.App}>
         <Header />
-          {this.state.route === 'create-green-nft' && this.renderCreateGreenNFT()}
+          {this.state.route === 'apply' && this.renderCreateGreenNFT()}
+          {this.state.route === 'approve' && this.renderCreateGreenNFT()}
           {this.state.route === 'my-green-nfts' && this.renderMyGreenNFTs()}
           {this.state.route === 'green-nft-marketplace' && this.renderGreenNFTMarketplace()}
         <Footer />
