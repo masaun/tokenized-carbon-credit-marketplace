@@ -26,7 +26,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         uint _greenNFTPrice, 
         string memory _ipfsHashOfGreenNFT
     ) public returns (bool) {
-        /// Save metadata of a GreenNFT of green
+        /// Save metadata of a GreenNFT
         Green memory green = Green({
             greenNFT: _greenNFT,
             greenNFTName: _greenNFTName,
@@ -50,7 +50,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         /// Identify green's index
         uint greenIndex = getGreenIndex(_greenNFT);
 
-        /// Update metadata of a GreenNFT of green
+        /// Update metadata of a GreenNFT
         Green storage green = greens[greenIndex];
         require (_newOwner != address(0), "A new owner address should be not empty");
         green.ownerAddress = _newOwner;  
@@ -63,7 +63,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         /// Identify green's index
         uint greenIndex = getGreenIndex(_greenNFT);
 
-        /// Update metadata of a GreenNFT of green
+        /// Update metadata of a GreenNFT
         Green storage green = greens[greenIndex];
         green.status = _newStatus;  
     }

@@ -30,7 +30,7 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
         GreenNFT greenNFT = _greenNFT;
 
         GreenNFTData.Green memory green = greenNFTData.getGreenByNFTAddress(greenNFT);
-        address _seller = green.ownerAddress;                     /// Owner
+        address _seller = green.ownerAddress;                /// Owner
         address payable seller = address(uint160(_seller));  /// Convert owner address with payable
         uint buyAmount = green.greenNFTPrice;
         require (msg.value == buyAmount, "msg.value should be equal to the buyAmount");

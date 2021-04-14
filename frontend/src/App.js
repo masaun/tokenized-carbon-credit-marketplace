@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
-import CreateGreenNFT from "./components/CreateGreenNFT/index.js";
-import MyGreenNFTs from "./components/MyGreenNFTs/index.js";
-import GreenNFTMarketplace from "./components/GreenNFTMarketplace/index.js";
+import CreateGreenNFT from "./components/Pages/CreateGreenNFT/index.js";
+import MyGreenNFTs from "./components/Pages/MyGreenNFTs/index.js";
+import GreenNFTMarketplace from "./components/Pages/GreenNFTMarketplace/index.js";
 import ipfs from './components/ipfs/ipfsApi.js'
 
 import { Loader, Button, Card, Input, Heading, Table, Form, Flex, Box, Image } from 'rimble-ui';

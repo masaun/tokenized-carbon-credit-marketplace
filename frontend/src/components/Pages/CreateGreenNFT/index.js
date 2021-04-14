@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import getWeb3, { getGanacheWeb3, Web3 } from "../../utils/getWeb3";
-import ipfs from '../ipfs/ipfsApi.js'
+import getWeb3, { getGanacheWeb3, Web3 } from "../../../utils/getWeb3";
+import ipfs from '../../ipfs/ipfsApi.js'
 
 import { Grid } from '@material-ui/core';
 import { Loader, Button, Card, Input, Heading, Table, Form, Field } from 'rimble-ui';
-import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
+import { zeppelinSolidityHotLoaderOptions } from '../../../../config/webpack';
 
-import styles from '../../App.module.scss';
+import styles from '../../../App.module.scss';
 
 
 export default class CreateGreenNFT extends Component {
@@ -114,7 +114,7 @@ export default class CreateGreenNFT extends Component {
 
             /// Get instance by using created GreenNFT address
             let GreenNFT = {};
-            GreenNFT = require("../../../../smart-contract/build/contracts/GreenNFT.json"); 
+            GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
             let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
             console.log('=== greenNFT ===', greenNFT);
      
@@ -151,8 +151,8 @@ export default class CreateGreenNFT extends Component {
         let GreenNFTFactory = {};
         let GreenNFTTMarketplace = {};
         try {
-          GreenNFTFactory = require("../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
-          GreenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTFactory = require("../../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
+          GreenNFTTMarketplace = require("../../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
         } catch (e) {
           console.log(e);
         }
