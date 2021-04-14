@@ -270,6 +270,14 @@ export default class Approve extends Component {
                             <h2>Approve a request of creating new Green NFT</h2>
 
                             <Form onSubmit={this.onSubmit}>
+                                <Field label="Verification Report (Audited-Report)">
+                                    <input 
+                                        type='file' 
+                                        onChange={this.captureFile} 
+                                        required={true}
+                                    />
+                                </Field>
+
                                 <Button size={'medium'} width={1} type='submit'>Approve</Button>
                             </Form>
                         </Card>
