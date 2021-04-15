@@ -19,7 +19,8 @@ contract GreenNFTMarketplace is GreenNFTMarketplaceEvents {
 
     GreenNFTData public greenNFTData;
 
-    constructor(GreenNFTData _greenNFTData) public GreenNFTTradable() {
+    constructor(GreenNFTData _greenNFTData) public {
+    //constructor(GreenNFTData _greenNFTData) public GreenNFTTradable() {
         greenNFTData = _greenNFTData;
         address payable GREEN_NFT_MARKETPLACE = address(uint160(address(this)));
     }
@@ -32,40 +33,19 @@ contract GreenNFTMarketplace is GreenNFTMarketplaceEvents {
     function buyGreenNFT(GreenNFT _greenNFT) public payable returns (bool) {
         GreenNFT greenNFT = _greenNFT;
 
-        GreenNFTData.Green memory green = greenNFTData.getGreenByNFTAddress(greenNFT);
-        address _seller = green.projectOwner;                /// Owner
+        GreenNFTData.GreenNFTMetadata memory greenNFTMetadata = greenNFTData.getGreenNFTMetadataByNFTAddress(greenNFT);
+        uint _projectId = greenNFTData.getClaim(greenNFTMetadata.claimId).projectId;
+        address _seller = greenNFTData.getProject(_projectId).projectOwner;
         address payable seller = address(uint160(_seller));  /// Convert owner address with payable
         
         /// [Todo]: Add calculation of buy amount (Unit price * buyable carbon credits)
-        uint unitPrice;
+        uint unitPrice = 1 * 1e18;
         uint buyableCarbonCredits;
         uint buyAmount = unitPrice * buyableCarbonCredits;
-        //uint buyAmount = green.greenNFTPrice;
         require (msg.value == buyAmount, "msg.value should be equal to the buyAmount");
  
         /// Bought-amount is transferred into a seller wallet
         seller.transfer(buyAmount);
-
-        /// Approve a buyer address as a receiver before NFT's transferFrom method is executed
-        address buyer = msg.sender;
-        uint greenId = 1;  /// [Note]: greenID is always 1. Because each GreenNFT is unique.
-        greenNFT.approve(buyer, greenId);
-
-        address ownerBeforeOwnershipTransferred = greenNFT.ownerOf(greenId);
-
-        /// Transfer Ownership of the GreenNFT from a seller to a buyer
-        transferOwnershipOfGreenNFT(greenNFT, greenId, buyer);    
-        greenNFTData.updateOwnerOfGreenNFT(greenNFT, buyer);
-        greenNFTData.updateStatus(greenNFT, GreenNFTDataObjects.GreenNFTStatus.NotSale);
-        //greenNFTData.updateStatus(greenNFT, "Cancelled");
-
-        /// Event for checking result of transferring ownership of a GreenNFT
-        address ownerAfterOwnershipTransferred = greenNFT.ownerOf(greenId);
-        emit GreenNFTOwnershipChanged(greenNFT, greenId, ownerBeforeOwnershipTransferred, ownerAfterOwnershipTransferred);
-
-        /// Mint a green with a new greenId
-        //string memory tokenURI = GreenNFTFactory.getTokenURI(greenData.ipfsHashOfGreenNFT);  /// [Note]: IPFS hash + URL
-        //GreenNFT.mint(msg.sender, tokenURI);
     }
 
 }

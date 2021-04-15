@@ -14,6 +14,7 @@ contract GreenNFTData is GreenNFTDataStorages {
 
     uint currentProjectId;
     uint currentClaimId;
+    uint currentGreenNFTMetadataId;
 
     /// Auditor
     address[] public auditors;
@@ -23,6 +24,12 @@ contract GreenNFTData is GreenNFTDataStorages {
 
     constructor() public {}
 
+    /**
+     * @notice - Register a auditor 
+     */
+    function addAuditor(address auditor) public returns (bool) {
+        auditors.push(auditor);
+    }
 
     /**
      * @notice - Save a project
@@ -36,7 +43,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         Project memory project = Project({
             projectOwner: _projectOwner,
             projectName: _projectName,    
-            co2Emissiosn: _co2Emissions
+            co2Emissions: _co2Emissions
         });
         projects.push(project);        
     }
@@ -70,7 +77,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         uint _carbonCredits,
         string memory _auditedReport
     ) public returns (bool) {
-        currentGreenId++;
+        currentGreenNFTMetadataId++;
 
         /// Save metadata of a GreenNFT
         GreenNFTMetadata memory greenNFTMetadata = GreenNFTMetadata({
@@ -93,70 +100,70 @@ contract GreenNFTData is GreenNFTDataStorages {
      */
     function updateStatus(GreenNFT _greenNFT, GreenNFTStatus _newStatus) public returns (bool) {
         /// Identify green's index
-        uint greenIndex = getGreenIndex(_greenNFT);
+        uint greenNFTMetadataIndex = getGreenNFTMetadataIndex(_greenNFT);
 
         /// Update metadata of a GreenNFT
-        Green storage green = greens[greenIndex];
-        green.greenNFTStatus = _newStatus;  
-        //green.status = _newStatus;  
+        GreenNFTMetadata storage greenNFTMetadata = greenNFTMetadatas[greenNFTMetadataIndex];
+        greenNFTMetadata.greenNFTStatus = _newStatus;  
     }
-
-    /**
-     * @notice - Update owner address of a GreenNFT by transferring ownership
-     */
-    function updateOwnerOfGreenNFT(GreenNFT _greenNFT, address _newOwner) public returns (bool) {
-        /// Identify green's index
-        uint greenIndex = getGreenIndex(_greenNFT);
-
-        /// Update metadata of a GreenNFT
-        Green storage green = greens[greenIndex];
-        require (_newOwner != address(0), "A new owner address should be not empty");
-        green.projectOwner = _newOwner;
-    }
-
 
 
     ///-----------------
     /// Getter methods
     ///-----------------
-    function getGreen(uint greenId) public view returns (Green memory _green) {
-        uint index = greenId.sub(1);
-        Green memory green = greens[index];
-        return green;
+
+    function getProject(uint projectId) public view returns (Project memory _projectId) {
+        uint index = projectId.sub(1);
+        Project memory project = projects[index];
+        return project;
     }
 
-    function getGreenIndex(GreenNFT greenNFT) public view returns (uint _greenIndex) {
+    function getClaim(uint claimId) public view returns (Claim memory _claim) {
+        uint index = claimId.sub(1);
+        Claim memory claim = claims[index];
+        return claim;
+    }
+
+    function getGreenNFTMetadata(uint greenNFTMetadataId) public view returns (GreenNFTMetadata memory _greenNFTMetadata) {
+        uint index = greenNFTMetadataId.sub(1);
+        GreenNFTMetadata memory greenNFTMetadata = greenNFTMetadatas[index];
+        return greenNFTMetadata;
+    }
+
+    function getGreenNFTMetadataIndex(GreenNFT greenNFT) public view returns (uint _greenNFTMetadataIndex) {
         address GREEN_NFT = address(greenNFT);
 
         /// Identify member's index
-        uint greenIndex;
+        uint greenNFTMetadataIndex;
         for (uint i=0; i < greenNFTAddresses.length; i++) {
             if (greenNFTAddresses[i] == GREEN_NFT) {
-                greenIndex = i;
+                greenNFTMetadataIndex = i;
             }
         }
 
-        return greenIndex;   
+        return greenNFTMetadataIndex;   
     }
 
-    function getGreenByNFTAddress(GreenNFT greenNFT) public view returns (Green memory _green) {
+    function getGreenNFTMetadataByNFTAddress(GreenNFT greenNFT) public view returns (GreenNFTMetadata memory _greenNFTMetadata) {
         address GREEN_NFT = address(greenNFT);
 
         /// Identify member's index
-        uint greenIndex = getGreenIndex(greenNFT);
+        uint index = getGreenNFTMetadataIndex(greenNFT);
 
-        Green memory green = greens[greenIndex];
-        return green;
+        GreenNFTMetadata memory greenNFTMetadata = greenNFTMetadatas[index];
+        return greenNFTMetadata;
     }
 
-    function getAllGreens() public view returns (Green[] memory _greens) {
-        return greens;
+    function getGreenNFTMetadatas() public view returns (GreenNFTMetadata[] memory _greenNFTMetadatas) {
+        return greenNFTMetadatas;
     }
-
 
     function getAuditors() public view returns (address[] memory _auditors) {
         return auditors;
     }
     
+    function getAuditor(uint index) public view returns (address _auditor) {
+        return auditors[index];
+    }
 
 }

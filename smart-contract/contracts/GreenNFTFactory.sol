@@ -17,7 +17,7 @@ import { GreenNFTDataObjects } from "./green-nft-data/commons/GreenNFTDataObject
  */
 contract GreenNFTFactory is GreenNFTFactoryStorages {
     using SafeMath for uint256;
-    using Strings for string;    
+    using Strings for string;
 
     address[] public greenNFTAddresses;
     address GREEN_NFT_MARKETPLACE;
@@ -31,14 +31,13 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
         GREEN_NFT_MARKETPLACE = address(greenNFTMarketplace);
     }
 
-
     /**
      * @notice - Register a auditor 
      */
-    function registerProject(address auditor) public returns (bool) {
-        /// onlyOwner to caller
-        auditors.push(auditor);
-    }    
+    function registerAuditor(address auditor) public returns (bool) {
+        /// Caller is onlyOwner 
+        greenNFTData.addAuditor(auditor);
+    }
 
     /**
      * @notice - Register a project
@@ -67,8 +66,8 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
         address auditor;
         address[] memory auditors = greenNFTData.getAuditors();
         for (uint i=0; i < auditors.length; i++) {
-            if (msg.sender == auditors[i]) {
-                auditor = auditors[i];
+            if (msg.sender == greenNFTData.getAuditor(i)) {
+                auditor = greenNFTData.getAuditor(i);
             }
         }
         require (msg.sender == auditor, "Caller must be an auditor");
@@ -80,27 +79,26 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
         ClaimAudited(_projectId, _co2Reductions, _referenceDocument);
 
         /// Create a new GreenNFT
-        _createNewGreenNFT(claimId, _projectId, auditor, _co2Reductions, auditedReport);
+        _createNewGreenNFT(_projectId, claimId, auditor, _co2Reductions, auditedReport);
     }
 
     /**
      * @notice - Create a new GreenNFT when a seller (owner) upload a green onto IPFS
      */
     function _createNewGreenNFT(
-        uint claimId,
         uint projectId,
+        uint claimId,
         address auditor,
         uint co2Reductions, 
         string memory auditedReport
     ) internal returns (bool) {
-        uint index = projectId.sub(1);
-        Project memory project = projects[index];
+        GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
         address _projectOwner = project.projectOwner;
-        string _projectName = project.projectName;
+        string memory _projectName = project.projectName;
         string memory projectSymbol = "";
         string memory tokenURI = getTokenURI(auditedReport);  /// [Note]: IPFS hash + URL
 
-        GreenNFT greenNFT = new GreenNFT(_projectOwner, _projectName, projectSymbol tokenURI);
+        GreenNFT greenNFT = new GreenNFT(_projectOwner, _projectName, projectSymbol, tokenURI);
         greenNFTAddresses.push(address(greenNFT));
 
         /// Calculate carbon credits
@@ -110,7 +108,7 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
         /// Save metadata of a GreenNFT created
         greenNFTData.saveGreenNFTMetadata(claimId, greenNFTAddresses, greenNFT, auditor, carbonCredits, auditedReport);
 
-        emit GreenNFTCreated(claimId, greenNFT, auditor, carbonCredits, auditedReport);
+        emit GreenNFTCreated(projectId, claimId, greenNFT, auditor, carbonCredits, auditedReport);
     }
 
 

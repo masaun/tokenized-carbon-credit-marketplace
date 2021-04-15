@@ -12,11 +12,11 @@ contract GreenNFTFactoryEvents {
     );
 
     event GreenNFTCreated (
+        uint projectId, 
+        uint claimId,
         GreenNFT greenNFT,
         address auditor, 
-        address projectOwner,
-        string projectName, 
-        string referenceDocument,
+        uint carbonCredits,
         string auditedReport
     );
 

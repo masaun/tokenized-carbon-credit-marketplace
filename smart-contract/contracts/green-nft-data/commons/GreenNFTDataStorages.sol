@@ -10,6 +10,6 @@ contract GreenNFTDataStorages is GreenNFTDataObjects {
 
     Claim[] public claims;
 
-    Green[] public greens;
+    GreenNFTMetadata[] public greenNFTMetadatas;
 }
 
