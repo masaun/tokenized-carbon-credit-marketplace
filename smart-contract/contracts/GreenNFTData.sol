@@ -76,6 +76,7 @@ contract GreenNFTData is GreenNFTDataStorages {
             greenNFT: _greenNFT,
             auditor: _auditor,
             carbonCredits: _carbonCredits,
+            buyableCarbonCredits: _carbonCredits,  /// [Note]: Initially, carbonCredits and buyableCarbonCredits are equal amount
             auditedReport: _auditedReport,
             greenNFTStatus: GreenNFTStatus.Applied
         });

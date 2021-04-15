@@ -25,10 +25,10 @@ contract GreenNFTDataObjects {
         uint claimId;              /// This is claimId for the Claim struct (Index is claimId - 1)
         address auditor;
         uint carbonCredits;        /// CO2 emissions - CO2 reductions
+        uint buyableCarbonCredits;
         string auditedReport;      /// IPFS hash
         GreenNFTStatus greenNFTStatus;  /// "Audited" or "Sale" or "Not Sale"
     }
-
 
     
 }
