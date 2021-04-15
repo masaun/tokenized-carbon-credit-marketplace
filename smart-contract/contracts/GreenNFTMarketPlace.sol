@@ -8,7 +8,7 @@ import { GreenNFTTradable } from "./GreenNFTTradable.sol";
 import { GreenNFTMarketplaceEvents } from "./green-nft-marketplace/commons/GreenNFTMarketplaceEvents.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
 
-/// [Note]: For calling enum
+/// [Note]: For calling the GreenNFTStatus enum
 import { GreenNFTDataObjects } from "./green-nft-data/commons/GreenNFTDataObjects.sol";
 
 

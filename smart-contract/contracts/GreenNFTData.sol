@@ -1,6 +1,7 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
+import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { GreenNFTDataStorages } from "./green-nft-data/commons/GreenNFTDataStorages.sol";
 import { GreenNFT } from "./GreenNFT.sol";
 
@@ -9,11 +10,16 @@ import { GreenNFT } from "./GreenNFT.sol";
  * @notice - This is the storage contract for GreenNFTs
  */
 contract GreenNFTData is GreenNFTDataStorages {
+    using SafeMath for uint;
+
+    /// Current ID of the Green struct (that meta-data of GreenNFT is saved)
+    uint currentGreenId;
 
     /// Auditor
     address[] public auditors;
 
-    address[] public greenAddresses;
+    /// All GreenNFTs addresses
+    address[] public greenNFTAddresses;
 
     constructor() public {}
 
@@ -21,23 +27,17 @@ contract GreenNFTData is GreenNFTDataStorages {
      * @notice - Save metadata of a GreenNFT
      */
     function saveMetadataOfGreenNFT(
-        address[] memory _greenAddresses, 
+        address[] memory _greenNFTAddresses, 
         GreenNFT _greenNFT, 
-
         address _projectOwner,
         string memory _projectName, 
         uint _carbonCreditsTotal,
         uint _carbonCreditsSold,
-
-        //string memory _greenNFTName, 
-        //string memory _greenNFTSymbol, 
-        //address _ownerAddress, 
-        //uint _greenNFTPrice, 
-        //string memory _ipfsHashOfGreenNFT
-
         string memory _referenceDocument,
         string memory _auditedReport
     ) public returns (bool) {
+        currentGreenId++;
+
         /// Save metadata of a GreenNFT
         Green memory green = Green({
             greenNFT: _greenNFT,
@@ -48,19 +48,11 @@ contract GreenNFTData is GreenNFTDataStorages {
             referenceDocument: _referenceDocument,
             auditedReport: _auditedReport,
             greenNFTStatus: GreenNFTStatus.Applied
-
-            //greenNFTName: _greenNFTName,
-            //greenNFTSymbol: _greenNFTSymbol,
-            //ownerAddress: _ownerAddress,
-            //greenNFTPrice: _greenNFTPrice,
-            //ipfsHashOfGreenNFT: _ipfsHashOfGreenNFT,
-            //status: "Open",
-
         });
         greens.push(green);
 
-        /// Update greenAddresses
-        greenAddresses = _greenAddresses;     
+        /// Update GreenNFTs addresses
+        greenNFTAddresses.push(address(_greenNFT));
     }
 
     /**
@@ -94,7 +86,8 @@ contract GreenNFTData is GreenNFTDataStorages {
     ///-----------------
     /// Getter methods
     ///-----------------
-    function getGreen(uint index) public view returns (Green memory _green) {
+    function getGreen(uint greenId) public view returns (Green memory _green) {
+        uint index = greenId.sub(1);
         Green memory green = greens[index];
         return green;
     }
@@ -104,8 +97,8 @@ contract GreenNFTData is GreenNFTDataStorages {
 
         /// Identify member's index
         uint greenIndex;
-        for (uint i=0; i < greenAddresses.length; i++) {
-            if (greenAddresses[i] == GREEN_NFT) {
+        for (uint i=0; i < greenNFTAddresses.length; i++) {
+            if (greenNFTAddresses[i] == GREEN_NFT) {
                 greenIndex = i;
             }
         }
@@ -117,12 +110,7 @@ contract GreenNFTData is GreenNFTDataStorages {
         address GREEN_NFT = address(greenNFT);
 
         /// Identify member's index
-        uint greenIndex;
-        for (uint i=0; i < greenAddresses.length; i++) {
-            if (greenAddresses[i] == GREEN_NFT) {
-                greenIndex = i;
-            }
-        }
+        uint greenIndex = getGreenIndex(greenNFT);
 
         Green memory green = greens[greenIndex];
         return green;
