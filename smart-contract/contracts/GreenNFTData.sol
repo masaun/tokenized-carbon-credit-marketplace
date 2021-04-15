@@ -23,6 +23,32 @@ contract GreenNFTData is GreenNFTDataStorages {
 
     constructor() public {}
 
+
+    /**
+     * @notice - Save applied data that is not approved by auditors yet
+     */
+    function saveMetadataOfGreenPreApproval(
+        address _projectOwner,
+        string memory _projectName, 
+        uint _carbonCreditsTotal,
+        string memory _auditedReport
+    ) public returns (bool) {
+        currentGreenPreApprovalId++;
+
+        /// Save metadata of a GreenNFT
+        Green memory green = Green({
+            greenNFT: _greenNFT,
+            projectOwner: _projectOwner,
+            projectName: _projectName,
+            carbonCreditsTotal: _carbonCreditsTotal,
+            carbonCreditsSold: _carbonCreditsSold,
+            referenceDocument: _referenceDocument,
+            auditedReport: _auditedReport,
+            greenNFTStatus: GreenNFTStatus.Applied
+        });
+        greens.push(green);        
+    }
+
     /**
      * @notice - Save metadata of a GreenNFT
      */
