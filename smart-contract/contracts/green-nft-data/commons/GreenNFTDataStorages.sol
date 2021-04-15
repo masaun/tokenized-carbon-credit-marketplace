@@ -6,7 +6,10 @@ import { GreenNFTDataObjects } from "./GreenNFTDataObjects.sol";
 // shared storage
 contract GreenNFTDataStorages is GreenNFTDataObjects {
 
-    Green[] public greens;
+    Project[] public projects;
 
+    Claim[] public claims;
+
+    Green[] public greens;
 }
 

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
-import CreateGreenNFT from "./components/CreateGreenNFT/index.js";
-import MyGreenNFTs from "./components/MyGreenNFTs/index.js";
-import GreenNFTMarketplace from "./components/GreenNFTMarketplace/index.js";
+import Apply from "./components/Pages/CreateGreenNFT/Apply.js";
+import Approve from "./components/Pages/CreateGreenNFT/Approve.js";
+import MyGreenNFTs from "./components/Pages/MyGreenNFTs/index.js";
+import GreenNFTMarketplace from "./components/Pages/GreenNFTMarketplace/index.js";
 import ipfs from './components/ipfs/ipfsApi.js'
 
 import { Loader, Button, Card, Input, Heading, Table, Form, Flex, Box, Image } from 'rimble-ui';
@@ -78,13 +79,21 @@ class App extends Component {
     );
   }
 
-  renderCreateGreenNFT() {
+  renderApply() {
     return (
       <div className={styles.wrapper}>
-        <CreateGreenNFT />
+        <Apply />
       </div>
     );
   }
+
+  renderApprove() {
+    return (
+      <div className={styles.wrapper}>
+        <Approve />
+      </div>
+    );
+  }  
 
   renderMyGreenNFTs() {
     return (
@@ -106,7 +115,8 @@ class App extends Component {
     return (
       <div className={styles.App}>
         <Header />
-          {this.state.route === 'create-green-nft' && this.renderCreateGreenNFT()}
+          {this.state.route === 'apply' && this.renderApply()}
+          {this.state.route === 'approve' && this.renderApprove()}
           {this.state.route === 'my-green-nfts' && this.renderMyGreenNFTs()}
           {this.state.route === 'green-nft-marketplace' && this.renderGreenNFTMarketplace()}
         <Footer />

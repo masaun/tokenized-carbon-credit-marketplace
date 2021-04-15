@@ -8,6 +8,9 @@ import { GreenNFTTradable } from "./GreenNFTTradable.sol";
 import { GreenNFTMarketplaceEvents } from "./green-nft-marketplace/commons/GreenNFTMarketplaceEvents.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
 
+/// [Note]: For calling the GreenNFTStatus enum
+import { GreenNFTDataObjects } from "./green-nft-data/commons/GreenNFTDataObjects.sol";
+
 
 contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
     using SafeMath for uint256;
@@ -30,9 +33,14 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
         GreenNFT greenNFT = _greenNFT;
 
         GreenNFTData.Green memory green = greenNFTData.getGreenByNFTAddress(greenNFT);
-        address _seller = green.ownerAddress;                     /// Owner
+        address _seller = green.projectOwner;                /// Owner
         address payable seller = address(uint160(_seller));  /// Convert owner address with payable
-        uint buyAmount = green.greenNFTPrice;
+        
+        /// [Todo]: Add calculation of buy amount (Unit price * buyable carbon credits)
+        uint unitPrice;
+        uint buyableCarbonCredits;
+        uint buyAmount = unitPrice * buyableCarbonCredits;
+        //uint buyAmount = green.greenNFTPrice;
         require (msg.value == buyAmount, "msg.value should be equal to the buyAmount");
  
         /// Bought-amount is transferred into a seller wallet
@@ -48,7 +56,8 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
         /// Transfer Ownership of the GreenNFT from a seller to a buyer
         transferOwnershipOfGreenNFT(greenNFT, greenId, buyer);    
         greenNFTData.updateOwnerOfGreenNFT(greenNFT, buyer);
-        greenNFTData.updateStatus(greenNFT, "Cancelled");
+        greenNFTData.updateStatus(greenNFT, GreenNFTDataObjects.GreenNFTStatus.NotSale);
+        //greenNFTData.updateStatus(greenNFT, "Cancelled");
 
         /// Event for checking result of transferring ownership of a GreenNFT
         address ownerAfterOwnershipTransferred = greenNFT.ownerOf(greenId);

@@ -1,17 +1,18 @@
-# NFT based Photo MarketPlace
+# Tokenized Carbon Credit wrapped NFT marketplace
 
 ***
 
-## 【Introduction of NFT based Photo MarketPlace】
-- NFT based Photo MarketPlace is the peer-to-peer Marketplace for buy and sell of photos which was uploaded by users.
-- It assume that uploaded photos in this marketplace are used as photos of news article.
-- Even if user has smartphone which include function of camera, anyone can become sellers by uploading photos in this MarketPlace.
-  - It mean that if user who is seller live in poor region and doesn't has bank account and so on, they can earn money by selling photos in this marketplace.
-- All of being uploaded photos are tokenized as NFT（Non-Fungible token). 
-- Uploaded photos buy/sell by using DAI for preventing risk of high volatility of crypto currency.
-
+## 【Introduction of the Tokenized Carbon Credit wrapped NFT marketplace】
+- 
 
 &nbsp;
+
+## 【Workflow】
+- ① Creator apply their project to Auditor.
+- ② Auditor approve a project that a creator applied.
+  => Whole process is executed on this platform to keep `transparency` and `traceability` .
+- ③ Creator receive a GreenNFT.
+- ④ Creator buy/sell a GreenNFT on the marketplace.
 
 
 ***
@@ -78,17 +79,6 @@ http://127.0.0.1:3000
 
 ***
 
-
-## 【Work flow】
-
-&nbsp;
-
-***
-
 ## 【References】
-- Gitcoin（The Road to Devcon5）
-https://gitcoin.co/issue/ConsenSys/Road-To-Devcon-Relay/2
-https://gitcoin.co/issue/ConsenSys/ConsenSysGrants-Challenges/5/3497
-
-- Documents
+- 
 

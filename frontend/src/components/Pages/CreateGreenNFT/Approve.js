@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import getWeb3, { getGanacheWeb3, Web3 } from "../../utils/getWeb3";
-import ipfs from '../ipfs/ipfsApi.js'
+import getWeb3, { getGanacheWeb3, Web3 } from "../../../utils/getWeb3";
+import ipfs from '../../ipfs/ipfsApi.js'
 
 import { Grid } from '@material-ui/core';
 import { Loader, Button, Card, Input, Heading, Table, Form, Field } from 'rimble-ui';
-import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
+import { zeppelinSolidityHotLoaderOptions } from '../../../../config/webpack';
 
-import styles from '../../App.module.scss';
+import styles from '../../../App.module.scss';
 
 
-export default class CreateGreenNFT extends Component {
+export default class Approve extends Component {
     constructor(props) {    
         super(props);
 
@@ -114,7 +114,7 @@ export default class CreateGreenNFT extends Component {
 
             /// Get instance by using created GreenNFT address
             let GreenNFT = {};
-            GreenNFT = require("../../../../smart-contract/build/contracts/GreenNFT.json"); 
+            GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
             let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
             console.log('=== greenNFT ===', greenNFT);
      
@@ -151,8 +151,8 @@ export default class CreateGreenNFT extends Component {
         let GreenNFTFactory = {};
         let GreenNFTTMarketplace = {};
         try {
-          GreenNFTFactory = require("../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
-          GreenNFTTMarketplace = require("../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTFactory = require("../../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
+          GreenNFTTMarketplace = require("../../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
         } catch (e) {
           console.log(e);
         }
@@ -267,46 +267,10 @@ export default class CreateGreenNFT extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Create a new Green NFT and Put on Sale</h2>
-                            <p>Please upload your photo and put on sale from here!</p>
+                            <h2>Approve a request of creating new Green NFT</h2>
 
                             <Form onSubmit={this.onSubmit}>
-                                <Field label="Green NFT Name">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) Art NFT Token"
-                                        required={true}
-                                        value={this.state.valueNFTName} 
-                                        onChange={this.handleNFTName} 
-                                    />
-                                </Field> 
-
-                                {/*
-                                <Field label="Photo NFT Symbol">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) ARNT"
-                                        required={true}
-                                        value={this.state.valueNFTSymbol} 
-                                        onChange={this.handleNFTSymbol}                                        
-                                    />
-                                </Field>
-                                */}
-
-                                <Field label="Green NFT's Price (unit: ETH)">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) 10"
-                                        required={true}
-                                        value={this.state.valuegreenNFTPrice} 
-                                        onChange={this.handlegreenNFTPrice}                                        
-                                    />
-                                </Field>
-
-                                <Field label="Photo for uploading to IPFS">
+                                <Field label="Verification Report (Audited-Report)">
                                     <input 
                                         type='file' 
                                         onChange={this.captureFile} 
@@ -314,7 +278,7 @@ export default class CreateGreenNFT extends Component {
                                     />
                                 </Field>
 
-                                <Button size={'medium'} width={1} type='submit'>Upload my photo and put on sale</Button>
+                                <Button size={'medium'} width={1} type='submit'>Approve</Button>
                             </Form>
                         </Card>
                     </Grid>
