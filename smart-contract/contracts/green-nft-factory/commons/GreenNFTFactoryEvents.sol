@@ -5,13 +5,10 @@ import { GreenNFT } from "../../GreenNFT.sol";
 
 contract GreenNFTFactoryEvents {
 
-    event ProjectApproved (
-        address auditor, 
-        address projectOwner,
-        string projectName, 
-        uint carbonCreditsTotal,
-        string referenceDocument,
-        string auditedReport
+    event ClaimAudited (
+        uint projectId, 
+        uint co2Reductions, 
+        string referenceDocument
     );
 
     event GreenNFTCreated (

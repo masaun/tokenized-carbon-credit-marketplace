@@ -23,6 +23,7 @@ contract GreenNFTDataObjects {
     /// @notice - Metadata of a GreenNFT of a project
     struct GreenNFTMetadata {  /// [Key]: index of array
         uint claimId;              /// This is claimId for the Claim struct (Index is claimId - 1)
+        GreenNFT greenNFT;
         address auditor;
         uint carbonCredits;        /// CO2 emissions - CO2 reductions
         uint buyableCarbonCredits;

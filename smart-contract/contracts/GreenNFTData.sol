@@ -63,6 +63,7 @@ contract GreenNFTData is GreenNFTDataStorages {
      * @notice - Save metadata of a GreenNFT
      */
     function saveGreenNFTMetadata(
+        uint _claimId,
         address[] memory _greenNFTAddresses, 
         GreenNFT _greenNFT, 
         address _auditor,
@@ -73,17 +74,31 @@ contract GreenNFTData is GreenNFTDataStorages {
 
         /// Save metadata of a GreenNFT
         GreenNFTMetadata memory greenNFTMetadata = GreenNFTMetadata({
+            claimId: _claimId,
             greenNFT: _greenNFT,
             auditor: _auditor,
             carbonCredits: _carbonCredits,
             buyableCarbonCredits: _carbonCredits,  /// [Note]: Initially, carbonCredits and buyableCarbonCredits are equal amount
             auditedReport: _auditedReport,
-            greenNFTStatus: GreenNFTStatus.Applied
+            greenNFTStatus: GreenNFTStatus.Audited
         });
         greenNFTMetadatas.push(greenNFTMetadata);
 
         /// Update GreenNFTs addresses
         greenNFTAddresses.push(address(_greenNFT));
+    }
+
+    /**
+     * @notice - Update status ("Open" or "Cancelled")
+     */
+    function updateStatus(GreenNFT _greenNFT, GreenNFTStatus _newStatus) public returns (bool) {
+        /// Identify green's index
+        uint greenIndex = getGreenIndex(_greenNFT);
+
+        /// Update metadata of a GreenNFT
+        Green storage green = greens[greenIndex];
+        green.greenNFTStatus = _newStatus;  
+        //green.status = _newStatus;  
     }
 
     /**
@@ -99,18 +114,6 @@ contract GreenNFTData is GreenNFTDataStorages {
         green.projectOwner = _newOwner;
     }
 
-    /**
-     * @notice - Update status ("Open" or "Cancelled")
-     */
-    function updateStatus(GreenNFT _greenNFT, GreenNFTStatus _newStatus) public returns (bool) {
-        /// Identify green's index
-        uint greenIndex = getGreenIndex(_greenNFT);
-
-        /// Update metadata of a GreenNFT
-        Green storage green = greens[greenIndex];
-        green.greenNFTStatus = _newStatus;  
-        //green.status = _newStatus;  
-    }
 
 
     ///-----------------
