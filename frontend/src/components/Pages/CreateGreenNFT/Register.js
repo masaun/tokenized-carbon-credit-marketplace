@@ -267,10 +267,56 @@ export default class Register extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Apply a new Green NFT</h2>
+                            <h2>Register a project</h2>
 
                             <Form onSubmit={this.onSubmit}>
-                                <Field label="Green NFT Name">
+                                <Field label="Project Name">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) The National Planting Organization"
+                                        required={true}
+                                        value={this.state.valueNFTName} 
+                                        onChange={this.handleNFTName} 
+                                    />
+                                </Field> 
+
+                                <Field label="CO2 Emissions">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) 50"
+                                        required={true}
+                                        value={this.state.valuegreenNFTPrice} 
+                                        onChange={this.handlegreenNFTPrice}                                        
+                                    />
+                                </Field>
+
+                                <Button size={'medium'} width={1} type='submit'>Register a project</Button>
+                            </Form>
+                        </Card>
+                    </Grid>
+
+                    <Grid item xs={1}>
+                    </Grid>
+
+                    <Grid item xs={1}>
+                    </Grid>
+                </Grid>
+
+                <Grid container style={{ marginTop: 20 }}>
+                    <Grid item xs={10}>
+                        <Card width={"420px"} 
+                              maxWidth={"420px"} 
+                              mx={"auto"} 
+                              my={5} 
+                              p={20} 
+                              borderColor={"#E8E8E8"}
+                        >
+                            <h2>Register a auditor</h2>
+
+                            <Form onSubmit={this.onSubmit}>
+                                <Field label="Auditor address">
                                     <Input
                                         type="text"
                                         width={1}
@@ -281,39 +327,7 @@ export default class Register extends Component {
                                     />
                                 </Field> 
 
-                                {/*
-                                <Field label="Photo NFT Symbol">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) ARNT"
-                                        required={true}
-                                        value={this.state.valueNFTSymbol} 
-                                        onChange={this.handleNFTSymbol}                                        
-                                    />
-                                </Field>
-                                */}
-
-                                <Field label="Green NFT's Price (unit: ETH)">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) 10"
-                                        required={true}
-                                        value={this.state.valuegreenNFTPrice} 
-                                        onChange={this.handlegreenNFTPrice}                                        
-                                    />
-                                </Field>
-
-                                <Field label="Reference document for approval">
-                                    <input 
-                                        type='file' 
-                                        onChange={this.captureFile} 
-                                        required={true}
-                                    />
-                                </Field>
-
-                                <Button size={'medium'} width={1} type='submit'>Apply</Button>
+                                <Button size={'medium'} width={1} type='submit'>Register a auditor</Button>
                             </Form>
                         </Card>
                     </Grid>

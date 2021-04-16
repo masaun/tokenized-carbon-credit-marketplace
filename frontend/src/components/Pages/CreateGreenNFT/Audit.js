@@ -267,10 +267,21 @@ export default class Audit extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Approve a request of creating new Green NFT</h2>
+                            <h2>Audit a CO2 reduction claim</h2>
 
                             <Form onSubmit={this.onSubmit}>
-                                <Field label="Verification Report (Audited-Report)">
+                                <Field label="Claim ID">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) 1"
+                                        required={true}
+                                        value={this.state.valuegreenNFTPrice} 
+                                        onChange={this.handlegreenNFTPrice}                                        
+                                    />
+                                </Field>
+
+                                <Field label="Audited-Report (Verification Report)">
                                     <input 
                                         type='file' 
                                         onChange={this.captureFile} 
@@ -278,7 +289,7 @@ export default class Audit extends Component {
                                     />
                                 </Field>
 
-                                <Button size={'medium'} width={1} type='submit'>Approve</Button>
+                                <Button size={'medium'} width={1} type='submit'>Audit</Button>
                             </Form>
                         </Card>
                     </Grid>
