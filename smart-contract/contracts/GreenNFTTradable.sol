@@ -18,7 +18,7 @@ contract GreenNFTTradable {
     /**
      * @notice - Open to put on sale of carbon credits.
      */
-    function openSale(GreenNFTData _greenNFTData, GreenNFT greenNFT, uint256 _greenId) public {
+    function openToPutOnSale(GreenNFTData _greenNFTData, GreenNFT greenNFT, uint256 _greenId) public {
         GreenNFTData greenNFTData = _greenNFTData;
         greenNFTData.updateStatus(greenNFT, GreenNFTDataCommons.GreenNFTStatus.Sale);
     }
@@ -26,7 +26,7 @@ contract GreenNFTTradable {
     /**
      * @notice - Cancel to put on sale of carbon credits.
      */
-    function cancelSale(GreenNFTData _greenNFTData, GreenNFT greenNFT, uint256 _greenId) public {
+    function cancelToPutOnSale(GreenNFTData _greenNFTData, GreenNFT greenNFT, uint256 _greenId) public {
         GreenNFTData greenNFTData = _greenNFTData;
         greenNFTData.updateStatus(greenNFT, GreenNFTDataCommons.GreenNFTStatus.NotSale);
     }
