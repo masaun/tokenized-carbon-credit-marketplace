@@ -13,6 +13,8 @@ contract GreenNFTMarketplace is GreenNFTMarketplaceCommons {
 //contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
     using SafeMath for uint256;
 
+    uint unitPriceOfCarbonCredits = 1 * 1e18;  /// 1 ETH per 1 carbon crefits
+
     address public GREEN_NFT_MARKETPLACE;
 
     GreenNFTData public greenNFTData;
@@ -24,26 +26,46 @@ contract GreenNFTMarketplace is GreenNFTMarketplaceCommons {
     }
 
     /** 
-     * @notice - Buy function is that buy NFT token and ownership transfer. (Reference from IERC721.sol)
-     * @notice - msg.sender buy NFT with ETH (msg.value)
-     * @notice - greenID is always 1. Because each GreenNFT is unique.
+     * @notice - Buy function is that a buyer (msg.sender) purchase carbon credits from a seller. (Reference from IERC721.sol)
+     * @notice - a buyer (msg.sender) purchase carbon credits with ETH (msg.value)
      */
-    function buyGreenNFT(GreenNFT _greenNFT) public payable returns (bool) {
+    function buyCarbonCredits(GreenNFT _greenNFT, uint orderOfCarbonCredits) public payable returns (bool) {
         GreenNFT greenNFT = _greenNFT;
+        address buyer = msg.sender;  /// [Note]: In advance, a buyer (msg.sender) must transfer msg.value from front-end.
 
         GreenNFTData.GreenNFTMetadata memory greenNFTMetadata = greenNFTData.getGreenNFTMetadataByNFTAddress(greenNFT);
         uint _projectId = greenNFTData.getClaim(greenNFTMetadata.claimId).projectId;
         address _seller = greenNFTData.getProject(_projectId).projectOwner;
         address payable seller = address(uint160(_seller));  /// Convert owner address with payable
         
-        /// [Todo]: Add calculation of buy amount (Unit price * buyable carbon credits)
-        uint unitPrice = 1 * 1e18;
-        uint buyableCarbonCredits;
-        uint buyAmount = unitPrice * buyableCarbonCredits;
-        require (msg.value == buyAmount, "msg.value should be equal to the buyAmount");
- 
-        /// Bought-amount is transferred into a seller wallet
-        seller.transfer(buyAmount);
+        /// Calculation of purchase amount (Unit price * buyable carbon credits) 
+        uint purchaseAmountOfCarbonCredits = getPurchaseAmountOfCarbonCredits(greenNFT, orderOfCarbonCredits);
+        require(purchaseAmountOfCarbonCredits == msg.value, "Purchase amount of carbon credits must be equal to msg.value");
+
+        /// [Todo]: Finalize this condition
+        //uint buyableCarbonCredits = getBuyableCarbonCredits()
+        //require (purchaseAmountOfCarbonCredits <= buyableCarbonCredits, "Purchase amount of carbon credits must be less than buyable carbon credits");
+
+        /// ETH amount purchased is transferred into a seller wallet
+        seller.transfer(purchaseAmountOfCarbonCredits);
     }
+
+
+    ///--------------------------
+    /// Getter methods
+    ///--------------------------
+    function getBuyableCarbonCredits() public view returns (uint _buyableCarbonCredits) {
+        /// [Todo]: Get buyable carbon credits
+    }
+
+
+    /**
+     * @notice - Calculation of buy amount (Unit price * order of carbon credits)
+     */
+    function getPurchaseAmountOfCarbonCredits(GreenNFT _greenNFT, uint orderOfCarbonCredits) public view returns (uint _purchaseAmountOfCarbonCredits) {
+        uint purchaseAmountOfCarbonCredits = unitPriceOfCarbonCredits * orderOfCarbonCredits;
+        return purchaseAmountOfCarbonCredits;
+    }
+    
 
 }
