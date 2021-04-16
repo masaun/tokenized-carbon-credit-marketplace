@@ -1,10 +1,23 @@
 pragma solidity 0.6.12;
 
-import { GreenNFT } from "../../GreenNFT.sol";
+import { GreenNFT } from "../GreenNFT.sol";
 
 
-contract GreenNFTFactoryEvents {
+contract GreenNFTFactoryCommons {
 
+    ///---------------------------
+    /// Storages
+    ///---------------------------
+
+
+    ///---------------------------
+    /// Objects
+    ///---------------------------
+
+
+    ///---------------------------
+    /// Events
+    ///---------------------------
     event ClaimAudited (
         uint projectId, 
         uint co2Reductions, 

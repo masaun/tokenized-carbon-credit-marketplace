@@ -5,13 +5,11 @@ pragma experimental ABIEncoderV2;
 import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { GreenNFT } from "./GreenNFT.sol";
 //import { GreenNFTTradable } from "./GreenNFTTradable.sol";
-import { GreenNFTMarketplaceEvents } from "./green-nft-marketplace/commons/GreenNFTMarketplaceEvents.sol";
+import { GreenNFTMarketplaceCommons } from "./commons/GreenNFTMarketplaceCommons.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
 
-/// [Note]: For calling the GreenNFTStatus enum
-import { GreenNFTDataObjects } from "./green-nft-data/commons/GreenNFTDataObjects.sol";
 
-contract GreenNFTMarketplace is GreenNFTMarketplaceEvents {
+contract GreenNFTMarketplace is GreenNFTMarketplaceCommons {
 //contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
     using SafeMath for uint256;
 

@@ -2,14 +2,14 @@ pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
-import { GreenNFTDataStorages } from "./green-nft-data/commons/GreenNFTDataStorages.sol";
+import { GreenNFTDataCommons } from "./commons/GreenNFTDataCommons.sol";
 import { GreenNFT } from "./GreenNFT.sol";
 
 
 /**
  * @notice - This is the storage contract for GreenNFTs
  */
-contract GreenNFTData is GreenNFTDataStorages {
+contract GreenNFTData is GreenNFTDataCommons {
     using SafeMath for uint;
 
     uint currentProjectId;
