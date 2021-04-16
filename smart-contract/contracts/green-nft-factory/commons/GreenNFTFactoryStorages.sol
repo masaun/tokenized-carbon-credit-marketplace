@@ -8,7 +8,5 @@ import { GreenNFTFactoryEvents } from "./GreenNFTFactoryEvents.sol";
 // shared storage
 contract GreenNFTFactoryStorages is GreenNFTFactoryObjects, GreenNFTFactoryEvents {
 
-    //Green[] public greens;
-
 }
 

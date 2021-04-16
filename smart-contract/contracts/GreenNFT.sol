@@ -11,7 +11,7 @@ import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 contract GreenNFT is ERC721 {
     using SafeMath for uint256;
 
-    uint256 public currentGreenId;
+    uint256 public currentTokenId;
     
     constructor(
         address _projectOwner,  /// Initial owner (Seller)
@@ -32,10 +32,10 @@ contract GreenNFT is ERC721 {
      */
     function mint(address to, string memory tokenURI) public returns (bool) {
         /// Mint a new GreenNFT
-        uint newgreenId = getNextgreenId();
-        currentGreenId++;
-        _mint(to, newgreenId);
-        _setTokenURI(newgreenId, tokenURI);
+        uint newTokenId = getNextTokenId();
+        currentTokenId++;
+        _mint(to, newTokenId);
+        _setTokenURI(newTokenId, tokenURI);
     }
 
 
@@ -47,8 +47,8 @@ contract GreenNFT is ERC721 {
     ///--------------------------------------
     /// Private methods
     ///--------------------------------------
-    function getNextgreenId() private returns (uint nextgreenId) {
-        return currentGreenId.add(1);
+    function getNextTokenId() private returns (uint _nextTokenId) {
+        return currentTokenId.add(1);
     }
     
 
