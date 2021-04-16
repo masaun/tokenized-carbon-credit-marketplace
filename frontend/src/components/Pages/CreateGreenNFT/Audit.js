@@ -9,7 +9,7 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../../config/webpack';
 import styles from '../../../App.module.scss';
 
 
-export default class Apply extends Component {
+export default class Audit extends Component {
     constructor(props) {    
         super(props);
 
@@ -267,45 +267,10 @@ export default class Apply extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Apply a new Green NFT</h2>
+                            <h2>Approve a request of creating new Green NFT</h2>
 
                             <Form onSubmit={this.onSubmit}>
-                                <Field label="Green NFT Name">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) Art NFT Token"
-                                        required={true}
-                                        value={this.state.valueNFTName} 
-                                        onChange={this.handleNFTName} 
-                                    />
-                                </Field> 
-
-                                {/*
-                                <Field label="Photo NFT Symbol">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) ARNT"
-                                        required={true}
-                                        value={this.state.valueNFTSymbol} 
-                                        onChange={this.handleNFTSymbol}                                        
-                                    />
-                                </Field>
-                                */}
-
-                                <Field label="Green NFT's Price (unit: ETH)">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) 10"
-                                        required={true}
-                                        value={this.state.valuegreenNFTPrice} 
-                                        onChange={this.handlegreenNFTPrice}                                        
-                                    />
-                                </Field>
-
-                                <Field label="Reference document for approval">
+                                <Field label="Verification Report (Audited-Report)">
                                     <input 
                                         type='file' 
                                         onChange={this.captureFile} 
@@ -313,7 +278,7 @@ export default class Apply extends Component {
                                     />
                                 </Field>
 
-                                <Button size={'medium'} width={1} type='submit'>Apply</Button>
+                                <Button size={'medium'} width={1} type='submit'>Approve</Button>
                             </Form>
                         </Card>
                     </Grid>

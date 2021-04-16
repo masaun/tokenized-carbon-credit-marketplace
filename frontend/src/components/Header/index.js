@@ -9,9 +9,11 @@ const Header = () => (
           <ul>
             <li><a href="/" className={styles.link}><span style={{ padding: "60px" }}></span></a></li>
 
-            <li><a href="/apply" className={styles.link}> Apply</a></li>
+            <li><a href="/register" className={styles.link}> Register</a></li>
 
-            <li><a href="/approve" className={styles.link}> Approve</a></li>
+            <li><a href="/claim" className={styles.link}> Claim</a></li>
+
+            <li><a href="/audit" className={styles.link}> Audit</a></li>
 
             <li><a href="/my-green-nfts" className={styles.link}> My Green NFTs</a></li>
 
