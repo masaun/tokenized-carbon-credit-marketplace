@@ -1,6 +1,7 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { Strings } from "./libraries/Strings.sol";
 
@@ -14,7 +15,7 @@ import { CarbonCreditToken } from "./CarbonCreditToken.sol";
 /**
  * @notice - This is the factory contract for a NFT of green
  */
-contract GreenNFTFactory is GreenNFTFactoryCommons {
+contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
     using SafeMath for uint256;
     using Strings for string;
 
@@ -39,7 +40,7 @@ contract GreenNFTFactory is GreenNFTFactoryCommons {
     /**
      * @notice - Register a auditor 
      */
-    function registerAuditor(address auditor) public returns (bool) {
+    function registerAuditor(address auditor) public onlyOwner returns (bool) {
         /// Caller is onlyOwner 
         greenNFTData.addAuditor(auditor);
     }
