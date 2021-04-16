@@ -8,6 +8,7 @@ import { GreenNFTFactoryCommons } from "./commons/GreenNFTFactoryCommons.sol";
 import { GreenNFT } from "./GreenNFT.sol";
 import { GreenNFTMarketplace } from "./GreenNFTMarketplace.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
+import { CarbonCreditToken } from "./CarbonCreditToken.sol";
 
 
 /**
@@ -21,10 +22,17 @@ contract GreenNFTFactory is GreenNFTFactoryCommons {
 
     GreenNFTMarketplace public greenNFTMarketplace;
     GreenNFTData public greenNFTData;
+    CarbonCreditToken public carbonCreditToken;
 
-    constructor(GreenNFTMarketplace _greenNFTMarketplace, GreenNFTData _greenNFTData) public {
+    constructor(
+        GreenNFTMarketplace _greenNFTMarketplace, 
+        GreenNFTData _greenNFTData, 
+        CarbonCreditToken _carbonCreditToken
+    ) public {
         greenNFTMarketplace = _greenNFTMarketplace;
         greenNFTData = _greenNFTData;
+        carbonCreditToken = _carbonCreditToken;
+
         GREEN_NFT_MARKETPLACE = address(greenNFTMarketplace);
     }
 
@@ -100,6 +108,10 @@ contract GreenNFTFactory is GreenNFTFactoryCommons {
         /// Calculate carbon credits
         uint _cc2Emissions = project.co2Emissions;
         uint carbonCredits = _cc2Emissions.sub(co2Reductions);
+
+        /// The CarbonCreditTokens that is equal amount to given-carbonCredits are transferred into the wallet of project owner
+        /// [Note]: This contract should has some the CarbonCreditTokens balance. 
+        carbonCreditToken.transfer(_projectOwner, carbonCredits);
 
         /// Save metadata of a GreenNFT created
         greenNFTData.saveGreenNFTMetadata(claimId, greenNFT, auditor, carbonCredits, auditedReport);
