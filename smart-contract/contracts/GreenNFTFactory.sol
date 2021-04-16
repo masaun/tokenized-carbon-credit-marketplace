@@ -56,7 +56,6 @@ contract GreenNFTFactory is GreenNFTFactoryCommons {
      * @notice - A project owner claim CO2 reductions
      */
     function claimCO2Reductions(uint projectId, uint co2Reductions, string memory referenceDocument) public returns (bool) {
-        /// [Todo]: Add a condition to check a caller
         address projectOwner;
         require (msg.sender == projectOwner, "Caller must be a project owner");
         
