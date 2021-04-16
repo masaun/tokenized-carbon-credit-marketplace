@@ -1,10 +1,23 @@
 pragma solidity 0.6.12;
 
-import { GreenNFT } from "../../GreenNFT.sol";
+import { GreenNFT } from "../GreenNFT.sol";
 
 
-contract GreenNFTDataObjects {
+contract GreenNFTDataCommons {
 
+    ///---------------------------
+    /// Storages
+    ///---------------------------
+    Project[] public projects;
+
+    Claim[] public claims;
+
+    GreenNFTMetadata[] public greenNFTMetadatas;
+
+
+    ///---------------------------
+    /// Objects
+    ///---------------------------
     enum GreenNFTStatus { Audited, Sale, NotSale }
 
     struct Project {
@@ -31,5 +44,9 @@ contract GreenNFTDataObjects {
         GreenNFTStatus greenNFTStatus;  /// "Audited" or "Sale" or "Not Sale"
     }
 
-    
+
+    ///---------------------------
+    /// Events
+    ///---------------------------
 }
+

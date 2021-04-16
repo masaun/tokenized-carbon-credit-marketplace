@@ -3,19 +3,17 @@ pragma experimental ABIEncoderV2;
 
 import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { Strings } from "./libraries/Strings.sol";
-import { GreenNFTFactoryStorages } from "./green-nft-factory/commons/GreenNFTFactoryStorages.sol";
+
+import { GreenNFTFactoryCommons } from "./commons/GreenNFTFactoryCommons.sol";
 import { GreenNFT } from "./GreenNFT.sol";
 import { GreenNFTMarketplace } from "./GreenNFTMarketplace.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
-
-/// [Note]: For calling the GreenNFTStatus enum
-import { GreenNFTDataObjects } from "./green-nft-data/commons/GreenNFTDataObjects.sol";
 
 
 /**
  * @notice - This is the factory contract for a NFT of green
  */
-contract GreenNFTFactory is GreenNFTFactoryStorages {
+contract GreenNFTFactory is GreenNFTFactoryCommons {
     using SafeMath for uint256;
     using Strings for string;
 
