@@ -71,7 +71,6 @@ contract GreenNFTData is GreenNFTDataStorages {
      */
     function saveGreenNFTMetadata(
         uint _claimId,
-        address[] memory _greenNFTAddresses, 
         GreenNFT _greenNFT, 
         address _auditor,
         uint _carbonCredits,

@@ -19,7 +19,6 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
     using SafeMath for uint256;
     using Strings for string;
 
-    address[] public greenNFTAddresses;
     address GREEN_NFT_MARKETPLACE;
 
     GreenNFTMarketplace public greenNFTMarketplace;
@@ -99,14 +98,13 @@ contract GreenNFTFactory is GreenNFTFactoryStorages {
         string memory tokenURI = getTokenURI(auditedReport);  /// [Note]: IPFS hash + URL
 
         GreenNFT greenNFT = new GreenNFT(_projectOwner, _projectName, projectSymbol, tokenURI);
-        greenNFTAddresses.push(address(greenNFT));
 
         /// Calculate carbon credits
         uint _cc2Emissions = project.co2Emissions;
         uint carbonCredits = _cc2Emissions.sub(co2Reductions);
 
         /// Save metadata of a GreenNFT created
-        greenNFTData.saveGreenNFTMetadata(claimId, greenNFTAddresses, greenNFT, auditor, carbonCredits, auditedReport);
+        greenNFTData.saveGreenNFTMetadata(claimId, greenNFT, auditor, carbonCredits, auditedReport);
 
         emit GreenNFTCreated(projectId, claimId, greenNFT, auditor, carbonCredits, auditedReport);
     }
