@@ -3,14 +3,13 @@ pragma experimental ABIEncoderV2;
 
 //import { ERC20 } from '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
-import { GreenNFT } from "./GreenNFT.sol";
-//import { GreenNFTTradable } from "./GreenNFTTradable.sol";
 import { GreenNFTMarketplaceCommons } from "./commons/GreenNFTMarketplaceCommons.sol";
+import { GreenNFT } from "./GreenNFT.sol";
+import { GreenNFTTradable } from "./GreenNFTTradable.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
 
 
-contract GreenNFTMarketplace is GreenNFTMarketplaceCommons {
-//contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceEvents {
+contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
     using SafeMath for uint256;
 
     uint unitPriceOfCarbonCredits = 1 * 1e18;  /// 1 ETH per 1 carbon crefits
@@ -19,8 +18,7 @@ contract GreenNFTMarketplace is GreenNFTMarketplaceCommons {
 
     GreenNFTData public greenNFTData;
 
-    constructor(GreenNFTData _greenNFTData) public {
-    //constructor(GreenNFTData _greenNFTData) public GreenNFTTradable() {
+    constructor(GreenNFTData _greenNFTData) public GreenNFTTradable() {
         greenNFTData = _greenNFTData;
         address payable GREEN_NFT_MARKETPLACE = address(uint160(address(this)));
     }
