@@ -28,8 +28,12 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
      * @notice - a buyer (msg.sender) purchase carbon credits with ETH (msg.value)
      */
     function buyCarbonCredits(GreenNFT _greenNFT, uint orderOfCarbonCredits) public payable returns (bool) {
-        GreenNFT greenNFT = _greenNFT;
         address buyer = msg.sender;  /// [Note]: In advance, a buyer (msg.sender) must transfer msg.value from front-end.
+
+        /// Check whether orderOfCarbonCredits is less than buyableCarbonCredits
+        GreenNFT greenNFT = _greenNFT;
+        uint buyableCarbonCredits = getBuyableCarbonCredits(greenNFT);
+        require (orderOfCarbonCredits <= buyableCarbonCredits, "Order of carbon credits must be less than buyable carbon credits");
 
         GreenNFTData.GreenNFTMetadata memory greenNFTMetadata = greenNFTData.getGreenNFTMetadataByNFTAddress(greenNFT);
         uint _projectId = greenNFTData.getClaim(greenNFTMetadata.claimId).projectId;
@@ -40,10 +44,6 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
         uint purchaseAmountOfCarbonCredits = getPurchaseAmountOfCarbonCredits(greenNFT, orderOfCarbonCredits);
         require(purchaseAmountOfCarbonCredits == msg.value, "Purchase amount of carbon credits must be equal to msg.value");
 
-        /// [Todo]: Finalize this condition
-        //uint buyableCarbonCredits = getBuyableCarbonCredits()
-        //require (purchaseAmountOfCarbonCredits <= buyableCarbonCredits, "Purchase amount of carbon credits must be less than buyable carbon credits");
-
         /// ETH amount purchased is transferred into a seller wallet
         seller.transfer(purchaseAmountOfCarbonCredits);
     }
@@ -52,10 +52,14 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
     ///--------------------------
     /// Getter methods
     ///--------------------------
-    function getBuyableCarbonCredits() public view returns (uint _buyableCarbonCredits) {
-        /// [Todo]: Get buyable carbon credits
-    }
 
+    /**
+     * @notice - Get buyable carbon credits
+     */
+    function getBuyableCarbonCredits(GreenNFT _greenNFT) public view returns (uint _buyableCarbonCredits) {
+        GreenNFTData.GreenNFTMetadata memory greenNFTMetadata = greenNFTData.getGreenNFTMetadataByNFTAddress(_greenNFT);
+        return greenNFTMetadata.buyableCarbonCredits;
+    }
 
     /**
      * @notice - Calculation of buy amount (Unit price * order of carbon credits)
