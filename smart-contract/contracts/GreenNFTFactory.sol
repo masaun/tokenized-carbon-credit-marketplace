@@ -38,6 +38,20 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
     }
 
     /**
+     * @notice - Throws if called by account without auditors
+     */
+    modifier onlyAuditor() {
+        address auditor;
+        address[] memory auditors = greenNFTData.getAuditors();
+        for (uint i=0; i < auditors.length; i++) {
+            auditor = auditors[i];
+        }
+
+        require(msg.sender == auditor, "Caller should be the auditor");
+        _;
+    }
+
+    /**
      * @notice - Register a auditor 
      */
     function registerAuditor(address auditor) public onlyOwner returns (bool) {
@@ -67,7 +81,7 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
      * @notice - An auditor audit a CO2 reduction claim
      * @notice - Only auditor can audit
      */
-    function auditClaim(uint claimId, string memory auditedReport) public returns (bool) {
+    function auditClaim(uint claimId, string memory auditedReport) public onlyAuditor returns (bool) {
         address auditor;
         address[] memory auditors = greenNFTData.getAuditors();
         for (uint i=0; i < auditors.length; i++) {
