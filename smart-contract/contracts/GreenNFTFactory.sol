@@ -71,8 +71,10 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
      * @notice - A project owner claim CO2 reductions
      */
     function claimCO2Reductions(uint projectId, uint co2Reductions, string memory referenceDocument) public returns (bool) {
-        address projectOwner;
-        require (msg.sender == projectOwner, "Caller must be a project owner");
+        /// Check whether a caller is a project owner or not
+        GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
+        address _projectOwner = project.projectOwner;
+        require (msg.sender == _projectOwner, "Caller must be a project owner");
         
         greenNFTData.saveClaim(projectId, co2Reductions, referenceDocument);
     }
