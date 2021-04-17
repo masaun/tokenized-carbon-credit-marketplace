@@ -20,7 +20,7 @@ export default class Register extends Component {
           accounts: null,
           route: window.location.pathname.replace("/", ""),
 
-          /////// NFT concern
+          /////// Input values from form
           valueProjectName: '',
           valueCO2Emissions: '',
           valueAuditorAddress: '',
