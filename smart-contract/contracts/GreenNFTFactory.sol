@@ -114,7 +114,7 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
         address _projectOwner = project.projectOwner;
         string memory _projectName = project.projectName;
-        string memory projectSymbol = "";
+        string memory projectSymbol = "GREEN_NFT";            /// [Note]: All NFT's symbol are common symbol
         string memory tokenURI = getTokenURI(auditedReport);  /// [Note]: IPFS hash + URL
 
         GreenNFT greenNFT = new GreenNFT(_projectOwner, _projectName, projectSymbol, tokenURI);
