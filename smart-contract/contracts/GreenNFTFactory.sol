@@ -97,23 +97,10 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         uint _projectId = claim.projectId;
         uint _co2Reductions = claim.co2Reductions;
         string memory _referenceDocument = claim.referenceDocument;
-        ClaimAudited(_projectId, _co2Reductions, _referenceDocument);
+        emit ClaimAudited(_projectId, _co2Reductions, _referenceDocument);
 
         /// Create a new GreenNFT
-        _createNewGreenNFT(_projectId, claimId, auditor, _co2Reductions, auditedReport);
-    }
-
-    /**
-     * @notice - Create a new GreenNFT when a seller (owner) upload a green onto IPFS
-     */
-    function _createNewGreenNFT(
-        uint projectId,
-        uint claimId,
-        address auditor,
-        uint co2Reductions, 
-        string memory auditedReport
-    ) internal returns (bool) {
-        GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
+        GreenNFTData.Project memory project = greenNFTData.getProject(_projectId);
         address _projectOwner = project.projectOwner;
         string memory _projectName = project.projectName;
         string memory projectSymbol = "GREEN_NFT";            /// [Note]: All NFT's symbol are common symbol
@@ -123,17 +110,51 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
 
         /// Calculate carbon credits
         uint _co2Emissions = project.co2Emissions;
-        uint carbonCredits = _co2Emissions.sub(co2Reductions);
+        uint carbonCredits = _co2Emissions.sub(_co2Reductions);
+
+        /// [Note]: Commentout this event because of "stack too deep"
+        //emit GreenNFTCreated(_projectId, claimId, greenNFT, auditor, carbonCredits, auditedReport);
 
         /// The CarbonCreditTokens that is equal amount to given-carbonCredits are transferred into the wallet of project owner
         /// [Note]: This contract should has some the CarbonCreditTokens balance. 
         carbonCreditToken.transfer(_projectOwner, carbonCredits);
+    }
 
+    function saveGreenNFTData(
+        uint projectId,
+        uint claimId,
+        GreenNFT greenNFT,
+        address projectOwner,
+        address auditor,
+        uint co2Emissions, 
+        uint co2Reductions, 
+        uint carbonCredits,
+        string memory auditedReport
+    ) public returns (bool) {
+        /// [Todo]: In progress
+        _saveGreenNFTMetadata(projectId, claimId, greenNFT, projectOwner, auditor, auditedReport);
+        _saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);        
+    }
+
+    function _saveGreenNFTMetadata(
+        uint projectId,
+        uint claimId,
+        GreenNFT greenNFT,
+        address _projectOwner,
+        address auditor,
+        string memory auditedReport
+    ) public returns (bool) {
         /// Save metadata of a GreenNFT created
-        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, _co2Emissions, co2Reductions, carbonCredits, auditedReport);
-        //greenNFTData.saveGreenNFTMetadata(claimId, greenNFT, auditor, carbonCredits, auditedReport);
+        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, auditedReport);
+    }
 
-        emit GreenNFTCreated(projectId, claimId, greenNFT, auditor, carbonCredits, auditedReport);
+    function _saveGreenNFTEmissonData(
+        uint co2Emissions, 
+        uint co2Reductions, 
+        uint carbonCredits
+    ) public returns (bool) {
+        /// Save emission data of a GreenNFT created
+        greenNFTData.saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);        
     }
 
 
