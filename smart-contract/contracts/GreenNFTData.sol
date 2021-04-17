@@ -70,9 +70,13 @@ contract GreenNFTData is GreenNFTDataCommons {
      * @notice - Save metadata of a GreenNFT
      */
     function saveGreenNFTMetadata(
+        uint _projectId,
         uint _claimId,
         GreenNFT _greenNFT, 
+        address _projectOwner,
         address _auditor,
+        uint _co2Emissions,
+        uint _co2Reductions,
         uint _carbonCredits,
         string memory _auditedReport
     ) public returns (bool) {
@@ -80,9 +84,13 @@ contract GreenNFTData is GreenNFTDataCommons {
 
         /// Save metadata of a GreenNFT
         GreenNFTMetadata memory greenNFTMetadata = GreenNFTMetadata({
+            projectId: _projectId,
             claimId: _claimId,
             greenNFT: _greenNFT,
+            projectOwner: _projectOwner,
             auditor: _auditor,
+            co2Emissions: _co2Emissions,
+            co2Reductions: _co2Reductions,
             carbonCredits: _carbonCredits,
             buyableCarbonCredits: _carbonCredits,  /// [Note]: Initially, carbonCredits and buyableCarbonCredits are equal amount
             auditedReport: _auditedReport,

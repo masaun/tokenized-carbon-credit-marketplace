@@ -122,15 +122,16 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFT greenNFT = new GreenNFT(_projectOwner, _projectName, projectSymbol, tokenURI);
 
         /// Calculate carbon credits
-        uint _cc2Emissions = project.co2Emissions;
-        uint carbonCredits = _cc2Emissions.sub(co2Reductions);
+        uint _co2Emissions = project.co2Emissions;
+        uint carbonCredits = _co2Emissions.sub(co2Reductions);
 
         /// The CarbonCreditTokens that is equal amount to given-carbonCredits are transferred into the wallet of project owner
         /// [Note]: This contract should has some the CarbonCreditTokens balance. 
         carbonCreditToken.transfer(_projectOwner, carbonCredits);
 
         /// Save metadata of a GreenNFT created
-        greenNFTData.saveGreenNFTMetadata(claimId, greenNFT, auditor, carbonCredits, auditedReport);
+        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, _co2Emissions, co2Reductions, carbonCredits, auditedReport);
+        //greenNFTData.saveGreenNFTMetadata(claimId, greenNFT, auditor, carbonCredits, auditedReport);
 
         emit GreenNFTCreated(projectId, claimId, greenNFT, auditor, carbonCredits, auditedReport);
     }
