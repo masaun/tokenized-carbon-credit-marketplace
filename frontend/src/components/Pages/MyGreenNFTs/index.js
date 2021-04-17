@@ -20,10 +20,9 @@ export default class MyGreenNFTs extends Component {
           route: window.location.pathname.replace("/", ""),
 
           /////// NFT
-          allGreens: []
+          greenNFTMetadatas: []
         };
 
-        //this.handleGreenNFTAddress = this.handleGreenNFTAddress.bind(this);
 
         this.putOnSale = this.putOnSale.bind(this);
         this.cancelOnSale = this.cancelOnSale.bind(this);
@@ -91,14 +90,14 @@ export default class MyGreenNFTs extends Component {
     ///------------------------------------- 
     /// NFT（Always load listed NFT data）
     ///-------------------------------------
-    getAllGreens = async () => {
+    getGreenNFTMetadatas = async () => {
         const { greenNFTData } = this.state
 
-        const allGreens = await greenNFTData.methods.getAllGreens().call()
-        console.log('=== allGreens ===', allGreens)
+        const greenNFTMetadatas = await greenNFTData.methods.getGreenNFTMetadatas().call()
+        console.log('=== greenNFTMetadatas ===', greenNFTMetadatas)
 
-        this.setState({ allGreens: allGreens })
-        return allGreens
+        this.setState({ greenNFTMetadatas: greenNFTMetadatas })
+        return greenNFTMetadatas
     }
 
 
@@ -210,8 +209,8 @@ export default class MyGreenNFTs extends Component {
             }
 
             ///@dev - NFT（Always load listed NFT data
-            const allGreens = await this.getAllGreens();
-            this.setState({ allGreens: allGreens })
+            const greenNFTMetadatas = await this.getGreenNFTMetadatas()
+            this.setState({ greenNFTMetadatas: greenNFTMetadatas })
           }
         } catch (error) {
           // Catch any errors for any of the above operations.
@@ -235,18 +234,18 @@ export default class MyGreenNFTs extends Component {
     }
 
     render() {
-        const { web3, allGreens, currentAccount } = this.state;
+        const { web3, greenNFTMetadatas, currentAccount } = this.state;
 
         return (
             <div className={styles.contracts}>
               <h2>My Green NFTs</h2>
 
-              { allGreens.map((green, key) => {
+              { greenNFTMetadatas.map((greenNFTMetadata, key) => {
                 return (
                   <div key={key} className="">
                     <div className={styles.widgets}>
 
-                        { currentAccount == green.ownerAddress ? 
+                        { currentAccount == greenNFTMetadata.ownerAddress ? 
                             <Card width={"360px"} 
                                     maxWidth={"360px"} 
                                     mx={"auto"} 
@@ -259,23 +258,23 @@ export default class MyGreenNFTs extends Component {
                                 borderRadius={8}
                                 height="100%"
                                 maxWidth='100%'
-                                src={ `https://ipfs.io/ipfs/${green.ipfsHashOfGreenNFT}` }
+                                src={ `https://ipfs.io/ipfs/${greenNFTMetadata.ipfsHashOfGreenNFT}` }
                               />
 
                               <span style={{ padding: "20px" }}></span>
 
-                              <p>Photo Name: { green.greenNFTName }</p>
+                              <p>Photo Name: { greenNFTMetadata.greenNFTName }</p>
 
-                              <p>Price: { web3.utils.fromWei(`${green.greenNFTPrice}`, 'ether') } ETH</p>
+                              <p>Price: { web3.utils.fromWei(`${greenNFTMetadata.greenNFTPrice}`, 'ether') } ETH</p>
 
-                              <p>Owner: { green.ownerAddress }</p>
+                              <p>Owner: { greenNFTMetadata.ownerAddress }</p>
                               
                               <br />
 
-                              { green.status == "Cancelled" ? 
-                                  <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.putOnSale}> Put on sale </Button>
+                              { greenNFTMetadata.greenNFTStatus == 2 ? 
+                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.putOnSale}> Put on sale </Button>
                               :
-                                  <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
+                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
                               }
 
                               <span style={{ padding: "5px" }}></span>

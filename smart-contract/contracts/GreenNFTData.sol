@@ -48,7 +48,6 @@ contract GreenNFTData is GreenNFTDataCommons {
         projects.push(project);        
     }
 
-
     /**
      * @notice - Save a CO2 reduction claim
      */
