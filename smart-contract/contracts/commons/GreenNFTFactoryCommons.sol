@@ -28,9 +28,7 @@ contract GreenNFTFactoryCommons {
         uint projectId, 
         uint claimId,
         GreenNFT greenNFT,
-        address auditor, 
-        uint carbonCredits,
-        string auditedReport
+        uint carbonCredits
     );
 
 }

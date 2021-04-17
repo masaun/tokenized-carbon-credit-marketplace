@@ -100,7 +100,7 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         emit ClaimAudited(_projectId, _co2Reductions, _referenceDocument);
 
         /// Create a new GreenNFT
-        _createNewGreenNFT(_projectId, _co2Reductions, auditedReport);
+        _createNewGreenNFT(_projectId, claimId, _co2Reductions, auditedReport);
     }
 
     /**
@@ -108,7 +108,8 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
      */
     function _createNewGreenNFT(
         uint projectId, 
-        uint co2Reductions, 
+        uint claimId,
+        uint co2Reductions,
         string memory auditedReport
     ) internal returns (bool) {
         GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
@@ -123,8 +124,7 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         uint _co2Emissions = project.co2Emissions;
         uint carbonCredits = _co2Emissions.sub(co2Reductions);
 
-        /// [Note]: Commentout this event because of "stack too deep"
-        //emit GreenNFTCreated(_projectId, claimId, greenNFT, auditor, carbonCredits, auditedReport);
+        emit GreenNFTCreated(projectId, claimId, greenNFT, carbonCredits);
 
         /// The CarbonCreditTokens that is equal amount to given-carbonCredits are transferred into the wallet of project owner
         /// [Note]: This contract should has some the CarbonCreditTokens balance. 

@@ -63,7 +63,7 @@ export default class Audit extends Component {
     }
       
     onSubmit(event) {
-        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, GREEN_NFT_MARKETPLACE, valueClaimId } = this.state
+        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, greenNFTData, GREEN_NFT_MARKETPLACE, valueClaimId } = this.state
 
         event.preventDefault()
 
@@ -78,13 +78,34 @@ export default class Audit extends Component {
             this.setState({ ipfsHash: result[0].hash })
             console.log('=== ipfsHash ===', this.state.ipfsHash)
 
+            const auditor = accounts[0]
             const claimId = valueClaimId
             const auditedReport = this.state.ipfsHash
             this.setState({ valueClaimId: '', ipfsHash: '' })
 
-            greenNFTFactory.methods.auditClaim(claimId, auditedReport).send({ from: accounts[0] })
-            .once('receipt', (receipt) => {
-                console.log('=== receipt ===', receipt)
+            let claim = greenNFTData.methods.getClaim(claimId).call()
+            .then((claim) => { 
+                console.log('=== claim ===', claim)
+                const _projectId = claim.projectId
+                const _projectOwner = claim.projectOwner
+
+                let project = greenNFTData.methods.getProject(_projectId).call()
+                .then((project) => {
+                    greenNFTFactory.methods.auditClaim(claimId, auditedReport).send({ from: auditor })
+                    .once('receipt', (receipt) => {
+                        console.log('=== receipt ===', receipt)
+
+                        /// Retrieve GREEN_NFT address from event of "GreenNFTCreated"                        
+                        let GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT
+                        console.log('=== GREEN_NFT ===', GREEN_NFT)
+
+                        /// [Todo]: This is not executed. => I need to investigate the cause of that
+                        greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor, auditedReport).send({ from: auditor })
+                        .once('receipt', (receipt) => {
+                            console.log('=== receipt ===', receipt)
+                        })
+                    })
+                })
             })
         })
     }  
@@ -108,9 +129,11 @@ export default class Audit extends Component {
      
         let GreenNFTFactory = {};
         let GreenNFTTMarketplace = {};
+        let GreenNFTData = {};
         try {
           GreenNFTFactory = require("../../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
           GreenNFTTMarketplace = require("../../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTData = require("../../../../../smart-contract/build/contracts/GreenNFTData.json");
         } catch (e) {
           console.log(e);
         }
@@ -139,6 +162,7 @@ export default class Audit extends Component {
 
             let instanceGreenNFTFactory = null;
             let instanceGreenNFTTMarketplace = null;
+            let instanceGreenNFTData = null;
             let GREEN_NFT_MARKETPLACE;
             let deployedNetwork = null;
 
@@ -167,6 +191,17 @@ export default class Audit extends Component {
               }
             }
 
+            if (GreenNFTData.networks) {
+              deployedNetwork = GreenNFTData.networks[networkId.toString()];
+              if (deployedNetwork) {
+                instanceGreenNFTData = new web3.eth.Contract(
+                  GreenNFTData.abi,
+                  deployedNetwork && deployedNetwork.address,
+                );
+                console.log('=== instanceGreenNFTData ===', instanceGreenNFTData);
+              }
+            }
+
             if (instanceGreenNFTFactory) {
                 // Set web3, accounts, and contract to the state, and then proceed with an
                 // example of interacting with the contract's methods.
@@ -181,6 +216,7 @@ export default class Audit extends Component {
                     isMetaMask, 
                     greenNFTFactory: instanceGreenNFTFactory,
                     greenNFTTMarketplace: instanceGreenNFTTMarketplace, 
+                    greenNFTData: instanceGreenNFTData,
                     GREEN_NFT_MARKETPLACE: GREEN_NFT_MARKETPLACE }, () => {
                       this.refreshValues(instanceGreenNFTFactory);
                       setInterval(() => {
