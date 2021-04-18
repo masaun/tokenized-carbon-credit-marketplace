@@ -14,6 +14,8 @@ contract GreenNFTDataCommons {
 
     GreenNFTMetadata[] public greenNFTMetadatas;
 
+    GreenNFTEmissonData[] public greenNFTEmissonDatas;
+
 
     ///---------------------------
     /// Objects
@@ -35,13 +37,21 @@ contract GreenNFTDataCommons {
 
     /// @notice - Metadata of a GreenNFT of a project
     struct GreenNFTMetadata {  /// [Key]: index of array
+        uint projectId;
         uint claimId;              /// This is claimId for the Claim struct (Index is claimId - 1)
         GreenNFT greenNFT;
+        address projectOwner;
         address auditor;
-        uint carbonCredits;        /// CO2 emissions - CO2 reductions
-        uint buyableCarbonCredits;
         string auditedReport;      /// IPFS hash
         GreenNFTStatus greenNFTStatus;  /// "Audited" or "Sale" or "Not Sale"
+    }
+
+    /// @notice - Emission data of a GreenNFT of a project
+    struct GreenNFTEmissonData {  /// [Key]: index of array
+        uint co2Emissions;
+        uint co2Reductions;
+        uint carbonCredits;        /// CO2 emissions - CO2 reductions
+        uint buyableCarbonCredits;
     }
 
 

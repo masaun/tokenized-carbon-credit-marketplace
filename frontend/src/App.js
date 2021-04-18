@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
-import Apply from "./components/Pages/CreateGreenNFT/Apply.js";
-import Approve from "./components/Pages/CreateGreenNFT/Approve.js";
+import Register from "./components/Pages/CreateGreenNFT/Register.js";
+import Audit from "./components/Pages/CreateGreenNFT/Audit.js";
+import Claim from "./components/Pages/CreateGreenNFT/Claim.js";
 import MyGreenNFTs from "./components/Pages/MyGreenNFTs/index.js";
 import GreenNFTMarketplace from "./components/Pages/GreenNFTMarketplace/index.js";
 import ipfs from './components/ipfs/ipfsApi.js'
@@ -79,21 +80,29 @@ class App extends Component {
     );
   }
 
-  renderApply() {
+  renderRegister() {
     return (
       <div className={styles.wrapper}>
-        <Apply />
+        <Register />
       </div>
     );
   }
 
-  renderApprove() {
+  renderClaim() {
     return (
       <div className={styles.wrapper}>
-        <Approve />
+        <Claim />
       </div>
     );
-  }  
+  }
+
+  renderAudit() {
+    return (
+      <div className={styles.wrapper}>
+        <Audit />
+      </div>
+    );
+  }
 
   renderMyGreenNFTs() {
     return (
@@ -115,8 +124,9 @@ class App extends Component {
     return (
       <div className={styles.App}>
         <Header />
-          {this.state.route === 'apply' && this.renderApply()}
-          {this.state.route === 'approve' && this.renderApprove()}
+          {this.state.route === 'register' && this.renderRegister()}
+          {this.state.route === 'claim' && this.renderClaim()}
+          {this.state.route === 'audit' && this.renderAudit()}
           {this.state.route === 'my-green-nfts' && this.renderMyGreenNFTs()}
           {this.state.route === 'green-nft-marketplace' && this.renderGreenNFTMarketplace()}
         <Footer />

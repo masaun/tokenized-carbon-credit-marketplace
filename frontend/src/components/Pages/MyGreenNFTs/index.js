@@ -20,13 +20,12 @@ export default class MyGreenNFTs extends Component {
           route: window.location.pathname.replace("/", ""),
 
           /////// NFT
-          allGreens: []
+          greenNFTMetadatas: []
         };
 
-        //this.handleGreenNFTAddress = this.handleGreenNFTAddress.bind(this);
 
-        this.putOnSale = this.putOnSale.bind(this);
-        this.cancelOnSale = this.cancelOnSale.bind(this);
+        this.openToPutOnSale = this.openToPutOnSale.bind(this);
+        this.cancelToPutOnSale = this.cancelToPutOnSale.bind(this);
     }
 
     ///--------------------------
@@ -40,10 +39,10 @@ export default class MyGreenNFTs extends Component {
     ///---------------------------------------------------------
     /// Functions put a photo NFT on sale or cancel it on sale 
     ///---------------------------------------------------------
-    putOnSale = async (e) => {
+    openToPutOnSale = async (e) => {
         const { web3, accounts, greenNFTTMarketplace, GreenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
 
-        console.log('=== value of putOnSale ===', e.target.value);
+        console.log('=== value of openToPutOnSale ===', e.target.value);
         console.log('=== GREEN_NFT_MARKETPLACE ===', GREEN_NFT_MARKETPLACE);
 
         const GREEN_NFT = e.target.value;
@@ -52,22 +51,16 @@ export default class MyGreenNFTs extends Component {
         let GreenNFT = {};
         GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
         let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
-
-        /// Check owner of greenNFTId
-        const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-        const owner = await greenNFT.methods.ownerOf(greenNFTId).call();
-        console.log('=== owner of greenNFTId ===', owner);  /// [Expect]: Owner should be the greenNFTTMarketplace.sol (This also called as a proxy/escrow contract)
             
-        /// Put on sale (by a seller who is also called as owner)
-        const txReceipt1 = await greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] });
-        const txReceipt2 = await greenNFTTMarketplace.methods.openTrade(GREEN_NFT_DATA, GREEN_NFT, greenNFTId).send({ from: accounts[0] });
-        console.log('=== response of openTrade ===', txReceipt2);
+        /// Open to put on sale
+        const txReceipt = await greenNFTTMarketplace.methods.openToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] });
+        console.log('=== response of openToPutOnSale ===', txReceipt);
     }
 
-    cancelOnSale = async (e) => {
+    cancelToPutOnSale = async (e) => {
         const { web3, accounts, greenNFTTMarketplace, GreenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
 
-        console.log('=== value of cancelOnSale ===', e.target.value);
+        console.log('=== value of cancelToPutOnSale ===', e.target.value);
 
         const GREEN_NFT = e.target.value;
 
@@ -75,30 +68,24 @@ export default class MyGreenNFTs extends Component {
         let GreenNFT = {};
         GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
         let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
-
-        /// Check owner of greenNFTId
-        const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-        const owner = await greenNFT.methods.ownerOf(greenNFTId).call();
-        console.log('=== owner of greenNFTId ===', owner);  /// [Expect]: Owner should be the greenNFTTMarketplace.sol (This also called as a proxy/escrow contract)
             
-        /// Cancel on sale
-        //const txReceipt1 = await greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] });
-        const txReceipt2 = await greenNFTTMarketplace.methods.cancelTrade(GREEN_NFT_DATA, GREEN_NFT, greenNFTId).send({ from: accounts[0] });
-        console.log('=== response of cancelTrade ===', txReceipt2);
+        /// Cancel to put on sale
+        const txReceipt = await greenNFTTMarketplace.methods.cancelToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] });
+        console.log('=== response of cancelToPutOnSale ===', txReceipt);
     }
 
 
     ///------------------------------------- 
     /// NFT（Always load listed NFT data）
     ///-------------------------------------
-    getAllGreens = async () => {
+    getGreenNFTMetadatas = async () => {
         const { greenNFTData } = this.state
 
-        const allGreens = await greenNFTData.methods.getAllGreens().call()
-        console.log('=== allGreens ===', allGreens)
+        const greenNFTMetadatas = await greenNFTData.methods.getGreenNFTMetadatas().call()
+        console.log('=== greenNFTMetadatas ===', greenNFTMetadatas)
 
-        this.setState({ allGreens: allGreens })
-        return allGreens
+        this.setState({ greenNFTMetadatas: greenNFTMetadatas })
+        return greenNFTMetadatas
     }
 
 
@@ -210,8 +197,8 @@ export default class MyGreenNFTs extends Component {
             }
 
             ///@dev - NFT（Always load listed NFT data
-            const allGreens = await this.getAllGreens();
-            this.setState({ allGreens: allGreens })
+            const greenNFTMetadatas = await this.getGreenNFTMetadatas()
+            this.setState({ greenNFTMetadatas: greenNFTMetadatas })
           }
         } catch (error) {
           // Catch any errors for any of the above operations.
@@ -235,18 +222,18 @@ export default class MyGreenNFTs extends Component {
     }
 
     render() {
-        const { web3, allGreens, currentAccount } = this.state;
+        const { web3, greenNFTMetadatas, currentAccount } = this.state;
 
         return (
             <div className={styles.contracts}>
               <h2>My Green NFTs</h2>
 
-              { allGreens.map((green, key) => {
+              { greenNFTMetadatas.map((greenNFTMetadata, key) => {
                 return (
                   <div key={key} className="">
                     <div className={styles.widgets}>
 
-                        { currentAccount == green.ownerAddress ? 
+                        { currentAccount == greenNFTMetadata.projectOwner ? 
                             <Card width={"360px"} 
                                     maxWidth={"360px"} 
                                     mx={"auto"} 
@@ -254,28 +241,36 @@ export default class MyGreenNFTs extends Component {
                                     p={20} 
                                     borderColor={"#E8E8E8"}
                             >
-                              <Image
-                                alt="random unsplash image"
-                                borderRadius={8}
-                                height="100%"
-                                maxWidth='100%'
-                                src={ `https://ipfs.io/ipfs/${green.ipfsHashOfGreenNFT}` }
-                              />
-
                               <span style={{ padding: "20px" }}></span>
 
-                              <p>Photo Name: { green.greenNFTName }</p>
+                              <p>Project ID: { greenNFTMetadata.projectId }</p>
 
-                              <p>Price: { web3.utils.fromWei(`${green.greenNFTPrice}`, 'ether') } ETH</p>
+                              <p>Claim ID: { greenNFTMetadata.claimId }</p>
 
-                              <p>Owner: { green.ownerAddress }</p>
-                              
+                              <p>Green NFT: { greenNFTMetadata.greenNFT }</p>
+
+                              <p>Project Owner: { greenNFTMetadata.projectOwner }</p>
+
+                              <p>Auditor: { greenNFTMetadata.auditor }</p>
+
+                              <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
+
+                              {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
+
+                              {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
+
+                              {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
+
+                              {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
+
+                              {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
+
                               <br />
 
-                              { green.status == "Cancelled" ? 
-                                  <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.putOnSale}> Put on sale </Button>
+                              { greenNFTMetadata.greenNFTStatus == "0" || greenNFTMetadata.greenNFTStatus == "2" ? 
+                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.openToPutOnSale}> Put on sale </Button>
                               :
-                                  <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
+                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.cancelToPutOnSale}> Cancel on sale </Button>
                               }
 
                               <span style={{ padding: "5px" }}></span>

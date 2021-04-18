@@ -9,7 +9,7 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../../config/webpack';
 import styles from '../../../App.module.scss';
 
 
-export default class Approve extends Component {
+export default class Register extends Component {
     constructor(props) {    
         super(props);
 
@@ -20,10 +20,10 @@ export default class Approve extends Component {
           accounts: null,
           route: window.location.pathname.replace("/", ""),
 
-          /////// NFT concern
-          valueNFTName: '',
-          valueNFTSymbol: '',
-          valuegreenNFTPrice: '',
+          /////// Input values from form
+          valueProjectName: '',
+          valueCO2Emissions: '',
+          valueAuditorAddress: '',
 
           /////// Ipfs Upload
           buffer: null,
@@ -31,29 +31,30 @@ export default class Approve extends Component {
         };
 
         /////// Handle
-        this.handleNFTName = this.handleNFTName.bind(this);
-        this.handleNFTSymbol = this.handleNFTSymbol.bind(this);
-        this.handlegreenNFTPrice = this.handlegreenNFTPrice.bind(this);
+        this.handleProjectName = this.handleProjectName.bind(this);
+        this.handleCO2Emissions = this.handleCO2Emissions.bind(this);
+        this.handleAuditorAddress = this.handleAuditorAddress.bind(this);
 
         /////// Ipfs Upload
         this.captureFile = this.captureFile.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onSubmitRegisterProject = this.onSubmitRegisterProject.bind(this)
+        this.onSubmitRegisterAuditor = this.onSubmitRegisterAuditor.bind(this)
     }
 
 
     ///--------------------------
     /// Handler
     ///-------------------------- 
-    handleNFTName(event) {
-        this.setState({ valueNFTName: event.target.value });
+    handleProjectName(event) {
+        this.setState({ valueProjectName: event.target.value });
     }
 
-    handleNFTSymbol(event) {
-        this.setState({ valueNFTSymbol: event.target.value });
+    handleCO2Emissions(event) {
+        this.setState({ valueCO2Emissions: event.target.value });
     }
 
-    handlegreenNFTPrice(event) {
-        this.setState({ valuegreenNFTPrice: event.target.value });
+    handleAuditorAddress(event) {
+        this.setState({ valueAuditorAddress: event.target.value });
     }
 
     ///--------------------------
@@ -73,63 +74,31 @@ export default class Approve extends Component {
         }
     }
       
-    onSubmit(event) {
-        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, GREEN_NFT_MARKETPLACE, valueNFTName, valueNFTSymbol, valuegreenNFTPrice } = this.state;
+    async onSubmitRegisterProject(event) {
+        const { web3, accounts, greenNFTFactory, valueProjectName, valueCO2Emissions } = this.state
 
         event.preventDefault()
 
-        ipfs.files.add(this.state.buffer, (error, result) => {
-          // In case of fail to upload to IPFS
-          if (error) {
-            console.error(error)
-            return
-          }
-
-          // In case of successful to upload to IPFS
-          this.setState({ ipfsHash: result[0].hash });
-          console.log('=== ipfsHash ===', this.state.ipfsHash);
-
-          const nftName = valueNFTName;
-          const nftSymbol = "NFT-MARKETPLACE";  /// [Note]: All NFT's symbol are common symbol
-          //const nftSymbol = valueNFTSymbol;
-          const _greenNFTPrice = valuegreenNFTPrice;
-          console.log('=== nftName ===', nftName);
-          console.log('=== nftSymbol ===', nftSymbol);
-          console.log('=== _greenNFTPrice ===', _greenNFTPrice);
-          this.setState({ 
-            valueNFTName: '',
-            valueNFTSymbol: '',
-            valuegreenNFTPrice: ''
-          });
-
-          //let GREEN_NFT;  /// [Note]: This is a GreenNFT address created
-          const greenNFTPrice = web3.utils.toWei(_greenNFTPrice, 'ether');
-          const ipfsHashOfGreenNFT = this.state.ipfsHash;
-          greenNFTFactory.methods.createNewGreenNFT(nftName, nftSymbol, greenNFTPrice, ipfsHashOfGreenNFT).send({ from: accounts[0] })
-          .once('receipt', (receipt) => {
-            console.log('=== receipt ===', receipt);
-
-            const GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT;
-            console.log('=== GREEN_NFT ===', GREEN_NFT);
-
-            /// Get instance by using created GreenNFT address
-            let GreenNFT = {};
-            GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
-            let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
-            console.log('=== greenNFT ===', greenNFT);
-     
-            /// Check owner of greenNFTId==1
-            const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-            greenNFT.methods.ownerOf(greenNFTId).call().then(owner => console.log('=== owner of greenNFTId 1 ===', owner));
-            
-            /// [Note]: Promise (nested-structure) is needed for executing those methods below (Or, rewrite by async/await)
-            greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] }).once('receipt', (receipt) => {
-                /// Put on sale (by a seller who is also called as owner)
-                greenNFTTMarketplace.methods.openTradeWhenCreateNewGreenNFT(GREEN_NFT, greenNFTId, greenNFTPrice).send({ from: accounts[0] }).once('receipt', (receipt) => {})
-            })
-          })
+        const projectName = valueProjectName
+        const co2Emissions = valueCO2Emissions
+        this.setState({ 
+            valueProjectName: '',
+            valueCO2Emissions: ''
         })
-    }  
+
+        let txReceipt = await greenNFTFactory.methods.registerProject(projectName, co2Emissions).send({ from: accounts[0] })
+    }
+
+    async onSubmitRegisterAuditor(event) {
+        const { web3, accounts, greenNFTFactory, valueAuditorAddress } = this.state
+
+        event.preventDefault()
+
+        const auditorAddress = valueAuditorAddress
+        this.setState({ valueAuditorAddress: '' })
+
+        let txReceipt = await greenNFTFactory.methods.registerAuditor(auditorAddress).send({ from: accounts[0] })
+    }
 
      
     //////////////////////////////////// 
@@ -267,18 +236,67 @@ export default class Approve extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Approve a request of creating new Green NFT</h2>
+                            <h2>Register a project</h2>
 
-                            <Form onSubmit={this.onSubmit}>
-                                <Field label="Verification Report (Audited-Report)">
-                                    <input 
-                                        type='file' 
-                                        onChange={this.captureFile} 
+                            <Form onSubmit={this.onSubmitRegisterProject}>
+                                <Field label="Project Name">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) The National Planting Organization"
                                         required={true}
+                                        value={this.state.valueProjectName} 
+                                        onChange={this.handleProjectName} 
+                                    />
+                                </Field> 
+
+                                <Field label="CO2 Emissions">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) 50"
+                                        required={true}
+                                        value={this.state.valueCO2Emissions} 
+                                        onChange={this.handleCO2Emissions}                                        
                                     />
                                 </Field>
 
-                                <Button size={'medium'} width={1} type='submit'>Approve</Button>
+                                <Button size={'medium'} width={1} type='submit'>Register a project</Button>
+                            </Form>
+                        </Card>
+                    </Grid>
+
+                    <Grid item xs={1}>
+                    </Grid>
+
+                    <Grid item xs={1}>
+                    </Grid>
+                </Grid>
+
+                <Grid container style={{ marginTop: 20 }}>
+                    <Grid item xs={10}>
+                        <Card width={"420px"} 
+                              maxWidth={"420px"} 
+                              mx={"auto"} 
+                              my={5} 
+                              p={20} 
+                              borderColor={"#E8E8E8"}
+                        >
+                            <h2>Register a auditor</h2>
+
+                            <Form onSubmit={this.onSubmitRegisterAuditor}>
+                                <Field label="Auditor address">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) 0x0264518b20e1042264F0B55687cEAA450EEfc312"
+                                        required={true}
+                                        value={this.state.valueAuditorAddress} 
+                                        onChange={this.handleAuditorAddress} 
+                                    />
+                                </Field> 
+
+                                <Button size={'medium'} width={1} type='submit'>Register a auditor</Button>
                             </Form>
                         </Card>
                     </Grid>

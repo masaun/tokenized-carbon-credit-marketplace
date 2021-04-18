@@ -9,31 +9,27 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../../config/webpack';
 import styles from '../../../App.module.scss';
 
 
-export default class Apply extends Component {
+export default class Audit extends Component {
     constructor(props) {    
         super(props);
 
         this.state = {
-          /////// Default state
-          storageValue: 0,
-          web3: null,
-          accounts: null,
-          route: window.location.pathname.replace("/", ""),
+            /////// Default state
+            storageValue: 0,
+            web3: null,
+            accounts: null,
+            route: window.location.pathname.replace("/", ""),
 
-          /////// NFT concern
-          valueNFTName: '',
-          valueNFTSymbol: '',
-          valuegreenNFTPrice: '',
+            /////// Input values from form
+            valueClaimId: '',
 
-          /////// Ipfs Upload
-          buffer: null,
-          ipfsHash: ''
+            /////// Ipfs Upload
+            buffer: null,
+            ipfsHash: ''
         };
 
         /////// Handle
-        this.handleNFTName = this.handleNFTName.bind(this);
-        this.handleNFTSymbol = this.handleNFTSymbol.bind(this);
-        this.handlegreenNFTPrice = this.handlegreenNFTPrice.bind(this);
+        this.handleClaimId = this.handleClaimId.bind(this);
 
         /////// Ipfs Upload
         this.captureFile = this.captureFile.bind(this);
@@ -44,17 +40,10 @@ export default class Apply extends Component {
     ///--------------------------
     /// Handler
     ///-------------------------- 
-    handleNFTName(event) {
-        this.setState({ valueNFTName: event.target.value });
+    handleClaimId(event) {
+        this.setState({ valueClaimId: event.target.value });
     }
 
-    handleNFTSymbol(event) {
-        this.setState({ valueNFTSymbol: event.target.value });
-    }
-
-    handlegreenNFTPrice(event) {
-        this.setState({ valuegreenNFTPrice: event.target.value });
-    }
 
     ///--------------------------
     /// Functions of ipfsUpload 
@@ -74,60 +63,55 @@ export default class Apply extends Component {
     }
       
     onSubmit(event) {
-        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, GREEN_NFT_MARKETPLACE, valueNFTName, valueNFTSymbol, valuegreenNFTPrice } = this.state;
+        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, greenNFTData, GREEN_NFT_MARKETPLACE, valueClaimId } = this.state
 
         event.preventDefault()
 
         ipfs.files.add(this.state.buffer, (error, result) => {
-          // In case of fail to upload to IPFS
-          if (error) {
-            console.error(error)
-            return
-          }
+            // In case of fail to upload to IPFS
+            if (error) {
+                console.error(error)
+                return
+            }
 
-          // In case of successful to upload to IPFS
-          this.setState({ ipfsHash: result[0].hash });
-          console.log('=== ipfsHash ===', this.state.ipfsHash);
+            // In case of successful to upload to IPFS
+            this.setState({ ipfsHash: result[0].hash })
+            console.log('=== ipfsHash ===', this.state.ipfsHash)
 
-          const nftName = valueNFTName;
-          const nftSymbol = "NFT-MARKETPLACE";  /// [Note]: All NFT's symbol are common symbol
-          //const nftSymbol = valueNFTSymbol;
-          const _greenNFTPrice = valuegreenNFTPrice;
-          console.log('=== nftName ===', nftName);
-          console.log('=== nftSymbol ===', nftSymbol);
-          console.log('=== _greenNFTPrice ===', _greenNFTPrice);
-          this.setState({ 
-            valueNFTName: '',
-            valueNFTSymbol: '',
-            valuegreenNFTPrice: ''
-          });
+            const auditor = accounts[0]
+            const claimId = valueClaimId
+            const auditedReport = this.state.ipfsHash
+            this.setState({ valueClaimId: '', ipfsHash: '' })
 
-          //let GREEN_NFT;  /// [Note]: This is a GreenNFT address created
-          const greenNFTPrice = web3.utils.toWei(_greenNFTPrice, 'ether');
-          const ipfsHashOfGreenNFT = this.state.ipfsHash;
-          greenNFTFactory.methods.createNewGreenNFT(nftName, nftSymbol, greenNFTPrice, ipfsHashOfGreenNFT).send({ from: accounts[0] })
-          .once('receipt', (receipt) => {
-            console.log('=== receipt ===', receipt);
+            let claim = greenNFTData.methods.getClaim(claimId).call()
+            .then((claim) => { 
+                console.log('=== claim ===', claim)
+                const _projectId = claim.projectId
+                const _co2Reductions = claim.co2Reductions 
 
-            const GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT;
-            console.log('=== GREEN_NFT ===', GREEN_NFT);
+                let project = greenNFTData.methods.getProject(_projectId).call()
+                .then((project) => {
+                    const _projectOwner = project.projectOwner
+                    const _co2Emissions = project.co2Emissions
+                    
+                    const carbonCredits = Number(_co2Emissions) - Number(_co2Reductions)
+                    const _carbonCredits = String(carbonCredits)            
 
-            /// Get instance by using created GreenNFT address
-            let GreenNFT = {};
-            GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
-            let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
-            console.log('=== greenNFT ===', greenNFT);
-     
-            /// Check owner of greenNFTId==1
-            const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-            greenNFT.methods.ownerOf(greenNFTId).call().then(owner => console.log('=== owner of greenNFTId 1 ===', owner));
-            
-            /// [Note]: Promise (nested-structure) is needed for executing those methods below (Or, rewrite by async/await)
-            greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] }).once('receipt', (receipt) => {
-                /// Put on sale (by a seller who is also called as owner)
-                greenNFTTMarketplace.methods.openTradeWhenCreateNewGreenNFT(GREEN_NFT, greenNFTId, greenNFTPrice).send({ from: accounts[0] }).once('receipt', (receipt) => {})
+                    greenNFTFactory.methods.auditClaim(claimId, auditedReport).send({ from: auditor })
+                    .then((receipt) => {
+                        console.log('=== receipt ===', receipt)
+
+                        /// Retrieve GREEN_NFT address from event of "GreenNFTCreated"                        
+                        let GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT
+                        console.log('=== GREEN_NFT ===', GREEN_NFT)
+
+                        greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor,  _co2Emissions, _co2Reductions, _carbonCredits, auditedReport).send({ from: auditor })
+                        .then((receipt) => {
+                            console.log('=== receipt ===', receipt)
+                        })
+                    })
+                })
             })
-          })
         })
     }  
 
@@ -150,9 +134,11 @@ export default class Apply extends Component {
      
         let GreenNFTFactory = {};
         let GreenNFTTMarketplace = {};
+        let GreenNFTData = {};
         try {
           GreenNFTFactory = require("../../../../../smart-contract/build/contracts/GreenNFTFactory.json"); // Load ABI of contract of greenNFTFactory
           GreenNFTTMarketplace = require("../../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
+          GreenNFTData = require("../../../../../smart-contract/build/contracts/GreenNFTData.json");
         } catch (e) {
           console.log(e);
         }
@@ -181,6 +167,7 @@ export default class Apply extends Component {
 
             let instanceGreenNFTFactory = null;
             let instanceGreenNFTTMarketplace = null;
+            let instanceGreenNFTData = null;
             let GREEN_NFT_MARKETPLACE;
             let deployedNetwork = null;
 
@@ -209,6 +196,17 @@ export default class Apply extends Component {
               }
             }
 
+            if (GreenNFTData.networks) {
+              deployedNetwork = GreenNFTData.networks[networkId.toString()];
+              if (deployedNetwork) {
+                instanceGreenNFTData = new web3.eth.Contract(
+                  GreenNFTData.abi,
+                  deployedNetwork && deployedNetwork.address,
+                );
+                console.log('=== instanceGreenNFTData ===', instanceGreenNFTData);
+              }
+            }
+
             if (instanceGreenNFTFactory) {
                 // Set web3, accounts, and contract to the state, and then proceed with an
                 // example of interacting with the contract's methods.
@@ -223,6 +221,7 @@ export default class Apply extends Component {
                     isMetaMask, 
                     greenNFTFactory: instanceGreenNFTFactory,
                     greenNFTTMarketplace: instanceGreenNFTTMarketplace, 
+                    greenNFTData: instanceGreenNFTData,
                     GREEN_NFT_MARKETPLACE: GREEN_NFT_MARKETPLACE }, () => {
                       this.refreshValues(instanceGreenNFTFactory);
                       setInterval(() => {
@@ -267,45 +266,21 @@ export default class Apply extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h2>Apply a new Green NFT</h2>
+                            <h2>Audit a CO2 reduction claim</h2>
 
                             <Form onSubmit={this.onSubmit}>
-                                <Field label="Green NFT Name">
+                                <Field label="Claim ID">
                                     <Input
                                         type="text"
                                         width={1}
-                                        placeholder="e.g) Art NFT Token"
+                                        placeholder="e.g) 1"
                                         required={true}
-                                        value={this.state.valueNFTName} 
-                                        onChange={this.handleNFTName} 
-                                    />
-                                </Field> 
-
-                                {/*
-                                <Field label="Photo NFT Symbol">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) ARNT"
-                                        required={true}
-                                        value={this.state.valueNFTSymbol} 
-                                        onChange={this.handleNFTSymbol}                                        
-                                    />
-                                </Field>
-                                */}
-
-                                <Field label="Green NFT's Price (unit: ETH)">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) 10"
-                                        required={true}
-                                        value={this.state.valuegreenNFTPrice} 
-                                        onChange={this.handlegreenNFTPrice}                                        
+                                        value={this.state.valueClaimId} 
+                                        onChange={this.handleClaimId}                                        
                                     />
                                 </Field>
 
-                                <Field label="Reference document for approval">
+                                <Field label="Audited-Report (Verification Report)">
                                     <input 
                                         type='file' 
                                         onChange={this.captureFile} 
@@ -313,7 +288,7 @@ export default class Apply extends Component {
                                     />
                                 </Field>
 
-                                <Button size={'medium'} width={1} type='submit'>Apply</Button>
+                                <Button size={'medium'} width={1} type='submit'>Audit</Button>
                             </Form>
                         </Card>
                     </Grid>

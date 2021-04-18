@@ -48,7 +48,6 @@ contract GreenNFTData is GreenNFTDataCommons {
         projects.push(project);        
     }
 
-
     /**
      * @notice - Save a CO2 reduction claim
      */
@@ -70,21 +69,22 @@ contract GreenNFTData is GreenNFTDataCommons {
      * @notice - Save metadata of a GreenNFT
      */
     function saveGreenNFTMetadata(
+        uint _projectId,
         uint _claimId,
         GreenNFT _greenNFT, 
+        address _projectOwner,
         address _auditor,
-        uint _carbonCredits,
         string memory _auditedReport
     ) public returns (bool) {
         currentGreenNFTMetadataId++;
 
         /// Save metadata of a GreenNFT
         GreenNFTMetadata memory greenNFTMetadata = GreenNFTMetadata({
+            projectId: _projectId,
             claimId: _claimId,
             greenNFT: _greenNFT,
+            projectOwner: _projectOwner,
             auditor: _auditor,
-            carbonCredits: _carbonCredits,
-            buyableCarbonCredits: _carbonCredits,  /// [Note]: Initially, carbonCredits and buyableCarbonCredits are equal amount
             auditedReport: _auditedReport,
             greenNFTStatus: GreenNFTStatus.Audited
         });
@@ -93,6 +93,25 @@ contract GreenNFTData is GreenNFTDataCommons {
         /// Update GreenNFTs addresses
         greenNFTAddresses.push(address(_greenNFT));
     }
+
+    /**
+     * @notice - Save emission data of a GreenNFT
+     */
+    function saveGreenNFTEmissonData(
+        uint _co2Emissions,
+        uint _co2Reductions,
+        uint _carbonCredits
+    ) public returns (bool) {
+        /// Save emission data of a GreenNFT
+        GreenNFTEmissonData memory greenNFTEmissonData = GreenNFTEmissonData({
+            co2Emissions: _co2Emissions,
+            co2Reductions: _co2Reductions,
+            carbonCredits: _carbonCredits,
+            buyableCarbonCredits: _carbonCredits  /// [Note]: Initially, carbonCredits and buyableCarbonCredits are equal amount
+        });
+        greenNFTEmissonDatas.push(greenNFTEmissonData);
+    }
+
 
     /**
      * @notice - Update status ("Open" or "Cancelled")
@@ -156,6 +175,39 @@ contract GreenNFTData is GreenNFTDataCommons {
     function getGreenNFTMetadatas() public view returns (GreenNFTMetadata[] memory _greenNFTMetadatas) {
         return greenNFTMetadatas;
     }
+
+    function getGreenNFTEmissonData(uint greenNFTMetadataId) public view returns (GreenNFTEmissonData memory _greenNFTEmissonData) {
+        /// [Note]: The GreenNFTEmissonData and the GreenNFTMetadata has same greenNFTMetadataId
+        uint index = greenNFTMetadataId.sub(1);
+        GreenNFTEmissonData memory greenNFTEmissonData = greenNFTEmissonDatas[index];
+        return greenNFTEmissonData;
+    }
+
+    function getGreenNFTEmissonDataIndex(GreenNFT greenNFT) public view returns (uint _greenNFTEmissonDataIndex) {
+        address GREEN_NFT = address(greenNFT);
+
+        /// Identify member's index
+        uint greenNFTEmissonDataIndex;
+        for (uint i=0; i < greenNFTAddresses.length; i++) {
+            if (greenNFTAddresses[i] == GREEN_NFT) {
+                greenNFTEmissonDataIndex = i;
+            }
+        }
+
+        return greenNFTEmissonDataIndex;   
+    }
+
+    function getGreenNFTEmissonDataByNFTAddress(GreenNFT greenNFT) public view returns (GreenNFTEmissonData memory _greenNFTEmissonData) {
+        address GREEN_NFT = address(greenNFT);
+
+        /// Identify member's index
+        uint index = getGreenNFTEmissonDataIndex(greenNFT);
+
+        GreenNFTEmissonData memory greenNFTEmissonData = greenNFTEmissonDatas[index];
+        return greenNFTEmissonData;
+    }
+
+
 
     function getAuditors() public view returns (address[] memory _auditors) {
         return auditors;

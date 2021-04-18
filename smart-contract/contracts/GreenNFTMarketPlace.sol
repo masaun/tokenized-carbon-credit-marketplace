@@ -56,8 +56,10 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
      * @notice - Get buyable carbon credits
      */
     function getBuyableCarbonCredits(GreenNFT _greenNFT) public view returns (uint _buyableCarbonCredits) {
-        GreenNFTData.GreenNFTMetadata memory greenNFTMetadata = greenNFTData.getGreenNFTMetadataByNFTAddress(_greenNFT);
-        return greenNFTMetadata.buyableCarbonCredits;
+        GreenNFTData.GreenNFTEmissonData memory greenNFTEmissonData = greenNFTData.getGreenNFTEmissonDataByNFTAddress(_greenNFT);
+        //GreenNFTData.GreenNFTMetadata memory greenNFTMetadata = greenNFTData.getGreenNFTMetadataByNFTAddress(_greenNFT);
+        return greenNFTEmissonData.buyableCarbonCredits;
+        //return greenNFTMetadata.buyableCarbonCredits;
     }
 
     /**
