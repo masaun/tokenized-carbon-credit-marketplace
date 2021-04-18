@@ -245,7 +245,7 @@ export default class MyGreenNFTs extends Component {
                   <div key={key} className="">
                     <div className={styles.widgets}>
 
-                        { currentAccount == greenNFTMetadata.ownerAddress ? 
+                        { currentAccount == greenNFTMetadata.projectOwner ? 
                             <Card width={"360px"} 
                                     maxWidth={"360px"} 
                                     mx={"auto"} 
@@ -253,25 +253,33 @@ export default class MyGreenNFTs extends Component {
                                     p={20} 
                                     borderColor={"#E8E8E8"}
                             >
-                              <Image
-                                alt="random unsplash image"
-                                borderRadius={8}
-                                height="100%"
-                                maxWidth='100%'
-                                src={ `https://ipfs.io/ipfs/${greenNFTMetadata.ipfsHashOfGreenNFT}` }
-                              />
-
                               <span style={{ padding: "20px" }}></span>
 
-                              <p>Photo Name: { greenNFTMetadata.greenNFTName }</p>
+                              <p>Project ID: { greenNFTMetadata.projectId }</p>
 
-                              <p>Price: { web3.utils.fromWei(`${greenNFTMetadata.greenNFTPrice}`, 'ether') } ETH</p>
+                              <p>Claim ID: { greenNFTMetadata.claimId }</p>
 
-                              <p>Owner: { greenNFTMetadata.ownerAddress }</p>
-                              
+                              <p>Green NFT: { greenNFTMetadata.greenNFT }</p>
+
+                              <p>Project Owner: { greenNFTMetadata.projectOwner }</p>
+
+                              <p>Auditor: { greenNFTMetadata.auditor }</p>
+
+                              <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
+
+                              {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
+
+                              {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
+
+                              {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
+
+                              {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
+
+                              {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
+
                               <br />
 
-                              { greenNFTMetadata.greenNFTStatus == 2 ? 
+                              { greenNFTMetadata.greenNFTStatus == "0" || greenNFTMetadata.greenNFTStatus == "2" ? 
                                   <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.putOnSale}> Put on sale </Button>
                               :
                                   <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
