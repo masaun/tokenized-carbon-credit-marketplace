@@ -87,21 +87,26 @@ export default class Audit extends Component {
             .then((claim) => { 
                 console.log('=== claim ===', claim)
                 const _projectId = claim.projectId
-                const _projectOwner = claim.projectOwner
+                const _co2Reductions = claim.co2Reductions 
 
                 let project = greenNFTData.methods.getProject(_projectId).call()
                 .then((project) => {
+                    const _projectOwner = project.projectOwner
+                    const _co2Emissions = project.co2Emissions
+                    
+                    const carbonCredits = Number(_co2Emissions) - Number(_co2Reductions)
+                    const _carbonCredits = String(carbonCredits)            
+
                     greenNFTFactory.methods.auditClaim(claimId, auditedReport).send({ from: auditor })
-                    .once('receipt', (receipt) => {
+                    .then((receipt) => {
                         console.log('=== receipt ===', receipt)
 
                         /// Retrieve GREEN_NFT address from event of "GreenNFTCreated"                        
                         let GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT
                         console.log('=== GREEN_NFT ===', GREEN_NFT)
 
-                        /// [Todo]: This is not executed. => I need to investigate the cause of that
-                        greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor, auditedReport).send({ from: auditor })
-                        .once('receipt', (receipt) => {
+                        greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor,  _co2Emissions, _co2Reductions, _carbonCredits, auditedReport).send({ from: auditor })
+                        .then((receipt) => {
                             console.log('=== receipt ===', receipt)
                         })
                     })
