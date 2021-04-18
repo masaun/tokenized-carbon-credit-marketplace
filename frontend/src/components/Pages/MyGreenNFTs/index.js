@@ -24,8 +24,8 @@ export default class MyGreenNFTs extends Component {
         };
 
 
-        this.putOnSale = this.putOnSale.bind(this);
-        this.cancelOnSale = this.cancelOnSale.bind(this);
+        this.openToPutOnSale = this.openToPutOnSale.bind(this);
+        this.cancelToPutOnSale = this.cancelToPutOnSale.bind(this);
     }
 
     ///--------------------------
@@ -39,10 +39,10 @@ export default class MyGreenNFTs extends Component {
     ///---------------------------------------------------------
     /// Functions put a photo NFT on sale or cancel it on sale 
     ///---------------------------------------------------------
-    putOnSale = async (e) => {
+    openToPutOnSale = async (e) => {
         const { web3, accounts, greenNFTTMarketplace, GreenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
 
-        console.log('=== value of putOnSale ===', e.target.value);
+        console.log('=== value of openToPutOnSale ===', e.target.value);
         console.log('=== GREEN_NFT_MARKETPLACE ===', GREEN_NFT_MARKETPLACE);
 
         const GREEN_NFT = e.target.value;
@@ -51,22 +51,16 @@ export default class MyGreenNFTs extends Component {
         let GreenNFT = {};
         GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
         let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
-
-        /// Check owner of greenNFTId
-        const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-        const owner = await greenNFT.methods.ownerOf(greenNFTId).call();
-        console.log('=== owner of greenNFTId ===', owner);  /// [Expect]: Owner should be the greenNFTTMarketplace.sol (This also called as a proxy/escrow contract)
             
-        /// Put on sale (by a seller who is also called as owner)
-        const txReceipt1 = await greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] });
-        const txReceipt2 = await greenNFTTMarketplace.methods.openTrade(GREEN_NFT_DATA, GREEN_NFT, greenNFTId).send({ from: accounts[0] });
-        console.log('=== response of openTrade ===', txReceipt2);
+        /// Open to put on sale
+        const txReceipt = await greenNFTTMarketplace.methods.openToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] });
+        console.log('=== response of openToPutOnSale ===', txReceipt);
     }
 
-    cancelOnSale = async (e) => {
+    cancelToPutOnSale = async (e) => {
         const { web3, accounts, greenNFTTMarketplace, GreenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
 
-        console.log('=== value of cancelOnSale ===', e.target.value);
+        console.log('=== value of cancelToPutOnSale ===', e.target.value);
 
         const GREEN_NFT = e.target.value;
 
@@ -74,16 +68,10 @@ export default class MyGreenNFTs extends Component {
         let GreenNFT = {};
         GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
         let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
-
-        /// Check owner of greenNFTId
-        const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-        const owner = await greenNFT.methods.ownerOf(greenNFTId).call();
-        console.log('=== owner of greenNFTId ===', owner);  /// [Expect]: Owner should be the greenNFTTMarketplace.sol (This also called as a proxy/escrow contract)
             
-        /// Cancel on sale
-        //const txReceipt1 = await greenNFT.methods.approve(GREEN_NFT_MARKETPLACE, greenNFTId).send({ from: accounts[0] });
-        const txReceipt2 = await greenNFTTMarketplace.methods.cancelTrade(GREEN_NFT_DATA, GREEN_NFT, greenNFTId).send({ from: accounts[0] });
-        console.log('=== response of cancelTrade ===', txReceipt2);
+        /// Cancel to put on sale
+        const txReceipt = await greenNFTTMarketplace.methods.cancelToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] });
+        console.log('=== response of cancelToPutOnSale ===', txReceipt);
     }
 
 
@@ -280,9 +268,9 @@ export default class MyGreenNFTs extends Component {
                               <br />
 
                               { greenNFTMetadata.greenNFTStatus == "0" || greenNFTMetadata.greenNFTStatus == "2" ? 
-                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.putOnSale}> Put on sale </Button>
+                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.openToPutOnSale}> Put on sale </Button>
                               :
-                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.cancelOnSale}> Cancel on sale </Button>
+                                  <Button size={'medium'} width={1} value={ greenNFTMetadata.greenNFT } onClick={this.cancelToPutOnSale}> Cancel on sale </Button>
                               }
 
                               <span style={{ padding: "5px" }}></span>
