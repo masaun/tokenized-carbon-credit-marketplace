@@ -11,7 +11,7 @@ import { GreenNFTData } from "./GreenNFTData.sol";
 contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
     using SafeMath for uint256;
 
-    uint unitPriceOfCarbonCredits = 1 * 1e18;  /// 1 ETH per 1 carbon crefits
+    uint unitPriceOfCarbonCredits = 1;  /// 1 ETH per 1 carbon crefits
 
     address public GREEN_NFT_MARKETPLACE;
 
@@ -66,7 +66,7 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
      * @notice - Calculation of buy amount (Unit price * order of carbon credits)
      */
     function getPurchaseAmountOfCarbonCredits(GreenNFT _greenNFT, uint orderOfCarbonCredits) public view returns (uint _purchaseAmountOfCarbonCredits) {
-        uint purchaseAmountOfCarbonCredits = unitPriceOfCarbonCredits * orderOfCarbonCredits;
+        uint purchaseAmountOfCarbonCredits = unitPriceOfCarbonCredits * orderOfCarbonCredits;  /// 1 ETH * order of carbon credits
         return purchaseAmountOfCarbonCredits;
     }
     
