@@ -20,63 +20,63 @@ export default class GreenNFTMarketplace extends Component {
           route: window.location.pathname.replace("/", ""),
 
           /////// NFT
-          allGreens: []
-        };
+          greenNFTMetadatas: []
+        }
 
-        //this.handleGreenNFTAddress = this.handleGreenNFTAddress.bind(this);
-
-        this.buyGreenNFT = this.buyGreenNFT.bind(this);
+        this.handleGreenNFT = this.handleGreenNFT.bind(this)
+        this.handleOrderOfCarbonCredits = this.handleOrderOfCarbonCredits.bind(this)
+        this.buyCarbonCredits = this.buyCarbonCredits.bind(this)
     }
 
     ///--------------------------
     /// Handler
     ///-------------------------- 
-    // handleGreenNFTAddress(event) {
-    //     this.setState({ valueGreenNFTAddress: event.target.value });
-    // }
+    handleGreenNFT(event) {
+        this.setState({ valueGreenNFT: event.target.value });
+    }
+
+    handleOrderOfCarbonCredits(event) {
+        this.setState({ valueOrderOfCarbonCredits: event.target.value });
+    }
 
 
     ///---------------------------------
     /// Functions of buying a photo NFT 
     ///---------------------------------
-    buyGreenNFT = async (e) => {
-        const { web3, accounts, greenNFTTMarketplace, greenNFTData } = this.state;
-        //const { web3, accounts, greenNFTTMarketplace, GreenNFTData, valueGreenNFTAddress } = this.state;
+    buyCarbonCredits = async (e) => {
+        const { web3, accounts, greenNFTTMarketplace, greenNFTData, valueGreenNFT, valueOrderOfCarbonCredits } = this.state;
 
-        console.log('=== value of buyGreenNFT ===', e.target.value);
+        console.log('=== valueGreenNFT ===', valueGreenNFT)
+        console.log('=== valueOrderOfCarbonCredits ===', valueOrderOfCarbonCredits)
+        //console.log('=== value of buyCarbonCredits ===', e.target.value)
 
-        const GREEN_NFT = e.target.value;
-        //const GREEN_NFT = valueGreenNFTAddress;
-        //this.setState({ valueGreenNFTAddress: "" });
+        const GREEN_NFT = valueGreenNFT
+        //const GREEN_NFT = e.target.value
+        const orderOfCarbonCredits = web3.utils.toWei(valueOrderOfCarbonCredits, 'ether')
+        const ethAmountToBuyCarbonCredits = await greenNFTTMarketplace.methods.getPurchaseAmountOfCarbonCredits(GREEN_NFT, orderOfCarbonCredits).call()
+        this.setState({ valueOrderOfCarbonCredits: "" })
 
         /// Get instance by using created GreenNFT address
         let GreenNFT = {};
-        GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
-        let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
+        GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json")
+        let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT)
 
-        /// Check owner of greenNFTId
-        const greenNFTId = 1;  /// [Note]: greenNFTId is always 1. Because each GreenNFT is unique.
-        const owner = await greenNFT.methods.ownerOf(greenNFTId).call();
-        console.log('=== owner of greenNFTId ===', owner);  /// [Expect]: Owner should be the greenNFTTMarketplace.sol (This also called as a proxy/escrow contract)
-
-        const green = await greenNFTData.methods.getGreenByNFTAddress(GREEN_NFT).call();
-        const buyAmount = await green.greenNFTPrice;
-        const txReceipt1 = await greenNFTTMarketplace.methods.buyGreenNFT(GREEN_NFT).send({ from: accounts[0], value: buyAmount });
-        console.log('=== response of buyGreenNFT ===', txReceipt1);
+        const txReceipt = await greenNFTTMarketplace.methods.buyCarbonCredits(GREEN_NFT, orderOfCarbonCredits).send({ from: accounts[0], value: ethAmountToBuyCarbonCredits })
+        console.log('=== response of buyCarbonCredits ===', txReceipt)
     }
 
 
     ///------------------------------------- 
     /// NFT（Always load listed NFT data）
     ///-------------------------------------
-    getAllGreens = async () => {
+    getGreenNFTMetadatas = async () => {
         const { greenNFTData } = this.state
 
-        const allGreens = await greenNFTData.methods.getAllGreens().call()
-        console.log('=== allGreens ===', allGreens)
+        const greenNFTMetadatas = await greenNFTData.methods.getGreenNFTMetadatas().call()
+        console.log('=== greenNFTMetadatas ===', greenNFTMetadatas)
 
-        this.setState({ allGreens: allGreens })
-        return allGreens
+        this.setState({ greenNFTMetadatas: greenNFTMetadatas })
+        return greenNFTMetadatas
     }
 
 
@@ -182,8 +182,8 @@ export default class GreenNFTMarketplace extends Component {
             }
 
             ///@dev - NFT（Always load listed NFT data
-            const allGreens = await this.getAllGreens();
-            this.setState({ allGreens: allGreens })
+            const greenNFTMetadatas = await this.getGreenNFTMetadatas()
+            this.setState({ greenNFTMetadatas: greenNFTMetadatas })
           }
         } catch (error) {
           // Catch any errors for any of the above operations.
@@ -207,69 +207,90 @@ export default class GreenNFTMarketplace extends Component {
     }
 
     render() {
-        const { web3, allGreens, currentAccount } = this.state;
+        const { web3, greenNFTMetadatas, currentAccount } = this.state;
 
         return (
             <div className={styles.contracts}>
-              <h2>NFT based Photo MarketPlace</h2>
+              <h2>Green NFT (Carbon Credits) MarketPlace</h2>
 
-              { allGreens.map((green, key) => {
+              { greenNFTMetadatas.map((greenNFTMetadata, key) => {
                 return (
                   <div key={key} className="">
                     <div className={styles.widgets}>
 
-                        { currentAccount != green.ownerAddress && green.status == "Open" ?
-                            <Card width={"360px"} 
-                                      maxWidth={"360px"} 
-                                      mx={"auto"} 
-                                      my={5} 
-                                      p={20} 
-                                      borderColor={"#E8E8E8"}
-                            >
-                                <Image
-                                  alt="random unsplash image"
-                                  borderRadius={8}
-                                  height="100%"
-                                  maxWidth='100%'
-                                  src={ `https://ipfs.io/ipfs/${green.ipfsHashOfGreenNFT}` }
-                                />
+                        <Card width={"360px"} 
+                                maxWidth={"360px"} 
+                                mx={"auto"} 
+                                my={5} 
+                                p={20} 
+                                borderColor={"#E8E8E8"}
+                        >
+                            <h2>Buy Carbon Credits</h2>
 
+                            <Field label="Green NFT's address">
+                                <Input
+                                    type="text"
+                                    width={1}
+                                    placeholder="e.g) 0x0224588b20e1042264F0B55687cEAA450EEfc300"
+                                    required={true}
+                                    value={this.state.valueGreenNFT} 
+                                    onChange={this.handleGreenNFT}                                        
+                                />
+                            </Field>
+
+                            <Field label="Order of carbon credits">
+                                <Input
+                                    type="text"
+                                    width={1}
+                                    placeholder="e.g) 10"
+                                    required={true}
+                                    value={this.state.valueOrderOfCarbonCredits} 
+                                    onChange={this.handleOrderOfCarbonCredits}                                        
+                                />
+                            </Field>
+
+                            <Button size={'medium'} width={1} onClick={this.buyCarbonCredits}> Buy Carbon Credits </Button>
+
+                            <span style={{ padding: "5px" }}></span>
+                        </Card>
+
+                        <br />
+
+                        <hr />
+
+                        { currentAccount != greenNFTMetadata.projectOwner && greenNFTMetadata.greenNFTStatus == "1" ?
+                            <Card width={"360px"} 
+                                    maxWidth={"360px"} 
+                                    mx={"auto"} 
+                                    my={5} 
+                                    p={20} 
+                                    borderColor={"#E8E8E8"}
+                            >
                                 <span style={{ padding: "20px" }}></span>
 
-                                <p>Photo Name: { green.GreenNFTName }</p>
+                                <p>Project ID: { greenNFTMetadata.projectId }</p>
 
-                                <p>Price: { web3.utils.fromWei(`${green.greenNFTPrice}`, 'ether') } ETH</p>
+                                <p>Claim ID: { greenNFTMetadata.claimId }</p>
 
-                                {/* <p>NFT Address: { green.GreenNFT }</p> */}
+                                <p>Green NFT: { greenNFTMetadata.greenNFT }</p>
 
-                                <p>Owner: { green.ownerAddress }</p>
+                                <p>Project Owner: { greenNFTMetadata.projectOwner }</p>
 
-                                {/* <p>Reputation Count: { green.reputation }</p> */}
-                                
+                                <p>Auditor: { greenNFTMetadata.auditor }</p>
+
+                                <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
+
+                                {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
+
+                                {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
+
+                                {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
+
+                                {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
+
+                                {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
+
                                 <br />
-
-                                {/* <hr /> */}
-
-                                {/* 
-                                <Field label="Please input a NFT Address as a confirmation to buy">
-                                    <Input
-                                        type="text"
-                                        width={1}
-                                        placeholder="e.g) 0x6d7d6fED69E7769C294DE41a28aF9E118567Bc81"
-                                        required={true}
-                                        value={this.state.valueGreenNFTAddress} 
-                                        onChange={this.handleGreenNFTAddress}                                        
-                                    />
-                                </Field>
-                                */}
-
-                                <Button size={'medium'} width={1} value={ green.greenNFT } onClick={this.buyGreenNFT}> Buy </Button>
-
-                                {/* <Button size={'small'} value={ green.GreenNFT } onClick={this.buyGreenNFT}> Buy </Button> */}
-
-                                {/* <span style={{ padding: "5px" }}></span> */}
-
-                                {/* <Button size={'small'} onClick={this.addReputation}> Rep </Button> */}
 
                                 <span style={{ padding: "5px" }}></span>
                             </Card>
