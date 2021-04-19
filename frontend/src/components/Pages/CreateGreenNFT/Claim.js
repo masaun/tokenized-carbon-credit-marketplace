@@ -85,7 +85,7 @@ export default class Claim extends Component {
             console.log('=== ipfsHash ===', this.state.ipfsHash)
 
             const projectId = valueProjectId
-            const co2Reductions = valueCO2Reductions
+            const co2Reductions = web3.utils.toWei(valueCO2Reductions, 'ether')
             const referenceDocument = this.state.ipfsHash
             this.setState({ 
                 valueProjectId: '',
