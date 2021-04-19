@@ -47,14 +47,28 @@ http://127.0.0.1:8545
 
 
 ### Setup backend
-1. Deploy contracts to private network of Ganache
+1. Deploy contracts on private network of Ganache
 ```
-(root directory)
-
 $ npm run migrate:local
 ```
 
 &nbsp;
+
+1. Deploy contracts on Goerli testnet
+```
+$ npm run migrate:local
+```
+
+&nbsp;
+
+1. Deploy contracts on Matic's Mumbai testnet
+```
+$ npm run migrate:polygon_testnet
+```
+
+&nbsp;
+
+<br>
 
 
 ### Setup frontend
