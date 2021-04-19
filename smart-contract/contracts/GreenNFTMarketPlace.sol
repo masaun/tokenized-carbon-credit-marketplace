@@ -6,6 +6,7 @@ import { GreenNFTMarketplaceCommons } from "./commons/GreenNFTMarketplaceCommons
 import { GreenNFT } from "./GreenNFT.sol";
 import { GreenNFTTradable } from "./GreenNFTTradable.sol";
 import { GreenNFTData } from "./GreenNFTData.sol";
+import { CarbonCreditToken } from "./CarbonCreditToken.sol";
 
 
 contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
@@ -16,9 +17,12 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
     address public GREEN_NFT_MARKETPLACE;
 
     GreenNFTData public greenNFTData;
+    CarbonCreditToken public carbonCreditToken;
 
-    constructor(GreenNFTData _greenNFTData) public GreenNFTTradable() {
+    constructor(GreenNFTData _greenNFTData, CarbonCreditToken _carbonCreditToken) public GreenNFTTradable(_carbonCreditToken) {
         greenNFTData = _greenNFTData;
+        carbonCreditToken = _carbonCreditToken;
+
         address payable GREEN_NFT_MARKETPLACE = address(uint160(address(this)));
     }
 
@@ -43,8 +47,11 @@ contract GreenNFTMarketplace is GreenNFTTradable, GreenNFTMarketplaceCommons {
         uint purchaseAmountOfCarbonCredits = getPurchaseAmountOfCarbonCredits(greenNFT, orderOfCarbonCredits);
         require(purchaseAmountOfCarbonCredits == msg.value, "Purchase amount of carbon credits must be equal to msg.value");
 
-        /// ETH amount purchased is transferred into a seller wallet
+        /// ETH amount purchased is transferred from a buyer's wallet a projectOwner's (seller's) wallet
         seller.transfer(purchaseAmountOfCarbonCredits);
+
+        /// CCTs (Carbon Credit Tokens) are transferred into the buyer's wallet address
+        carbonCreditToken.transfer(buyer, purchaseAmountOfCarbonCredits);
     }
 
 

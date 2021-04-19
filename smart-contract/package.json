@@ -6,6 +6,7 @@
   "scripts": {
     "test": "truffle test ./test/*",
     "console": "truffle console --network local",
+    "compile:local": "truffle compile --reset --network local",
     "migrate:local": "truffle migrate --reset --network local",
     "migrate:goerli": "truffle migrate --reset --network goerli",
     "migrate:polygon_testnet": "truffle migrate --reset --network polygon_testnet"
