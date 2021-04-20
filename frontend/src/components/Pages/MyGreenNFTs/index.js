@@ -53,7 +53,8 @@ export default class MyGreenNFTs extends Component {
         let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
             
         /// Get amount of carbon credits
-        const greenNFTEmissonData = greenNFTData.getGreenNFTEmissonDataByNFTAddress(greenNFT)
+        const greenNFTEmissonData = await greenNFTData.methods.getGreenNFTEmissonDataByNFTAddress(GREEN_NFT).call()
+        console.log('=== greenNFTEmissonData ===', greenNFTEmissonData)        
         const _carbonCredits = web3.utils.toWei(greenNFTEmissonData.carbonCredits, 'ether')
 
         /// Approve the locked-CCTs amount
@@ -61,7 +62,7 @@ export default class MyGreenNFTs extends Component {
 
         /// Open to put on sale
         let txReceipt2 = await greenNFTTMarketplace.methods.openToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] })
-        console.log('=== response of openToPutOnSale ===', txReceipt2);
+        console.log('=== response of openToPutOnSale ===', txReceipt2)
     }
 
     cancelToPutOnSale = async (e) => {
