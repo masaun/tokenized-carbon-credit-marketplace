@@ -40,7 +40,7 @@ export default class MyGreenNFTs extends Component {
     /// Functions put a photo NFT on sale or cancel it on sale 
     ///---------------------------------------------------------
     openToPutOnSale = async (e) => {
-        const { web3, accounts, greenNFTTMarketplace, GreenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
+        const { web3, accounts, greenNFTTMarketplace, greenNFTData, carbonCreditToken, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
 
         console.log('=== value of openToPutOnSale ===', e.target.value);
         console.log('=== GREEN_NFT_MARKETPLACE ===', GREEN_NFT_MARKETPLACE);
@@ -52,13 +52,21 @@ export default class MyGreenNFTs extends Component {
         GreenNFT = require("../../../../../smart-contract/build/contracts/GreenNFT.json"); 
         let greenNFT = new web3.eth.Contract(GreenNFT.abi, GREEN_NFT);
             
+        /// Get amount of carbon credits
+        const greenNFTEmissonData = await greenNFTData.methods.getGreenNFTEmissonDataByNFTAddress(GREEN_NFT).call()
+        console.log('=== greenNFTEmissonData ===', greenNFTEmissonData)
+        const _carbonCredits = greenNFTEmissonData.carbonCredits
+
+        /// Approve the locked-CCTs amount
+        let txReceipt1 = await carbonCreditToken.methods.approve(GREEN_NFT_MARKETPLACE, _carbonCredits).send({ from: accounts[0] })
+
         /// Open to put on sale
-        const txReceipt = await greenNFTTMarketplace.methods.openToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] });
-        console.log('=== response of openToPutOnSale ===', txReceipt);
+        let txReceipt2 = await greenNFTTMarketplace.methods.openToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] })
+        console.log('=== response of openToPutOnSale ===', txReceipt2)
     }
 
     cancelToPutOnSale = async (e) => {
-        const { web3, accounts, greenNFTTMarketplace, GreenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
+        const { web3, accounts, greenNFTTMarketplace, greenNFTData, GREEN_NFT_MARKETPLACE, GREEN_NFT_DATA } = this.state;
 
         console.log('=== value of cancelToPutOnSale ===', e.target.value);
 
@@ -105,11 +113,13 @@ export default class MyGreenNFTs extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let GreenNFTTMarketplace = {};
-        let GreenNFTData = {};
+        let GreenNFTTMarketplace = {}
+        let GreenNFTData = {}
+        let CarbonCreditToken = {}
         try {
-          GreenNFTTMarketplace = require("../../../../../smart-contract/build/contracts/GreenNFTMarketplace.json");
-          GreenNFTData = require("../../../../../smart-contract/build/contracts/GreenNFTData.json");
+          GreenNFTTMarketplace = require("../../../../../smart-contract/build/contracts/GreenNFTMarketplace.json")
+          GreenNFTData = require("../../../../../smart-contract/build/contracts/GreenNFTData.json")
+          CarbonCreditToken = require("../../../../../smart-contract/build/contracts/CarbonCreditToken.json")
         } catch (e) {
           console.log(e);
         }
@@ -140,6 +150,7 @@ export default class MyGreenNFTs extends Component {
 
             let instanceGreenNFTTMarketplace = null;
             let instanceGreenNFTData = null;
+            let instanceCarbonCreditToken = null;
             let GREEN_NFT_MARKETPLACE;
             let GREEN_NFT_DATA;
             let deployedNetwork = null;
@@ -169,6 +180,16 @@ export default class MyGreenNFTs extends Component {
               }
             }
 
+            if (CarbonCreditToken.networks) {
+              deployedNetwork = CarbonCreditToken.networks[networkId.toString()];
+              if (deployedNetwork) {
+                instanceCarbonCreditToken = new web3.eth.Contract(
+                  CarbonCreditToken.abi,
+                  deployedNetwork && deployedNetwork.address,
+                )
+              }
+            }
+
             if (instanceGreenNFTTMarketplace) {
                 // Set web3, accounts, and contract to the state, and then proceed with an
                 // example of interacting with the contract's methods.
@@ -184,6 +205,7 @@ export default class MyGreenNFTs extends Component {
                     currentAccount: currentAccount,
                     greenNFTTMarketplace: instanceGreenNFTTMarketplace,
                     greenNFTData: instanceGreenNFTData,
+                    carbonCreditToken: instanceCarbonCreditToken,
                     GREEN_NFT_MARKETPLACE: GREEN_NFT_MARKETPLACE,
                     GREEN_NFT_DATA: GREEN_NFT_DATA }, () => {
                       this.refreshValues(instanceGreenNFTTMarketplace);

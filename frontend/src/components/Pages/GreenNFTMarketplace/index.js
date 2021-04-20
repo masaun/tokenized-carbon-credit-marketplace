@@ -213,51 +213,46 @@ export default class GreenNFTMarketplace extends Component {
             <div className={styles.contracts}>
               <h2>Green NFT (Carbon Credits) MarketPlace</h2>
 
+              <Card width={"360px"} 
+                        maxWidth={"360px"} 
+                        mx={"auto"} 
+                        my={5} 
+                        p={20} 
+                        borderColor={"#E8E8E8"}
+              >
+                    <h2>Buy Carbon Credits</h2>
+
+                    <Field label="Green NFT's address">
+                        <Input
+                            type="text"
+                            width={1}
+                            placeholder="e.g) 0x0224588b20e1042264F0B55687cEAA450EEfc300"
+                            required={true}
+                            value={this.state.valueGreenNFT} 
+                            onChange={this.handleGreenNFT}                                        
+                        />
+                    </Field>
+
+                    <Field label="Order of carbon credits">
+                        <Input
+                            type="text"
+                            width={1}
+                            placeholder="e.g) 10"
+                            required={true}
+                            value={this.state.valueOrderOfCarbonCredits} 
+                            onChange={this.handleOrderOfCarbonCredits}                                        
+                        />
+                    </Field>
+
+                    <Button size={'medium'} width={1} onClick={this.buyCarbonCredits}> Buy Carbon Credits </Button>
+
+                    <span style={{ padding: "5px" }}></span>
+              </Card>
+
               { greenNFTMetadatas.map((greenNFTMetadata, key) => {
                 return (
                   <div key={key} className="">
                     <div className={styles.widgets}>
-
-                        <Card width={"360px"} 
-                                maxWidth={"360px"} 
-                                mx={"auto"} 
-                                my={5} 
-                                p={20} 
-                                borderColor={"#E8E8E8"}
-                        >
-                            <h2>Buy Carbon Credits</h2>
-
-                            <Field label="Green NFT's address">
-                                <Input
-                                    type="text"
-                                    width={1}
-                                    placeholder="e.g) 0x0224588b20e1042264F0B55687cEAA450EEfc300"
-                                    required={true}
-                                    value={this.state.valueGreenNFT} 
-                                    onChange={this.handleGreenNFT}                                        
-                                />
-                            </Field>
-
-                            <Field label="Order of carbon credits">
-                                <Input
-                                    type="text"
-                                    width={1}
-                                    placeholder="e.g) 10"
-                                    required={true}
-                                    value={this.state.valueOrderOfCarbonCredits} 
-                                    onChange={this.handleOrderOfCarbonCredits}                                        
-                                />
-                            </Field>
-
-                            <Button size={'medium'} width={1} onClick={this.buyCarbonCredits}> Buy Carbon Credits </Button>
-
-                            <span style={{ padding: "5px" }}></span>
-                        </Card>
-
-                        <br />
-
-                        <hr />
-
                         { currentAccount != greenNFTMetadata.projectOwner && greenNFTMetadata.greenNFTStatus == "1" ?
                             <Card width={"360px"} 
                                     maxWidth={"360px"} 
