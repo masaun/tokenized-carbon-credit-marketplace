@@ -80,7 +80,7 @@ export default class Register extends Component {
         event.preventDefault()
 
         const projectName = valueProjectName
-        const co2Emissions = valueCO2Emissions
+        const co2Emissions = web3.utils.toWei(valueCO2Emissions, 'ether')
         this.setState({ 
             valueProjectName: '',
             valueCO2Emissions: ''
