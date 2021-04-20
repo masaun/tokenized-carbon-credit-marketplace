@@ -54,8 +54,8 @@ export default class MyGreenNFTs extends Component {
             
         /// Get amount of carbon credits
         const greenNFTEmissonData = await greenNFTData.methods.getGreenNFTEmissonDataByNFTAddress(GREEN_NFT).call()
-        console.log('=== greenNFTEmissonData ===', greenNFTEmissonData)        
-        const _carbonCredits = web3.utils.toWei(greenNFTEmissonData.carbonCredits, 'ether')
+        console.log('=== greenNFTEmissonData ===', greenNFTEmissonData)
+        const _carbonCredits = greenNFTEmissonData.carbonCredits
 
         /// Approve the locked-CCTs amount
         let txReceipt1 = await carbonCreditToken.approve(GREEN_NFT_MARKETPLACE, _carbonCredits).send({ from: accounts[0] })
