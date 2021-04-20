@@ -96,6 +96,7 @@ export default class Audit extends Component {
                     
                     const carbonCredits = Number(_co2Emissions) - Number(_co2Reductions)
                     const _carbonCredits = String(carbonCredits)
+                    console.log('=== _carbonCredits ===', _carbonCredits)
 
                     greenNFTFactory.methods.auditClaim(claimId, auditedReport).send({ from: auditor })
                     .then((receipt) => {

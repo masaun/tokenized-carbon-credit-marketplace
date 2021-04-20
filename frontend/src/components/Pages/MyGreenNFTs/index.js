@@ -58,7 +58,7 @@ export default class MyGreenNFTs extends Component {
         const _carbonCredits = greenNFTEmissonData.carbonCredits
 
         /// Approve the locked-CCTs amount
-        let txReceipt1 = await carbonCreditToken.approve(GREEN_NFT_MARKETPLACE, _carbonCredits).send({ from: accounts[0] })
+        let txReceipt1 = await carbonCreditToken.methods.approve(GREEN_NFT_MARKETPLACE, _carbonCredits).send({ from: accounts[0] })
 
         /// Open to put on sale
         let txReceipt2 = await greenNFTTMarketplace.methods.openToPutOnSale(GREEN_NFT_DATA, GREEN_NFT).send({ from: accounts[0] })
