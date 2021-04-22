@@ -74,6 +74,8 @@ contract GreenNFTData is GreenNFTDataCommons {
         GreenNFT _greenNFT, 
         address _projectOwner,
         address _auditor,
+        uint _startOfPeriod,          /// e.g). 12:00 UTC, Jan 1, 2022
+        uint _endOfPeriod,            /// e.g). 12:00 UTC, Dec 31, 2024
         string memory _auditedReport
     ) public returns (bool) {
         currentGreenNFTMetadataId++;
@@ -85,6 +87,9 @@ contract GreenNFTData is GreenNFTDataCommons {
             greenNFT: _greenNFT,
             projectOwner: _projectOwner,
             auditor: _auditor,
+            timestampOfissuedDate: now,
+            startOfPeriod: _startOfPeriod,
+            endOfPeriod: _endOfPeriod,
             auditedReport: _auditedReport,
             greenNFTStatus: GreenNFTStatus.Audited
         });
@@ -97,7 +102,7 @@ contract GreenNFTData is GreenNFTDataCommons {
     /**
      * @notice - Save emission data of a GreenNFT
      */
-    function saveGreenNFTEmissonData(
+    function saveGreenNFTEmissonData(  
         uint _co2Emissions,
         uint _co2Reductions,
         uint _carbonCredits

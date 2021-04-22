@@ -75,6 +75,8 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
         address _projectOwner = project.projectOwner;
         require (msg.sender == _projectOwner, "Caller must be a project owner");
+
+        uint timestampOfissuedDate = now;
         
         greenNFTData.saveClaim(projectId, co2Reductions, referenceDocument);
     }
@@ -139,13 +141,15 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFT greenNFT,
         address projectOwner,
         address auditor,
+        uint startOfPeriod, 
+        uint endOfPeriod,
         uint co2Emissions, 
         uint co2Reductions, 
         uint carbonCredits,
         string memory auditedReport
     ) public returns (bool) {
-        _saveGreenNFTMetadata(projectId, claimId, greenNFT, projectOwner, auditor, auditedReport);
-        _saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);        
+        _saveGreenNFTMetadata(projectId, claimId, greenNFT, projectOwner, auditor, startOfPeriod, endOfPeriod, auditedReport);
+        _saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);
     }
 
     function _saveGreenNFTMetadata(
@@ -154,19 +158,23 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFT greenNFT,
         address _projectOwner,
         address auditor,
+        uint startOfPeriod, 
+        uint endOfPeriod,
         string memory auditedReport
     ) public returns (bool) {
         /// Save metadata of a GreenNFT created
-        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, auditedReport);
+        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, startOfPeriod, endOfPeriod, auditedReport);
     }
 
     function _saveGreenNFTEmissonData(
+        // uint startOfPeriod, 
+        // uint endOfPeriod,
         uint co2Emissions, 
         uint co2Reductions, 
         uint carbonCredits
     ) public returns (bool) {
         /// Save emission data of a GreenNFT created
-        greenNFTData.saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);        
+        greenNFTData.saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);
     }
 
 
