@@ -47,10 +47,13 @@ contract GreenNFTDataCommons {
     }
 
     /// @notice - Emission data of a GreenNFT of a project
-    struct GreenNFTEmissonData {  /// [Key]: index of array
+    struct GreenNFTEmissonData {     /// [Key]: index of array
+        uint timestampOfissuedDate;  /// e.g). 15:00 UTC, Sep 12, 2021
+        uint startOfPeriod;          /// e.g). 2017
+        uint endOfPeriod;            /// e.g). 2019
         uint co2Emissions;
         uint co2Reductions;
-        uint carbonCredits;        /// CO2 emissions - CO2 reductions
+        uint carbonCredits;          /// CO2 emissions - CO2 reductions
         uint buyableCarbonCredits;
     }
 

@@ -75,6 +75,8 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFTData.Project memory project = greenNFTData.getProject(projectId);
         address _projectOwner = project.projectOwner;
         require (msg.sender == _projectOwner, "Caller must be a project owner");
+
+        uint timestampOfissuedDate = now;
         
         greenNFTData.saveClaim(projectId, co2Reductions, referenceDocument);
     }
