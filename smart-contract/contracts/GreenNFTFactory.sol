@@ -148,8 +148,8 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         uint carbonCredits,
         string memory auditedReport
     ) public returns (bool) {
-        _saveGreenNFTMetadata(projectId, claimId, greenNFT, projectOwner, auditor, auditedReport);
-        _saveGreenNFTEmissonData(startOfPeriod, endOfPeriod, co2Emissions, co2Reductions, carbonCredits);        
+        _saveGreenNFTMetadata(projectId, claimId, greenNFT, projectOwner, auditor, startOfPeriod, endOfPeriod, auditedReport);
+        _saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);
     }
 
     function _saveGreenNFTMetadata(
@@ -158,21 +158,23 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         GreenNFT greenNFT,
         address _projectOwner,
         address auditor,
+        uint startOfPeriod, 
+        uint endOfPeriod,
         string memory auditedReport
     ) public returns (bool) {
         /// Save metadata of a GreenNFT created
-        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, auditedReport);
+        greenNFTData.saveGreenNFTMetadata(projectId, claimId, greenNFT, _projectOwner, auditor, startOfPeriod, endOfPeriod, auditedReport);
     }
 
     function _saveGreenNFTEmissonData(
-        uint startOfPeriod, 
-        uint endOfPeriod,
+        // uint startOfPeriod, 
+        // uint endOfPeriod,
         uint co2Emissions, 
         uint co2Reductions, 
         uint carbonCredits
     ) public returns (bool) {
         /// Save emission data of a GreenNFT created
-        greenNFTData.saveGreenNFTEmissonData(startOfPeriod, endOfPeriod, co2Emissions, co2Reductions, carbonCredits);        
+        greenNFTData.saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);
     }
 
 
