@@ -98,12 +98,17 @@ contract GreenNFTData is GreenNFTDataCommons {
      * @notice - Save emission data of a GreenNFT
      */
     function saveGreenNFTEmissonData(
+        uint _startOfPeriod,          /// e.g). 12:00 UTC, Jan 1, 2022
+        uint _endOfPeriod,            /// e.g). 12:00 UTC, Dec 31, 2024        
         uint _co2Emissions,
         uint _co2Reductions,
         uint _carbonCredits
     ) public returns (bool) {
         /// Save emission data of a GreenNFT
         GreenNFTEmissonData memory greenNFTEmissonData = GreenNFTEmissonData({
+            timestampOfissuedDate: now,
+            startOfPeriod: _startOfPeriod,
+            endOfPeriod: _endOfPeriod,
             co2Emissions: _co2Emissions,
             co2Reductions: _co2Reductions,
             carbonCredits: _carbonCredits,
