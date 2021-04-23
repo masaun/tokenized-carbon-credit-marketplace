@@ -20,6 +20,7 @@ contract GreenNFTFactoryCommons {
     ///---------------------------
     event ClaimAudited (
         uint projectId, 
+        uint claimId,
         uint co2Reductions, 
         string referenceDocument
     );
