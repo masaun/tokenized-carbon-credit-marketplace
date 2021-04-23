@@ -97,7 +97,7 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         uint _projectId = claim.projectId;
         uint _co2Reductions = claim.co2Reductions;
         string memory _referenceDocument = claim.referenceDocument;
-        emit ClaimAudited(_projectId, _co2Reductions, _referenceDocument);
+        emit ClaimAudited(_projectId, claimId, _co2Reductions, _referenceDocument);
 
         /// Create a new GreenNFT
         _createNewGreenNFT(_projectId, claimId, _co2Reductions, auditedReport);
@@ -134,20 +134,22 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
      * @notice - Save a GreenNFT data
      */
     function saveGreenNFTData(
-        uint projectId,
         uint claimId,
         GreenNFT greenNFT,
         address projectOwner,
         address auditor,
-        uint startOfPeriod, 
-        uint endOfPeriod,
         uint co2Emissions, 
-        uint co2Reductions, 
         uint carbonCredits,
         string memory auditedReport
     ) public returns (bool) {
-        _saveGreenNFTMetadata(projectId, claimId, greenNFT, projectOwner, auditor, startOfPeriod, endOfPeriod, auditedReport);
-        _saveGreenNFTEmissonData(co2Emissions, co2Reductions, carbonCredits);
+        GreenNFTData.Claim memory claim = greenNFTData.getClaim(claimId);
+        uint _projectId = claim.projectId;
+        uint _startOfPeriod = claim.startOfPeriod;
+        uint _endOfPeriod = claim.endOfPeriod;
+        uint _co2Reductions = claim.co2Reductions;
+
+        _saveGreenNFTMetadata(_projectId, claimId, greenNFT, projectOwner, auditor, _startOfPeriod, _endOfPeriod, auditedReport);
+        _saveGreenNFTEmissonData(co2Emissions, _co2Reductions, carbonCredits);
     }
 
     function _saveGreenNFTMetadata(
