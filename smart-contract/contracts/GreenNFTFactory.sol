@@ -136,9 +136,7 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
     function saveGreenNFTData(
         uint claimId,
         GreenNFT greenNFT,
-        address projectOwner,
         address auditor,
-        uint co2Emissions, 
         uint carbonCredits,
         string memory auditedReport
     ) public returns (bool) {
@@ -148,8 +146,11 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
         uint _endOfPeriod = claim.endOfPeriod;
         uint _co2Reductions = claim.co2Reductions;
 
-        _saveGreenNFTMetadata(_projectId, claimId, greenNFT, projectOwner, auditor, _startOfPeriod, _endOfPeriod, auditedReport);
-        _saveGreenNFTEmissonData(co2Emissions, _co2Reductions, carbonCredits);
+        GreenNFTData.Project memory project = greenNFTData.getProject(_projectId);
+
+        /// [Note]: Use a project instance as it is. (Do not assign another variable in order to avoid "stack too deep")
+        _saveGreenNFTMetadata(_projectId, claimId, greenNFT, project.projectOwner, auditor, _startOfPeriod, _endOfPeriod, auditedReport);
+        _saveGreenNFTEmissonData(project.co2Emissions, _co2Reductions, carbonCredits);
     }
 
     function _saveGreenNFTMetadata(
