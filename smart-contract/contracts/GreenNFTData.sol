@@ -54,15 +54,19 @@ contract GreenNFTData is GreenNFTDataCommons {
     function saveClaim(
         uint _projectId,
         uint _co2Reductions,
+        uint _startOfPeriod, 
+        uint _endOfPeriod,
         string memory _referenceDocument
     ) public returns (bool) {
         currentClaimId++;
         Claim memory claim = Claim({
             projectId: _projectId,
+            startOfPeriod: _startOfPeriod,
+            endOfPeriod: _endOfPeriod,
             co2Reductions: _co2Reductions,
             referenceDocument: _referenceDocument
         });
-        claims.push(claim);        
+        claims.push(claim);
     }
 
     /**

@@ -32,6 +32,8 @@ contract GreenNFTDataCommons {
     struct Claim {
         uint projectId;            /// This is projectId for the Project struct (Index is projectId - 1)
         uint co2Reductions;
+        uint startOfPeriod;        /// e.g). 12:00 UTC, Jan 1, 2022
+        uint endOfPeriod;          /// e.g). 12:00 UTC, Dec 31, 2024
         string referenceDocument;  /// IPFS hash
     }
 
