@@ -105,7 +105,8 @@ export default class Audit extends Component {
                         let GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT
                         console.log('=== GREEN_NFT ===', GREEN_NFT)
 
-                        greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor,  _co2Emissions, _co2Reductions, _carbonCredits, auditedReport).send({ from: auditor })
+                        greenNFTFactory.methods.saveGreenNFTData(claimId, GREEN_NFT, auditor, _carbonCredits, auditedReport).send({ from: auditor })
+                        //greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor,  _co2Emissions, _co2Reductions, _carbonCredits, auditedReport).send({ from: auditor })
                         .then((receipt) => {
                             console.log('=== receipt ===', receipt)
                         })
