@@ -271,9 +271,15 @@ export default class MyGreenNFTs extends Component {
 
                               <p>Green NFT: { greenNFTMetadata.greenNFT }</p>
 
-                              <p>Project Owner: { greenNFTMetadata.projectOwner }</p>
+                              <p>Issued by (Auditor): { greenNFTMetadata.auditor }</p>
 
-                              <p>Auditor: { greenNFTMetadata.auditor }</p>
+                              <p>Issued to (Project Owner): { greenNFTMetadata.projectOwner }</p>
+
+                              <p>Issued at (Timestamp): { greenNFTMetadata.timestampOfissuedDate }</p>
+
+                              <p>Verification period is started from: { greenNFTMetadata.startOfPeriod }</p>
+
+                              <p>Verification period is ended until: { greenNFTMetadata.endOfPeriod }</p>
 
                               <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
 

@@ -285,7 +285,7 @@ export default class Claim extends Component {
                                     <Input
                                         type="text"
                                         width={1}
-                                        placeholder="e.g) 01/09/2021"
+                                        placeholder="e.g) 2021/10/01"
                                         required={true}
                                         value={this.state.valueStartingDateOfPeriod} 
                                         onChange={this.handleStartingDateOfPeriod} 
@@ -296,7 +296,7 @@ export default class Claim extends Component {
                                     <Input
                                         type="text"
                                         width={1}
-                                        placeholder="e.g) 15/11/2026"
+                                        placeholder="e.g) 2026/10/01"
                                         required={true}
                                         value={this.state.valueEndingDateOfPeriod} 
                                         onChange={this.handleEndingDateOfPeriod} 
