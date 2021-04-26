@@ -34,8 +34,8 @@ export default class Claim extends Component {
         /////// Handle
         this.handleProjectId = this.handleProjectId.bind(this)
         this.handleCO2Reductions = this.handleCO2Reductions.bind(this)
-        this.handleStartingDateOfPeriod = this.valueStartingDateOfPeriod.bind(this)
-        this.handleEndingDateOfPeriod = this.valueEndingDateOfPeriod.bind(this)
+        this.handleStartingDateOfPeriod = this.handleStartingDateOfPeriod.bind(this)
+        this.handleEndingDateOfPeriod = this.handleEndingDateOfPeriod.bind(this)
 
         /////// Ipfs Upload
         this.captureFile = this.captureFile.bind(this);
@@ -97,8 +97,13 @@ export default class Claim extends Component {
 
             const projectId = valueProjectId
             const co2Reductions = web3.utils.toWei(valueCO2Reductions, 'ether')
-            const startingDateOfPeriod = valueStartingDateOfPeriod
-            const endingDateOfPeriod = valueEndingDateOfPeriod
+
+            /// Convert dates to timestamp
+            //const _timeLimit = Date.parse('2021/05/21')                        /// e.g). 1595257200000 (data-type is "Number")
+            const _startingDateOfPeriod = Date.parse(valueStartingDateOfPeriod)  /// e.g). 1595257200000 (data-type is "Number")
+            const startingDateOfPeriod = _startingDateOfPeriod / 1000            /// Convert from mili-second to second (Result: 1595257200)
+            const _endingDateOfPeriod = Date.parse(valueEndingDateOfPeriod)
+            const endingDateOfPeriod = _endingDateOfPeriod / 1000
             const referenceDocument = this.state.ipfsHash
             this.setState({ 
                 valueProjectId: '',
