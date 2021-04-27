@@ -23,6 +23,8 @@ export default class Claim extends Component {
             /////// Input values from form
             valueProjectId: '',
             valueCO2Reductions: '',
+            valueStartingDateOfPeriod: '',
+            valueEndingDateOfPeriod: '',
 
             /////// Ipfs Upload
             buffer: null,
@@ -30,8 +32,10 @@ export default class Claim extends Component {
         };
 
         /////// Handle
-        this.handleProjectId = this.handleProjectId.bind(this);
-        this.handleCO2Reductions = this.handleCO2Reductions.bind(this);
+        this.handleProjectId = this.handleProjectId.bind(this)
+        this.handleCO2Reductions = this.handleCO2Reductions.bind(this)
+        this.handleStartingDateOfPeriod = this.handleStartingDateOfPeriod.bind(this)
+        this.handleEndingDateOfPeriod = this.handleEndingDateOfPeriod.bind(this)
 
         /////// Ipfs Upload
         this.captureFile = this.captureFile.bind(this);
@@ -50,6 +54,13 @@ export default class Claim extends Component {
         this.setState({ valueCO2Reductions: event.target.value });
     }
 
+    handleStartingDateOfPeriod(event) {
+        this.setState({ valueStartingDateOfPeriod: event.target.value });
+    }
+
+    handleEndingDateOfPeriod(event) {
+        this.setState({ valueEndingDateOfPeriod: event.target.value });
+    }    
 
     ///--------------------------
     /// Functions of ipfsUpload 
@@ -69,7 +80,7 @@ export default class Claim extends Component {
     }
       
     onSubmit(event) {
-        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, GREEN_NFT_MARKETPLACE, valueProjectId, valueCO2Reductions } = this.state
+        const { web3, accounts, greenNFTFactory, greenNFTTMarketplace, GREEN_NFT_MARKETPLACE, valueProjectId, valueCO2Reductions, valueStartingDateOfPeriod, valueEndingDateOfPeriod } = this.state
 
         event.preventDefault()
 
@@ -86,14 +97,23 @@ export default class Claim extends Component {
 
             const projectId = valueProjectId
             const co2Reductions = web3.utils.toWei(valueCO2Reductions, 'ether')
+
+            /// Convert dates to timestamp
+            //const _timeLimit = Date.parse('2021/05/21')                        /// e.g). 1595257200000 (data-type is "Number")
+            const _startingDateOfPeriod = Date.parse(valueStartingDateOfPeriod)  /// e.g). 1595257200000 (data-type is "Number")
+            const startingDateOfPeriod = _startingDateOfPeriod / 1000            /// Convert from mili-second to second (Result: 1595257200)
+            const _endingDateOfPeriod = Date.parse(valueEndingDateOfPeriod)
+            const endingDateOfPeriod = _endingDateOfPeriod / 1000
             const referenceDocument = this.state.ipfsHash
             this.setState({ 
                 valueProjectId: '',
                 valueCO2Reductions: '',
+                valueStartingDateOfPeriod: '',
+                valueEndingDateOfPeriod: '',
                 ipfsHash: ''
             })
 
-            greenNFTFactory.methods.claimCO2Reductions(projectId, co2Reductions, referenceDocument).send({ from: accounts[0] })
+            greenNFTFactory.methods.claimCO2Reductions(projectId, co2Reductions, startingDateOfPeriod, endingDateOfPeriod, referenceDocument).send({ from: accounts[0] })
             .once('receipt', (receipt) => {
                 console.log('=== receipt ===', receipt)
             })
@@ -258,6 +278,28 @@ export default class Claim extends Component {
                                         required={true}
                                         value={this.state.valueCO2Reductions} 
                                         onChange={this.handleCO2Reductions} 
+                                    />
+                                </Field>
+
+                                <Field label="Starting date of monitoring period">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) 2021/10/01"
+                                        required={true}
+                                        value={this.state.valueStartingDateOfPeriod} 
+                                        onChange={this.handleStartingDateOfPeriod} 
+                                    />
+                                </Field>
+
+                                <Field label="Ending date of monitoring period">
+                                    <Input
+                                        type="text"
+                                        width={1}
+                                        placeholder="e.g) 2026/10/01"
+                                        required={true}
+                                        value={this.state.valueEndingDateOfPeriod} 
+                                        onChange={this.handleEndingDateOfPeriod} 
                                     />
                                 </Field>
 
