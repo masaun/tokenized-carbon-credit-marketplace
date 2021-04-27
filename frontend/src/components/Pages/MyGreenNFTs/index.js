@@ -275,11 +275,26 @@ export default class MyGreenNFTs extends Component {
 
                               <p>Issued to (Project Owner): { greenNFTMetadata.projectOwner }</p>
 
-                              <p>Issued at (Timestamp): { greenNFTMetadata.timestampOfissuedDate }</p>
+                              <p>Issued at (Timestamp): { 
+                                  `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getFullYear() }` + "/" +
+                                  `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getMonth() + 1 }` + "/" +
+                                  `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getDate() }` + " " +
+                                  `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getHours() }` + ":" +
+                                  `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getMinutes() }` + ":" +
+                                  `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getSeconds() }`
+                              }</p>
 
-                              <p>Verification period is started from: { greenNFTMetadata.startOfPeriod }</p>
+                              <p>Verification period is started from: { 
+                                  `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getFullYear() }` + "/" +
+                                  `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getMonth() + 1 }` + "/" +
+                                  `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getDate() }`
+                              }</p>
 
-                              <p>Verification period is ended until: { greenNFTMetadata.endOfPeriod }</p>
+                              <p>Verification period is ended until: { 
+                                  `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getFullYear() }` + "/" +
+                                  `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getMonth() + 1 }` + "/" +
+                                  `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getDate() }`
+                              }</p>
 
                               <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
 
