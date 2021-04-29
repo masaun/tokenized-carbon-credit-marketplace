@@ -96,8 +96,6 @@ export default class Audit extends Component {
                     
                     const carbonCredits = Number(_co2Emissions) - Number(_co2Reductions)
                     const _carbonCredits = String(carbonCredits)
-                    //const _carbonCredits = web3.utils.fromWei(String(carbonCredits), 'ether')
-                    console.log('=== _carbonCredits ===', _carbonCredits)
 
                     greenNFTFactory.methods.auditClaim(claimId, auditedReport).send({ from: auditor })
                     .then((receipt) => {
@@ -107,7 +105,8 @@ export default class Audit extends Component {
                         let GREEN_NFT = receipt.events.GreenNFTCreated.returnValues.greenNFT
                         console.log('=== GREEN_NFT ===', GREEN_NFT)
 
-                        greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor,  _co2Emissions, _co2Reductions, _carbonCredits, auditedReport).send({ from: auditor })
+                        greenNFTFactory.methods.saveGreenNFTData(claimId, GREEN_NFT, auditor, _carbonCredits, auditedReport).send({ from: auditor })
+                        //greenNFTFactory.methods.saveGreenNFTData(_projectId, claimId, GREEN_NFT, _projectOwner, auditor,  _co2Emissions, _co2Reductions, _carbonCredits, auditedReport).send({ from: auditor })
                         .then((receipt) => {
                             console.log('=== receipt ===', receipt)
                         })
