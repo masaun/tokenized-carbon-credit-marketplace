@@ -211,15 +211,15 @@ export default class GreenNFTMarketplace extends Component {
 
         return (
             <div className={styles.contracts}>
-              <h2>Green NFT (Carbon Credits) MarketPlace</h2>
+                <h2>Green NFT (Carbon Credits) MarketPlace</h2>
 
-              <Card width={"360px"} 
+                <Card width={"360px"} 
                         maxWidth={"360px"} 
                         mx={"auto"} 
                         my={5} 
                         p={20} 
                         borderColor={"#E8E8E8"}
-              >
+                >
                     <h2>Buy Carbon Credits</h2>
 
                     <Field label="Green NFT's address">
@@ -247,77 +247,77 @@ export default class GreenNFTMarketplace extends Component {
                     <Button size={'medium'} width={1} onClick={this.buyCarbonCredits}> Buy Carbon Credits </Button>
 
                     <span style={{ padding: "5px" }}></span>
-              </Card>
+                </Card>
 
-              { greenNFTMetadatas.map((greenNFTMetadata, key) => {
-                return (
-                  <div key={key} className="">
-                    <div className={styles.widgets}>
-                        { currentAccount != greenNFTMetadata.projectOwner && greenNFTMetadata.greenNFTStatus == "1" ?
-                            <Card width={"360px"} 
-                                    maxWidth={"360px"} 
-                                    mx={"auto"} 
-                                    my={5} 
-                                    p={20} 
-                                    borderColor={"#E8E8E8"}
-                            >
-                                <span style={{ padding: "20px" }}></span>
+                { greenNFTMetadatas.map((greenNFTMetadata, key) => {
+                    return (
+                      <div key={key} className="">
+                        <div className={styles.widgets}>
+                            { currentAccount != greenNFTMetadata.projectOwner && greenNFTMetadata.greenNFTStatus == "1" ?
+                                <Card width={"360px"} 
+                                        maxWidth={"360px"} 
+                                        mx={"auto"} 
+                                        my={5} 
+                                        p={20} 
+                                        borderColor={"#E8E8E8"}
+                                >
+                                    <span style={{ padding: "20px" }}></span>
 
-                                <p>Project ID: { greenNFTMetadata.projectId }</p>
+                                    <p>Project ID: { greenNFTMetadata.projectId }</p>
 
-                                <p>Claim ID: { greenNFTMetadata.claimId }</p>
+                                    <p>Claim ID: { greenNFTMetadata.claimId }</p>
 
-                                <p>Green NFT: { greenNFTMetadata.greenNFT }</p>
+                                    <p>Green NFT: { greenNFTMetadata.greenNFT }</p>
 
-                                <p>Issued by (Auditor): { greenNFTMetadata.auditor }</p>
+                                    <p>Issued by (Auditor): { greenNFTMetadata.auditor }</p>
 
-                                <p>Issued to (Project Owner): { greenNFTMetadata.projectOwner }</p>
+                                    <p>Issued to (Project Owner): { greenNFTMetadata.projectOwner }</p>
 
-                                <p>Issued at (Timestamp): { 
-                                    `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getFullYear() }` + "/" +
-                                    `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getMonth() + 1 }` + "/" +
-                                    `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getDate() }` + " " +
-                                    `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getHours() }` + ":" +
-                                    `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getMinutes() }` + ":" +
-                                    `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getSeconds() }`
-                                }</p>
+                                    <p>Issued at (Timestamp): { 
+                                        `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getFullYear() }` + "/" +
+                                        `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getMonth() + 1 }` + "/" +
+                                        `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getDate() }` + " " +
+                                        `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getHours() }` + ":" +
+                                        `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getMinutes() }` + ":" +
+                                        `${ new Date(Number(greenNFTMetadata.timestampOfissuedDate) * 1000).getSeconds() }`
+                                    }</p>
 
-                                <p>Verification period is started from: { 
-                                    `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getFullYear() }` + "/" +
-                                    `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getMonth() + 1 }` + "/" +
-                                    `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getDate() }`
-                                }</p>
+                                    <p>Verification period is started from: { 
+                                        `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getFullYear() }` + "/" +
+                                        `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getMonth() + 1 }` + "/" +
+                                        `${ new Date(Number(greenNFTMetadata.startOfPeriod) * 1000).getDate() }`
+                                    }</p>
 
-                                <p>Verification period is ended until: { 
-                                    `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getFullYear() }` + "/" +
-                                    `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getMonth() + 1 }` + "/" +
-                                    `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getDate() }`
-                                }</p>
+                                    <p>Verification period is ended until: { 
+                                        `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getFullYear() }` + "/" +
+                                        `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getMonth() + 1 }` + "/" +
+                                        `${ new Date(Number(greenNFTMetadata.endOfPeriod) * 1000).getDate() }`
+                                    }</p>
 
-                                <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
+                                    <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
 
-                                {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
+                                    {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
 
-                                {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
+                                    {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
 
-                                {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
+                                    {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
 
-                                {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
+                                    {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
 
-                                {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
+                                    {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
 
-                                <br />
+                                    <br />
 
-                                <span style={{ padding: "5px" }}></span>
-                            </Card>
-                        :
-                            "" 
-                        }
+                                    <span style={{ padding: "5px" }}></span>
+                                </Card>
+                            :
+                                "" 
+                            }
 
-                    </div>
-                  </div>
-                )
-              }) }
+                        </div>
+                      </div>
+                    )
+                })}
             </div>
         );
     }
