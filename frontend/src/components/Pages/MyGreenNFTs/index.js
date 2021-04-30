@@ -20,7 +20,8 @@ export default class MyGreenNFTs extends Component {
           route: window.location.pathname.replace("/", ""),
 
           /////// NFT
-          greenNFTMetadatas: []
+          greenNFTMetadatas: [],
+          greenNFTEmissonDatas: []
         };
 
 
@@ -94,6 +95,16 @@ export default class MyGreenNFTs extends Component {
 
         this.setState({ greenNFTMetadatas: greenNFTMetadatas })
         return greenNFTMetadatas
+    }
+
+    getGreenNFTEmissonDatas = async () => {
+        const { greenNFTData } = this.state
+
+        const greenNFTEmissonDatas = await greenNFTData.methods.getGreenNFTEmissonDatas().call()
+        console.log('=== greenNFTEmissonDatas ===', greenNFTEmissonDatas)
+
+        this.setState({ greenNFTEmissonDatas: greenNFTEmissonDatas })
+        return greenNFTEmissonDatas
     }
 
 
@@ -220,7 +231,10 @@ export default class MyGreenNFTs extends Component {
 
             ///@dev - NFT（Always load listed NFT data
             const greenNFTMetadatas = await this.getGreenNFTMetadatas()
+            const greenNFTEmissonDatas = await this.getGreenNFTEmissonDatas()
+
             this.setState({ greenNFTMetadatas: greenNFTMetadatas })
+            this.setState({ greenNFTEmissonDatas: greenNFTEmissonDatas })
           }
         } catch (error) {
           // Catch any errors for any of the above operations.
@@ -244,7 +258,7 @@ export default class MyGreenNFTs extends Component {
     }
 
     render() {
-        const { web3, greenNFTMetadatas, currentAccount } = this.state;
+        const { web3, greenNFTMetadatas, greenNFTEmissonDatas, currentAccount } = this.state;
 
         return (
             <div className={styles.contracts}>
@@ -300,7 +314,7 @@ export default class MyGreenNFTs extends Component {
 
                               {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
 
-                              {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
+                              {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonDatas[key].co2Emissions}`, 'ether') } ETH</p> */}
 
                               {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
 

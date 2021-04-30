@@ -181,10 +181,6 @@ contract GreenNFTData is GreenNFTDataCommons {
         return greenNFTMetadata;
     }
 
-    function getGreenNFTMetadatas() public view returns (GreenNFTMetadata[] memory _greenNFTMetadatas) {
-        return greenNFTMetadatas;
-    }
-
     function getGreenNFTEmissonData(uint greenNFTMetadataId) public view returns (GreenNFTEmissonData memory _greenNFTEmissonData) {
         /// [Note]: The GreenNFTEmissonData and the GreenNFTMetadata has same greenNFTMetadataId
         uint index = greenNFTMetadataId.sub(1);
@@ -216,7 +212,13 @@ contract GreenNFTData is GreenNFTDataCommons {
         return greenNFTEmissonData;
     }
 
+    function getGreenNFTMetadatas() public view returns (GreenNFTMetadata[] memory _greenNFTMetadatas) {
+        return greenNFTMetadatas;
+    }
 
+    function getGreenNFTEmissonDatas() public view returns (GreenNFTEmissonData[] memory _greenNFTEmissonDatas) {
+        return greenNFTEmissonDatas;
+    }
 
     function getAuditors() public view returns (address[] memory _auditors) {
         return auditors;
