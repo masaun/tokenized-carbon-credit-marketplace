@@ -230,11 +230,11 @@ export default class MyGreenNFTs extends Component {
             }
 
             ///@dev - NFT（Always load listed NFT data
-            const greenNFTMetadatas = await this.getGreenNFTMetadatas()
+            ///@notice - Order of saving values below are important to display emission data and Metadata 
             const greenNFTEmissonDatas = await this.getGreenNFTEmissonDatas()
-
-            this.setState({ greenNFTMetadatas: greenNFTMetadatas })
+            const greenNFTMetadatas = await this.getGreenNFTMetadatas()
             this.setState({ greenNFTEmissonDatas: greenNFTEmissonDatas })
+            this.setState({ greenNFTMetadatas: greenNFTMetadatas })
           }
         } catch (error) {
           // Catch any errors for any of the above operations.
@@ -312,15 +312,15 @@ export default class MyGreenNFTs extends Component {
 
                               <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
 
-                              {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
+                              {/***** Display the GreenNFTEmissonData struct-related data *****/}
 
-                              {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonDatas[key].co2Emissions}`, 'ether') } ETH</p> */}
+                              <p>CO2 Emissions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Emissions }`, 'ether') } ETH</p>
 
-                              {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
+                              <p>CO2 Reductions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Reductions }`, 'ether') } ETH</p>
 
-                              {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
+                              <p>Issued Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].carbonCredits }`, 'ether') } ETH</p>
 
-                              {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
+                              <p>Buyable Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].buyableCarbonCredits }`, 'ether') } ETH</p>
 
                               <br />
 
