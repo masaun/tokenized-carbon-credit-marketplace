@@ -20,7 +20,8 @@ export default class GreenNFTMarketplace extends Component {
           route: window.location.pathname.replace("/", ""),
 
           /////// NFT
-          greenNFTMetadatas: []
+          greenNFTMetadatas: [],
+          greenNFTEmissonDatas: []          
         }
 
         this.handleGreenNFT = this.handleGreenNFT.bind(this)
@@ -77,6 +78,16 @@ export default class GreenNFTMarketplace extends Component {
 
         this.setState({ greenNFTMetadatas: greenNFTMetadatas })
         return greenNFTMetadatas
+    }
+
+    getGreenNFTEmissonDatas = async () => {
+        const { greenNFTData } = this.state
+
+        const greenNFTEmissonDatas = await greenNFTData.methods.getGreenNFTEmissonDatas().call()
+        console.log('=== greenNFTEmissonDatas ===', greenNFTEmissonDatas)
+
+        this.setState({ greenNFTEmissonDatas: greenNFTEmissonDatas })
+        return greenNFTEmissonDatas
     }
 
 
@@ -181,8 +192,12 @@ export default class GreenNFTMarketplace extends Component {
               this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled, isMetaMask });
             }
 
+
             ///@dev - NFT（Always load listed NFT data
+            ///@notice - Order of saving values below are important to display emission data and Metadata 
+            const greenNFTEmissonDatas = await this.getGreenNFTEmissonDatas()
             const greenNFTMetadatas = await this.getGreenNFTMetadatas()
+            this.setState({ greenNFTEmissonDatas: greenNFTEmissonDatas })
             this.setState({ greenNFTMetadatas: greenNFTMetadatas })
           }
         } catch (error) {
@@ -207,7 +222,7 @@ export default class GreenNFTMarketplace extends Component {
     }
 
     render() {
-        const { web3, greenNFTMetadatas, currentAccount } = this.state;
+        const { web3, greenNFTMetadatas, greenNFTEmissonDatas, currentAccount } = this.state;
 
         return (
             <div className={styles.contracts}>
@@ -233,7 +248,7 @@ export default class GreenNFTMarketplace extends Component {
                         />
                     </Field>
 
-                    <Field label="Order of carbon credits">
+                    <Field label="Order of carbon credits  (※ 1 Carbon Credits = 1 MATIC)">
                         <Input
                             type="text"
                             width={1}
@@ -254,8 +269,8 @@ export default class GreenNFTMarketplace extends Component {
                   <div key={key} className="">
                     <div className={styles.widgets}>
                         { currentAccount != greenNFTMetadata.projectOwner && greenNFTMetadata.greenNFTStatus == "1" ?
-                            <Card width={"360px"} 
-                                    maxWidth={"360px"} 
+                            <Card width={"600px"} 
+                                    maxWidth={"600px"} 
                                     mx={"auto"} 
                                     my={5} 
                                     p={20} 
@@ -296,15 +311,17 @@ export default class GreenNFTMarketplace extends Component {
 
                                 <p>Audited Report: <a href={ `https://ipfs.io/ipfs/${greenNFTMetadata.auditedReport}` }>{ greenNFTMetadata.auditedReport }</a></p>
 
-                                {/***** [Todo]: Display the GreenNFTEmissonData struct-related data *****/}
+                                {/***** Display the GreenNFTEmissonData struct-related data *****/}
 
-                                {/* <p>CO2 Emissions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Emissions}`, 'ether') } ETH</p> */}
+                                <p>CO2 Emissions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Emissions }`, 'ether') }</p>
 
-                                {/* <p>CO2 Reductions: { web3.utils.fromWei(`${greenNFTEmissonData.co2Reductions}`, 'ether') } ETH</p> */}
+                                <p>CO2 Reductions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Reductions }`, 'ether') }</p>
 
-                                {/* <p>Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.carbonCredits}`, 'ether') } ETH</p> */}
+                                <p>Issued Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].carbonCredits }`, 'ether') }</p>
 
-                                {/* <p>Buyable Carbon Credits: { web3.utils.fromWei(`${greenNFTEmissonData.buyableCarbonCredits}`, 'ether') } ETH</p> */}
+                                <p>Buyable Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].buyableCarbonCredits }`, 'ether') }</p>
+
+                                <p>(※ 1 Carbon Credits = 1 MATIC)</p>
 
                                 <br />
 

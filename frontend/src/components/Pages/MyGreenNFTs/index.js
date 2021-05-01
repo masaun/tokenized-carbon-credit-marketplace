@@ -314,13 +314,15 @@ export default class MyGreenNFTs extends Component {
 
                               {/***** Display the GreenNFTEmissonData struct-related data *****/}
 
-                              <p>CO2 Emissions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Emissions }`, 'ether') } ETH</p>
+                              <p>CO2 Emissions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Emissions }`, 'ether') }</p>
 
-                              <p>CO2 Reductions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Reductions }`, 'ether') } ETH</p>
+                              <p>CO2 Reductions: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].co2Reductions }`, 'ether') }</p>
 
-                              <p>Issued Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].carbonCredits }`, 'ether') } ETH</p>
+                              <p>Issued Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].carbonCredits }`, 'ether') }</p>
 
-                              <p>Buyable Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].buyableCarbonCredits }`, 'ether') } ETH</p>
+                              <p>Buyable Carbon Credits: { web3.utils.fromWei(`${ greenNFTEmissonDatas[key].buyableCarbonCredits }`, 'ether') }</p>
+
+                              <p>(※ 1 Carbon Credits = 1 MATIC)</p>
 
                               <br />
 
