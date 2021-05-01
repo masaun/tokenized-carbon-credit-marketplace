@@ -17,6 +17,19 @@
 
 ***
 
+## 【Versions】
+- Versions are following below:
+  - Solidity (Solc): v0.6.12
+  - Truffle: v5.1.60
+  - web3.js: v1.2.9
+  - openzeppelin-solidity: v3.4.1
+  - ganache-cli: v6.9.1 (ganache-core: 2.10.2)
+  - Node.js: v11.15.0
+
+&nbsp;
+
+***
+
 ## 【Setup】
 
 ### Setup private network by using Ganache-CLI
