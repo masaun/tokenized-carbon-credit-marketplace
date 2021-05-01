@@ -213,8 +213,8 @@ export default class GreenNFTMarketplace extends Component {
             <div className={styles.contracts}>
               <h2>Green NFT (Carbon Credits) MarketPlace</h2>
 
-              <Card width={"360px"} 
-                        maxWidth={"360px"} 
+              <Card width={"600px"} 
+                        maxWidth={"600px"} 
                         mx={"auto"} 
                         my={5} 
                         p={20} 

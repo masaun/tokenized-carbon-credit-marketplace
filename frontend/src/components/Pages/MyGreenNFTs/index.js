@@ -270,8 +270,8 @@ export default class MyGreenNFTs extends Component {
                     <div className={styles.widgets}>
 
                         { currentAccount == greenNFTMetadata.projectOwner ? 
-                            <Card width={"360px"} 
-                                    maxWidth={"360px"} 
+                            <Card width={"600px"} 
+                                    maxWidth={"600px"} 
                                     mx={"auto"} 
                                     my={5} 
                                     p={20} 
