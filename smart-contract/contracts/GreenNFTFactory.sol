@@ -54,8 +54,9 @@ contract GreenNFTFactory is Ownable, GreenNFTFactoryCommons {
     /**
      * @notice - Register a auditor 
      */
-    function registerAuditor(address auditor) public onlyOwner returns (bool) {
-        /// Caller is onlyOwner 
+    function registerAuditor(address auditor) public returns (bool) {
+    //function registerAuditor(address auditor) public onlyOwner returns (bool) {
+        /// [Note]: Caller should be onlyOwner. But it is commentouted temporary.
         greenNFTData.addAuditor(auditor);
     }
 
