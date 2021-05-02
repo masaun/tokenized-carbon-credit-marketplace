@@ -3,8 +3,10 @@
 ***
 
 ## 【Introduction of the Tokenized Carbon Credit wrapped NFT marketplace】
-- This is a smart contract and dApp that allow to be able to claim, audit, trade carbon credits in a single platform. 
+- This is a smart contract and dApp that allow to be able to claim, audit, buy/sell tokenized-carbon credits in a single platform. 
   - By that whole process is executed on this platform, it is able to keep `transparency` and `traceability` .
+  - The Carbon Credit Token (CCT) which is ERC20 is used for representing carbon credits.
+  - Green NFT is used as a `proof of audit` .
   - This smart contract is deployed on Polygon (previously Matic Network) in order to save cost of transaction and realize faster transactions. 
 
 &nbsp;
