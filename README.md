@@ -3,7 +3,7 @@
 ***
 
 ## 【Introduction of the Tokenized-Carbon Credit Marketplace (on Polygon/Matic)】
-- This is a smart contract and dApp that is the Tokenized-Carbon Credit Marketplace which allow to be able to claim, audit, trade carbon credits in a single platform. (for incentivize and accelerating the CO2 emission reduction)
+- This is a smart contract and dApp that is the Tokenized-Carbon Credit Marketplace which allow to be able to claim, audit, buy/sell carbon credits in a single platform. (for incentivize and accelerating the CO2 emission reduction)
   - By that whole process is executed on this platform, it is able to keep `transparency` and `traceability` .
   - The `Carbon Credit Tokens (CCTs)` are used for representing amount of carbon credits. (The Carbon Credit Tokens is created as ERC20 token)
   - `Green NFT` is used for a `proof of audit` of CO2 reductions for a project
@@ -14,7 +14,7 @@
 ## 【Workflow】
 - ① A project owner (e.g. organizations, corporations, etc...) register themself on this dApp.
 - ② A auditor (e.g. the institutions to issue carbon credit) is registered on this dApp.
-  - Only deployer can register a auditor.
+  - Only admin (deployer of smart contracts) can register a auditor.
 
 - ③ A project owner claim CO2 reductions to a auditor.
 - ④ Auditor audit (=approve) a claim from a project owner.
@@ -22,12 +22,15 @@
   - A `Green NFT` represents a `proof of audit` of CO2 reductions for a project that is claimed.
   - Given-Carbon Credit Tokens (CCTs) are same amount with audited-amount of CO2 reductions.
 
-- ⑤ A project owner put a Green NFT (=audited-claim) on sale.
+- ⑤ A project owner put a Green NFT (=proof of audit) and the Carbon Credit Tokens (CCTs) on sale.
 - ⑥ A buyer can buy the Carbon Credit Tokens (CCTs) based on GreenNFT in the carbon credit marketplace.
   - Once buying process is successful, CCTs that are bought by a buyer will be transferred into a buyer's wallet.
     (※ At that time, a Green NFT is not transferred. A Green NFT is kept in the project owner's wallet as a proof of audit)
   - That buyer can sell CCTs bought in the marketplace as secondary sales.
   - Price rate of the Carbon Credit Tokens (CCTs) is `1 CCT = 1 MATIC`
+
+![【Diagram】Tokenized-Carbon Credit Marketplace (on Polygon_Matic)](https://user-images.githubusercontent.com/19357502/116817298-8d611900-aba0-11eb-955a-182e61885c47.jpg)
+
 
 <br>
 
