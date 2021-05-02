@@ -3,7 +3,7 @@
 ***
 
 ## 【Introduction of the Tokenized-Carbon Credit Marketplace (on Polygon/Matic)】
-- This is a smart contract and dApp that is the Tokenized-Carbon Credit Marketplace which allow to be able to claim, audit, trade carbon credits in a single platform. 
+- This is a smart contract and dApp that is the Tokenized-Carbon Credit Marketplace which allow to be able to claim, audit, trade carbon credits in a single platform. (for incentivize and accelerating the CO2 emission reduction)
   - By that whole process is executed on this platform, it is able to keep `transparency` and `traceability` .
   - The `Carbon Credit Tokens (CCTs)` are used for representing amount of carbon credits. (The Carbon Credit Tokens is created as ERC20 token)
   - `Green NFT` is used for a `proof of audit` of CO2 reductions for a project
