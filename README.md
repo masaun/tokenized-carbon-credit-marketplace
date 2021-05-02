@@ -3,11 +3,11 @@
 ***
 
 ## 【Introduction of the Tokenized-Carbon Credit Marketplace (on Polygon/Matic)】
-- This is a smart contract and dApp that allow to be able to claim, audit, trade carbon credits in a single platform. 
+- This is a smart contract and dApp that is the Tokenized-Carbon Credit Marketplace which allow to be able to claim, audit, trade carbon credits in a single platform. 
   - By that whole process is executed on this platform, it is able to keep `transparency` and `traceability` .
   - The `Carbon Credit Tokens (CCTs)` are used for representing amount of carbon credits. (The Carbon Credit Tokens is created as ERC20 token)
   - `Green NFT` is used for a `proof of audit` of CO2 reductions for a project
-  - This smart contract is deployed on Polygon (previously Matic Network) in order to save cost of transaction and realize faster transactions. 
+  - This smart contract is deployed on `Polygon` (previously `Matic Network` ) in order to save cost of transaction and realize faster transactions. 
 
 &nbsp;
 
@@ -30,6 +30,11 @@
   - Price rate of the Carbon Credit Tokens (CCTs) is `1 CCT = 1 MATIC`
 
 <br>
+
+
+## 【Demo Video】
+- 
+
 
 ***
 
@@ -76,7 +81,8 @@ http://127.0.0.1:8545
 ```
 https://rpc-mumbai.maticvigil.com/
 ```
-(More configuration detail is here: https://docs.matic.network/docs/develop/metamask/config-matic/ )
+(More configuration detail is here: https://docs.matic.network/docs/develop/metamask/config-matic/ )  
+
 ![Screen Shot 2021-04-18 at 13 20 46](https://user-images.githubusercontent.com/19357502/115134313-124d1e00-a04a-11eb-99bb-901d86477111.png)
 
 
