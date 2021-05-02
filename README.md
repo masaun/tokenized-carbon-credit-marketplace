@@ -1,10 +1,12 @@
-# Tokenized Carbon Credit Wrapped NFT Marketplace
+# Tokenized-Carbon Credit Marketplace (on Polygon/Matic)
 
 ***
 
-## 【Introduction of the Tokenized Carbon Credit wrapped NFT marketplace】
+## 【Introduction of the Tokenized-Carbon Credit Marketplace (on Polygon/Matic)】
 - This is a smart contract and dApp that allow to be able to claim, audit, trade carbon credits in a single platform. 
   - By that whole process is executed on this platform, it is able to keep `transparency` and `traceability` .
+  - The `Carbon Credit Tokens (CCTs)` are used for representing amount of carbon credits. (The Carbon Credit Tokens is created as ERC20 token)
+  - `Green NFT` is used for a `proof of audit` of CO2 reductions for a project
   - This smart contract is deployed on Polygon (previously Matic Network) in order to save cost of transaction and realize faster transactions. 
 
 &nbsp;
@@ -70,7 +72,7 @@ https://metamask.io/
 http://127.0.0.1:8545
 ```
 
-3. Adjust appropriate newwork below (In case of deploying smart contract on Polygon's Mumbai testnet)
+2. Adjust appropriate newwork below (In case of deploying smart contract on Polygon's Mumbai testnet)
 ```
 https://rpc-mumbai.maticvigil.com/
 ```
@@ -83,21 +85,15 @@ https://rpc-mumbai.maticvigil.com/
 
 
 ### Setup backend
-1. Deploy contracts on private network of Ganache
+
+- In case of deploying smart contracts on local
 ```
 $ npm run migrate:local
 ```
 
 &nbsp;
 
-1. Deploy contracts on local
-```
-$ npm run migrate:local
-```
-
-&nbsp;
-
-1. Deploy contracts on Matic's Mumbai testnet
+- In case of deploying smart contract on `Matic's Mumbai testnet`
 ```
 $ npm run migrate:polygon_testnet
 ```
